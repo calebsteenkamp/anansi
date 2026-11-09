@@ -4,7 +4,7 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 
 | Milestone | Gate | Dependency | Status | Status timestamp | Evidence / blocker / commit |
 | --- | --- | --- | --- | --- | --- |
-| M0 Foundation + documentation | T0 | Owner-approved docs step | Verified/commit pending | 2026-11-09T23:26:37+02:00 | Final T0 passed; explicit staging/commit pending. |
+| M0 Foundation + documentation | T0 | Owner-approved docs step | Complete | 2026-11-09T23:29:10+02:00 | T0 passed; first commit 3287918; recorded in subsequent docs commit. |
 | M1 Provider feasibility | T1 | M0 complete + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q1-Q3; no code/benchmark authorized yet. |
 | M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q4 project/migrations; no implementation. |
 | M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q5 device/format evidence pending. |
@@ -36,8 +36,11 @@ M10 intent-example prompting is deferred, outside the nine upcoming milestones. 
 
 ## Git completion record
 
-Pending successful final T0 and explicit allowlisted staging. First message: feat: complete milestone m0 and update documentation.
-After success, record first commit hash/completion time here and commit this record separately with docs: record milestone m0 completion. Never claim a commit succeeded before Git confirms it.
+- First commit succeeded at 2026-11-09T23:29:10+02:00: 3287918a2255f38d4065747cf466036568ec6284.
+- Message: feat: complete milestone m0 and update documentation.
+- 27 files committed after explicit allowlisted staging; git diff --cached --check passed; no forbidden local data/generated/secret paths and no credential-pattern matches in staged text.
+- This post-commit record is saved in the following docs-only commit, message docs: record milestone m0 completion. Its own hash is available in Git history rather than creating a self-reference.
+- M1 remains not started and requires explicit owner confirmation. No push or remote migration performed.
 
 ## Operating schedule
 
