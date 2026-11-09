@@ -1,0 +1,17 @@
+# Open questions
+
+Keep answered rows, actual resolution dates, and decision links. Unknown evidence blocks the named gate, not unrelated authorized work.
+
+| ID | Question / blocking gate | Owner | Provisional assumption | Answer / status | Decision / date |
+| --- | --- | --- | --- | --- | --- |
+| Q1 | Which provider transcribes isiXhosa adequately, with which formats/timings? M1/T1 | Owner + tester; Codex gathers evidence | OpenAI candidate needs testing; Vulavula published sync support omits Xhosa. | Open; no benchmark. Do not send Xhosa as Zulu. | D05; opened 2026-11-09 |
+| Q2 | Which translation provider/model preserves meaning/intent? M1/T1 | Owner + tester | Vulavula lists Xhosa translation; OpenAI configurable candidate. | Open; evidence and owner choice required. | D05; opened 2026-11-09 |
+| Q3 | Are recordings cleared for provider submission; what spend limit applies? M1 live benchmark | Owner | No live calls/top-ups during docs step. | Open; confirm before live benchmark. | D06; opened 2026-11-09 |
+| Q4 | Which Supabase demo/test project and accounts; migrations applied? M2/T2 | Owner | Capstone project, tagged fixtures, no reset; secrets local. | Open; verify target before writes; owner applies SQL. | D03; opened 2026-11-09 |
+| Q5 | Does tester phone format work or need conversion? M3/T3 | Tester + Codex | Upload fallback; no conversion dependency without evidence. | Open; provider formats M1, actual device M3. | D05; opened 2026-11-09 |
+| Q6 | When can tester provide cleared narrative and review translation? M9/T9 | Owner + tester | One informal tester, 10 or 11 November. | Open; record session agreement/results when available. | D06; opened 2026-11-09 |
+| Q7 | Tailwind or CSS modules? | Owner | Retain existing Tailwind. | Resolved: Tailwind and root app structure approved. | D01; resolved 2026-11-09 |
+| Q8 | How save post-commit M0 record? | Owner | Separate docs commit. | Resolved: two commits, no amend/push. | D07; resolved 2026-11-09 |
+| Q9 | Reminder and approval policy? | Owner | Hourly until deadline; confirm each milestone. | Resolved: end 2026-11-11T23:59:00+02:00; no automatic implementation. | D04/D08; resolved 2026-11-09 |
+
+On resolution, preserve question/history, add actual answer, evidence, decision ID, and date. Blocked/not-run tests remain so until genuinely verified.
