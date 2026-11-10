@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-The repository contains a Next.js foundation, M1 provider adapters/offline tests and benchmark tooling, and an approved implementation blueprint. The homepage is still the starter screen. Authentication, recording UI, database persistence, story translation workflow, reviews, and discovery are **not implemented**. Provider selection remains pending bilingual review. See [actual milestone evidence](docs/MILESTONES.md); plans are not completion claims.
+M1 provider feasibility is accepted and pushed. M2 account/profile code has passing automated checks against the owner-applied schema; the owner confirms the reported hydration/sign-in issues are resolved; permission hardening is verified. M2 changes remain uncommitted. The landing page now links to sign-up, sign-in, and protected profile editing. Recording, story translation/review workflows and discovery remain unimplemented. See [M2 manual setup and verification](docs/M2_VERIFICATION.md) and [actual milestone evidence](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -32,7 +32,7 @@ Stop dev before starting production on the same port. Start requires a successfu
 
 ## Tests
 
-M0 uses lint, production build, and local HTTP verification. M1 adds Vitest and an explicit benchmark command. Integration/browser commands remain planned:
+M0 uses lint, production build, and local HTTP verification. M1 adds Vitest and an explicit benchmark command. Integration/browser commands are installed but require the M2 prerequisites:
 
 | Introduced | Command (M1 available; M2 planned) | Purpose |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ See [TEST_PLAN](docs/TEST_PLAN.md) for T0-T9, environments, and fixtures. Missin
 | AGENTS.md | Persistent coding-agent instructions |
 | .env.example | Safe configuration template |
 | data/ | Ignored local source briefs, recordings, reference text |
-| lib/, tests/, supabase/migrations/ | Planned future locations; not present at M0 |
+| lib/, tests/, supabase/migrations/ | Implemented providers, auth/profile helpers, tests and owner-reviewed SQL |
 
 ## Project documents
 
@@ -90,3 +90,9 @@ Mandatory integer --max-openai-cents and --max-vulavula-calls set run limits. Be
 USD1 per GPT-5.4-mini request exceeds full 400k context at USD0.75/M input plus 4096 output at USD4.50/M (standard text endpoint, no tools; rates checked 10 November 2026). Ledger amounts are conservative reservations, not measured charges. Limits cover this tool only, not other applications/account billing, tax, future pricing changes, or independent use of adapters. Recheck pricing before modifying the pinned model/rates. Actual billed usage remains a provider-dashboard reconciliation.
 
 Zero-budget verification: invoke with both caps 0; expected exit 1, all outcomes blocked, zero requests/reservations. No-budget flags also exit 1 before reading credentials or samples.
+
+## M2 setup and test prerequisites
+
+See [M2_VERIFICATION](docs/M2_VERIFICATION.md) for exact SQL/email/manual steps. Pinning: Supabase JS 2.119.0, SSR 0.12.7, Playwright 1.65.0, CLI 3.1.0. Run npm run test:integration and npm run test:e2e only against the approved Anansi demo project. These suites fail visibly on missing setup; no skip is a pass. Unit discovery excludes the integration/e2e suites and never contacts providers. Every milestone report must state completion, blockers, commands/results and exact manual next steps.
+
+M2 profile forms preserve controlled values across saves and account changes. Browser regression checks all fields before refresh and repeated account switching, not only separate browser sessions. Use M2_REUSE_SERVER=1 explicitly to run E2E against an existing local server; otherwise stop that server so Playwright can manage port 3000.

@@ -5,8 +5,8 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | Milestone | Gate | Dependency | Status | Status timestamp | Evidence / blocker / commit |
 | --- | --- | --- | --- | --- | --- |
 | M0 Foundation + documentation | T0 | Owner-approved docs step | Complete | 2026-11-09T23:29:10+02:00 | T0 passed; first commit 3287918; recorded in subsequent docs commit. |
-| M1 Provider feasibility | T1 | M0 complete + owner confirmation | Verified/commit pending | 2026-11-10T12:03:52+02:00 | Owner accepted M1 results; final rechecks/publication pending; Google key not yet entered. |
-| M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q4 project/migrations; no implementation. |
+| M1 Provider feasibility | T1 | M0 complete + owner confirmation | Complete | 2026-11-10T12:03:52+02:00 | Owner accepted M1; 545e449 committed/pushed and remote verified. Google key remains separately pending. |
+| M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 uncommitted; M3 unauthorized. |
 | M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q5 device/format evidence pending. |
 | M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M5 Linked English translation | T5 | M4/T4 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
@@ -88,3 +88,55 @@ For every later milestone append start/block/verification/commit events, command
 ### M1 owner acceptance - 2026-11-10T12:03:52+02:00
 
 Owner reviewed comparison results and is happy with them, accepting M1 evidence with its documented sample/ASR limitations. OpenAI remains default. Google key will be entered locally by owner; currently absent, not falsely reported stored. M2 authorized after M1 publication; M2 held uncommitted pending manual checks, M3 unauthorized.
+
+## M1 publication / M2 evidence - 2026-11-10T12:58:23+02:00
+
+- M1 accepted by owner. Rechecks: 31 tests, lint and build passed before commit. Commit 545e4499331c0ff2f3e937c18cf21c715b1a250f pushed to origin/main; exact remote hash matched. Google key absent at check; independent local entry pending, never falsely claimed stored.
+- M2 added auth/profile UI/server actions, Supabase SSR/Proxy session refresh, schema/bucket migration and test harnesses. Owner SQL/application policy retained; no M3 work.
+- Unit: 39/39 tests passed (4 files). Lint exit 0. Initial production build exit 0: compiled 8.2s, TypeScript 21.6s; /account partial-prerendered, /sign-in and /sign-up static, Proxy present. Final recheck after profile revalidation change pending.
+- Integration exit 1: BLOCKED owner must apply M2 migration; 4 cases skipped, zero accepted. Initial harness environment-loading bug corrected (Next skips .env.local in test mode).
+- Browser exit 1 overall: public rendering/anonymous redirect smoke passed; two-account signup/profile test blocked by missing migration. Chromium installed. No fixture users created at blocked preflight.
+- Supabase public schema still empty at inspection. Email confirmation last observed enabled; owner configuration confirmation pending.
+- Exact owner steps: [M2_VERIFICATION](M2_VERIFICATION.md). No M2 commit/push while these remain outstanding.
+
+### Final M2 local code checks - 2026-11-10T13:00:28+02:00
+
+- npm run test:unit exit 0: 39 tests/4 files, 3.26s. npm run lint exit 0.
+- npm run build exit 0: compiled 6.1s, TypeScript 23.7s; static public/auth pages, streamed protected /account and Proxy.
+- npm ls --depth=0 and document-link validation passed. Final static JS scanned against configured private secret values: no matches (no values logged).
+- Integration remains exit 1 at missing-migration preflight (4 skipped); browser 1 smoke passed / 1 real-account case blocked. No claim of fully functioning M2 until manual prerequisites and all real-user tests pass.
+- Google key remains separately pending unless owner enters it. SQL was not applied, no M2 commit/push, M3 not started.
+
+### Prerequisite refresh - 2026-11-10T13:01:17+02:00
+
+GOOGLE_CLOUD_TRANSLATION_API_KEY now verified nonempty through Next environment loading; .env.local ignored; value never displayed and Google API not called. This resolves the separately pending key-storage prerequisite. Hosted public tables remain empty; Auth settings HTTP 200 with mailer_autoconfirm=false. SQL application and demo email confirmation setting remain pending.
+
+## M2 prerequisites applied and functional verification - 2026-11-10T13:24:49+02:00
+
+- Owner reports foundation SQL applied and email configured. Read-only verification: eight tables present/RLS enabled; story-audio private; intended grants; Auth settings HTTP 200, mailer_autoconfirm=true. Google variable nonempty, ignored, never printed/called. Owner supplied Google Node client documentation, retained in handoff as future reference.
+- Integration initial run 4/4 passed. Strengthened real private-object case: final 5/5 passed, 11.28s, ordinary owner/other/anonymous checks plus published access. Fixture cleanup: zero remaining test users/objects.
+- Browser: both tests passed. First logged a Cache Components Date.now prerender diagnostic; fixed Account with explicit await connection() before third-party session validation, based on installed guide. Rerun 2/2 passed in 51.3s without that diagnostic. No manual acceptance inferred.
+- Final unit 39/39 passed, 1.44s; lint exit 0; build exit 0 compiled 9.1s/TypeScript 15.9s.
+- Security advisors found unnecessary public/anon/authenticated EXECUTE permissions on existing event-trigger function public.rls_auto_enable(); local follow-up 20261110111925_m2_restrict_event_trigger_execute.sql prepared for owner, not remotely applied. RLS-no-policy INFO on translation_tasks is intentional deny-by-default.
+- Hosted migration history remains empty after editor application; do not automatically db push/reapply foundation. Reconcile history before future automated migration deployment.
+- Remaining gates: owner follow-up SQL/application confirmation, advisor recheck, human checklist in M2_VERIFICATION. M2 uncommitted/unpushed; M3 not started.
+
+### M2 final automated/permission verification - 2026-11-10T13:26:53+02:00
+
+- Owner applied follow-up SQL. Function privilege checks: anon_execute=false, authenticated_execute=false. Security advisors now report only intentional INFO for translation_tasks RLS/no client policy; previous public execute warnings cleared.
+- Final browser rerun after targeted cleanup revision: 2/2 passed, 46.4s; no Date.now prerender diagnostic. Test accounts/objects from preceding verification were confirmed removed.
+- Documentation links, git diff --check and final built-client private-secret scan passed; .env.local remains ignored.
+- Only owner manual two-account acceptance remains outstanding. M2 stays uncommitted/unpushed; M3 unauthorized.
+
+## M2 manual feedback regression and resolution - 2026-11-10T13:50:00+02:00
+
+- Owner reported hydration warning and sign-in profile mismatch; manual acceptance remained open while investigated. Original E2E only used separate sessions and reloaded before checking saved profile, masking a preferred-language UI reset.
+- Expanded E2E reproduced wrong preferred-language display immediately after saving. Fixed profile form with controlled values, canonical validated save result, prevention of native action-form reset, identity-keyed form mount and auth route invalidation after sign-in/up/out. No hydration-warning suppression introduced.
+- Expanded E2E passed 2/2 in 25.5s: immediate saved fields vs real DB, profile persistence, both sessions, B->A->B same-browser sign-in transitions, all fields/language checkboxes, logout, and no captured hydration errors in the clean browser.
+- Final unit 39/39 passed (1.12s), integration 5/5 passed (9.67s), lint exit 0, production build exit 0 (compiled 3.0s, TypeScript 7.4s).
+- Owner subsequently confirmed: hydration error fixed and sign-in now correct. Record this actual report; do not attribute the original warning to extensions without evidence. No repeated manual check requested for the same resolved issue.
+- M2 verified but remains uncommitted/unpushed in this repair step; M1 remains published as 545e449. M3 has not started.
+
+## M2 publication authorized - 2026-11-10T14:04:56+02:00
+
+Owner confirms manual checks passed and explicitly requests M2 commit/push, followed by M3 only. Recorded automated checks 39 unit/5 integration/2 browser plus lint/build passed on current code. No manual M2 gate remains. M3 code starts only after remote M2 commit verification.

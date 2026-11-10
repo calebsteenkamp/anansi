@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-The documentation/M0 step is complete. The owner has subsequently authorized M1 only. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0 and owner-accepted M1 are committed/pushed. The owner has authorized M2; its manual gates must pass before M2 commit/push. M3 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 

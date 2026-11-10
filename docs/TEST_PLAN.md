@@ -1,12 +1,12 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; later T2-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
 Current commands: npm run lint, npm run build, npm run dev -- --port 3000.
 Planned from M1: npm run test:unit (Vitest), npm run benchmark:providers (explicit live only).
-Planned from M2: npm run test:integration (real Supabase), npm run test:e2e (Playwright).
+Available from M2 (manual prerequisites required): npm run test:integration (real Supabase), npm run test:e2e (Playwright).
 
 Run common lint/build and all implemented applicable suites before completing each milestone. Unit/component tests cover synchronous logic/UI; async server pages use browser tests. Deterministic provider mocks are the ordinary default. Never let normal tests accidentally call paid APIs.
 
@@ -113,3 +113,11 @@ Run npm run test:unit: tests/providers.test.ts covers synthetic deterministic ad
 31 unit tests pass across two files. Tests include missing/duplicate/negative/nonfinite/fractional/oversized caps, per-run and cumulative reservation exhaustion, exact-boundary reservations, invalid ledger, sanitized errors and nonzero failed/incomplete report status. CLI zero-budget integration test exited 1 with zero reservations; four-request corrected-text live comparison exited 0. Persistent exclusive file lock and atomic ledger rename fail closed on errors. No live calls in unit tests. OpenAI default/pinned comparison model is gpt-5.4-mini-2026-03-17. Historical ASR sample results are retained; current runner tests translation separately using corrected reference text. Human bilingual review remains pending.
 
 Additional regression coverage: OpenAI defaults/pinned model, max_output_tokens=4096 in request, oversized output configuration rejected before transport, incomplete Responses output treated as failure.
+
+## M2 implemented cases and latest result
+
+Profile/credential validation and Proxy cookie-refresh/no-shared-cache units pass (39 total with M1). Integration covers real-user profile updates, cross-user/identity denial, draft/published/anonymous visibility, invalid database inputs, denied future writes, private bucket/anonymous signed-URL denial; blocked until migration. Playwright public smoke passed; real two-context signup/edit/reload/logout blocked at migration preflight. See MILESTONES for actual results; no mock or service-role assertion substitutes for RLS evidence. Exact owner prerequisites/manual checklist in M2_VERIFICATION.
+
+M2 applied-environment update: 39 unit / 5 real-user integration / 2 browser tests passed; latest lint/build passed. Private-object case uses a real disposable stored object, not merely a missing-object denial. Signup/profile/logout and cross-user updates tested with isolated accounts; zero fixtures remain. Owner manual check and advisor follow-up remain open. Historical blocked runs remain historical, not current results.
+
+M2 manual-feedback regression: E2E now checks all fields before refresh against stored data, different language/checkbox combinations, repeated same-browser B->A->B sign-in after logout, and hydration console errors. It failed on the pre-fix preferred-language reset, then passed after repair (2 tests, 25.5s). Explicit M2_REUSE_SERVER=1 permits using the owner test server; default still starts an isolated managed server. No screenshot/trace/password retention.

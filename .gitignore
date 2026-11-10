@@ -44,3 +44,10 @@ next-env.d.ts
 # misc files
 data/
 *.pdf
+# browser test artifacts
+/playwright-report/
+/test-results/
+
+# Supabase CLI local caches
+/supabase/.temp/
+/supabase/.branches/

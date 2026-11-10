@@ -49,3 +49,23 @@ Zero-cap CLI run: exit 1, zero reservations, four blocked outcomes. Live run: ex
 ## D17 - M1 accepted, M2 authorized with manual gates (2026-11-10T12:03:52+02:00)
 
 Owner accepted M1 comparison. Retain OpenAI default. Store a future-only GOOGLE_CLOUD_TRANSLATION_API_KEY locally, no Google adapter/calls. Owner enters key; never echo value. Commit/push M1 only after checks; M2 changes stay uncommitted until owner SQL application, demo email configuration and manual acceptance are verified. Do not start M3.
+
+## D18 - M2 foundation and manual gates (2026-11-10T12:58:23+02:00)
+
+M1 accepted/pushed as 545e449. Owner authorized M2 only. Retain existing Anansi project, owner-applied additive SQL, demo-only Confirm email disabled by owner, no M2 commit/push until actual database/browser/human checks pass. Supabase JS 2.119.0/SSR 0.12.7, CLI 3.1.0 and Playwright 1.65.0 pinned. Unit and network suites isolated. Google variable remains absent pending owner local entry; no Google calls or adapter.
+
+Google-key prerequisite refreshed at 2026-11-10T13:01:17+02:00: local variable nonempty, ignored, no key value logged and no Google call. SQL/email gates remain pending.
+
+## D19 - Real M2 verification and request-time auth fix (2026-11-10T13:24:49+02:00)
+
+Owner-applied foundation and demo email setting verified. Real integration/browser tests pass and fixtures removed. Explicit connection() in streamed Account excludes SDK session clock reads from prerender; Cache Components remains enabled. Advisor warning for existing rls_auto_enable() is addressed by owner-reviewed permissions-only follow-up, not removal of automatic RLS. Keep task denial policy intentional. Google Node reference https://docs.cloud.google.com/nodejs/docs/reference/translate/latest retained without adding adapter/API calls. Manual owner acceptance and follow-up ACL verification remain pending; no M2 commit. SQL Editor application does not populate hosted CLI history; reconcile before future db push.
+
+Permissions follow-up verified 2026-11-10T13:26:53+02:00: anon/authenticated execute false; both advisor warnings cleared, intentional task-denial INFO remains. Final browser suite 2/2 passed. Human checklist still pending; no commit/push of M2.
+
+## D20 - Preserve profile state across action reset and auth changes (2026-11-10T13:50:00+02:00)
+
+Manual feedback exposed missing regression coverage. React action-form reset changed preferred-language display after save. Use controlled profile values, return validated profile from server, prevent native form reset, key form by authenticated user, and invalidate the root layout on successful auth transitions. Expanded browser tests compare real stored values and visible fields before refresh and alternate B/A/B in one browser. Clean browser captured no hydration errors; owner confirms hydration and sign-in issues fixed. Do not speculate about extension cause or suppress warnings. M2 repair verified; no M2 publication or M3 action in this step.
+
+## D21 - M2 publication and M3 authorization (2026-11-10T14:04:56+02:00)
+
+Owner authorizes commit/push M2 following passed manual checks, then M3 capture/draft work only. M3 must remain uncommitted until required phone/audio/manual verification passes. No M4 authorization.

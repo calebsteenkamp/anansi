@@ -83,3 +83,7 @@ Provider/model, formats/timing support, conversion need, live spend, and target 
 ## M1 default and bounded comparison update (2026-11-10)
 
 OpenAI is the configured default; translation snapshot gpt-5.4-mini-2026-03-17. Adapters keep explicit mock/Vulavula selection and <=4096 OpenAI output tokens. Paid benchmark compares only corrected text. Its exclusive lock, atomic pre-call conservative reservations, per-run limits, and cumulative local ledger are specified in README/D16. Any failed outcome makes CLI exit nonzero after saving results. These runner controls do not constitute global application billing enforcement. No story routes or database processing implemented yet.
+
+## M2 implementation status
+
+Auth/profile pages, server actions and Supabase clients/Proxy are implemented; authenticated account reads stream under Suspense, profile writes use verified user identity and RLS, and refreshed responses are private/no-store. Migration 20261110105042_m2_foundation.sql creates all eight domain tables/private bucket but remains owner-applied. Ordinary write grants are restricted to profile fields; later workflow writes/uploads are denied. No M3 feature UI. See M2_VERIFICATION for exact setup and test gates.
