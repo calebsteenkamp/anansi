@@ -1,6 +1,6 @@
 # Architecture blueprint
 
-Approved design, 2026-11-09; implementation remains M1-M9. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
+Approved design, 2026-11-09. M1 provider adapters and CLI benchmark are now implemented; routes/data/UI below remain planned for M2-M9. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
 
 ## Boundaries and services
 
@@ -79,3 +79,7 @@ No silent fallback to a different paid provider. M1 selects configured providers
 ## Provisional decisions and references
 
 Provider/model, formats/timing support, conversion need, live spend, and target test project remain [open](OPEN_QUESTIONS.md). [DECISIONS](DECISIONS.md) tracks authority and sources. Current references: [Supabase SSR](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security/), [OpenAI transcription](https://developers.openai.com/api/docs/guides/speech-to-text), [Vulavula STT](https://docs.lelapa.ai/transcribe/sync) and [translation](https://docs.lelapa.ai/translate/translate). Read installed Next.js guides before implementing.
+
+## M1 default and bounded comparison update (2026-11-10)
+
+OpenAI is the configured default; translation snapshot gpt-5.4-mini-2026-03-17. Adapters keep explicit mock/Vulavula selection and <=4096 OpenAI output tokens. Paid benchmark compares only corrected text. Its exclusive lock, atomic pre-call conservative reservations, per-run limits, and cumulative local ledger are specified in README/D16. Any failed outcome makes CLI exit nonzero after saving results. These runner controls do not constitute global application billing enforcement. No story routes or database processing implemented yet.

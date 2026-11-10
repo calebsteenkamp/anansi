@@ -48,3 +48,5 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 - Update [MILESTONES](docs/MILESTONES.md) when work starts, blocks, verifies, commits; map M0-M9 to T0-T9.
 - Brief defines why; scope what; architecture how; PLANS sequence; TEST_PLAN proof; MILESTONES actual progress. Keep links synchronized and planned commands visibly distinct from installed scripts.
 - Use [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) for rehearsal. Preserve ignored source materials; committed docs must stand alone.
+
+- Every milestone report must explain what is complete, what remains, and exact steps for required manual actions/checks. Never commit/push a milestone while its required manual verification remains outstanding.

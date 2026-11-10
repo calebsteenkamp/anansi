@@ -1,6 +1,6 @@
 # Test plan: T0-T9
 
-This is a test specification, not executable tests or a passing report. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; later T2-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
@@ -103,3 +103,13 @@ T0.1-T0.3 are owner's M0 runtime criteria. T0.4 validates this documentation del
 - T9.4 Manual: bilingual cleared narrative session, elapsed review time, rating, correction clarity, meaning/intent errors; limitations recorded.
 - T9.5 Manual: execute exact DEMO_SCRIPT twice, uninterrupted <=5 minutes each, real dates/outcomes.
 - T9.6 Fresh setup check, lint, build, all applicable suites; README commands accurately reflect installed scripts. No demo/video/submission completion claim without artifact/evidence.
+
+## M1 implemented coverage
+
+Run npm run test:unit: tests/providers.test.ts covers synthetic deterministic adapters, multipart/OpenAI Responses/Vulavula mappings, response validation, credentials/quota/timeout/network error sanitation, and unsupported Xhosa Vulavula STT. tests/benchmark.test.ts covers permission gates and normalized word-error counts. Live output is local-only; human evaluation is pending. Unit tests use injected transports, not paid APIs.
+
+## M1 follow-up: enforced budgets/error outcomes (10 November 2026)
+
+31 unit tests pass across two files. Tests include missing/duplicate/negative/nonfinite/fractional/oversized caps, per-run and cumulative reservation exhaustion, exact-boundary reservations, invalid ledger, sanitized errors and nonzero failed/incomplete report status. CLI zero-budget integration test exited 1 with zero reservations; four-request corrected-text live comparison exited 0. Persistent exclusive file lock and atomic ledger rename fail closed on errors. No live calls in unit tests. OpenAI default/pinned comparison model is gpt-5.4-mini-2026-03-17. Historical ASR sample results are retained; current runner tests translation separately using corrected reference text. Human bilingual review remains pending.
+
+Additional regression coverage: OpenAI defaults/pinned model, max_output_tokens=4096 in request, oversized output configuration rejected before transport, incomplete Responses output treated as failure.

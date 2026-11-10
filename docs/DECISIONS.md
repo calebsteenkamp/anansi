@@ -25,3 +25,27 @@ Owner-approved blueprint recorded 2026-11-09. Approval of a design does not impl
 - Installed Next.js guides under node_modules/next/dist/docs/, especially authentication-with-cache-components and testing/vitest.
 
 Recheck relevant current documentation before implementation. Append actual M1 benchmark measurements/model choice and later cuts as new dated decisions; do not retroactively invent findings.
+
+## D13 - M1 authorization and benchmark permission (2026-11-09T23:45:03+02:00)
+
+Owner authorized M1 adapters/tests only and subsequently permitted both Phrase recordings/reference text to OpenAI/Lelapa, with USD 500 OpenAI allowance and 100 free Vulavula calls. First spike is at most six requests, no automatic retries; budget note is not monetary enforcement. No top-up, M2, or database work authorized. Local configured translation model davinci-codex is unverified and will not be silently used; first spike uses configured OpenAI speech and documented Vulavula translation. Provider choice still needs results and bilingual review.
+
+## D14 - First live evidence; no provider selection (2026-11-09T23:47:48+02:00)
+
+Report: ignored data/benchmark-results/2026-11-09T21-46-49.571Z.json. Two OpenAI gpt-transcribe requests and four Vulavula translation requests completed; no automatic retries. Phrase 1: 4 word edits / 8 reference words (50%); Phrase 2: 10 / 19 (52.63%). These tiny reference comparisons are descriptive, not an accuracy claim or a judgment about recording quality. Reference-text English outputs were plausible; ASR-text translation for Phrase 2 included 'I hope we will get hurt', unlike reference intent. Human bilingual evaluation and owner selection remain pending. Keep editable transcript/manual fallback; do not select a winner automatically. No word timings or billed-usage metrics collected; reconcile provider dashboard, no top-up performed.
+
+## D15 - Patched compatible test runner (2026-11-09)
+
+Vitest 5 conflicts with current Node-20 type definitions. Vitest 3 passed tests but introduced critical worker advisories. Selected pinned Vitest 4.1.12, which passes all 21 tests and leaves no critical audit findings. Eight moderate existing lint-chain findings remain; no force upgrade/downgrade performed. Native fetch avoids additional provider SDK dependencies; all paid operations explicit, server-only secret entrypoint.
+
+## D16 - Corrected-text comparison and enforced runner limits (2026-11-10)
+
+Owner authorized M1 benchmark error/budget fixes, valid OpenAI model selection, corrected-text provider comparison, OpenAI default; M2 still unauthorized. Select documented gpt-5.4-mini-2026-03-17 (Responses; 400k context, standard input USD0.75/M, output USD4.50/M), with <=4096 output tokens and no tools. Reference: https://developers.openai.com/api/docs/models/gpt-5.4-mini . Older GPT-4.1 mini/GPT-5 mini pages marked deprecated during inspection, so neither selected.
+
+Runner now performs only two corrected-text translations per provider; it does not repeat ASR. Run caps USD2 reserved / two Vulavula calls. Local cumulative caps USD500 reserved / 100 calls; historical baseline USD2 conservative reservation for earlier ASR and four known Vulavula calls, not actual billing. Atomic reservation persistence under exclusive lock precedes each remote request. Failed/uncertain calls remain reserved; invalid ledgers fail closed. No automatic retry. Limits cannot control other apps or prevent owner tampering/deletion; no account-wide billing guarantee. Failed/partial outputs now return exit 1; report-saving success does not mean API success.
+
+Zero-cap CLI run: exit 1, zero reservations, four blocked outcomes. Live run: exit 0, 4/4 succeeded, report data/benchmark-results/corrected-2026-11-10T06-07-33.020Z.json. Two OpenAI and two Vulavula requests; USD2 reserved (not billed). Cumulative ledger USD4 reserved, six Vulavula calls. Both matched reference English exactly for Phrase1; Phrase2 preserved broad reference meaning with phrasing differences, OpenAI 'grow in our work' vs Vulavula 'grow in our activities'. Latencies OpenAI 2792/2954ms, Vulavula 1086/717ms. No accuracy winner or generalization from these two greetings. Bilingual intent review pending; retain OpenAI default by owner preference and budget, Vulavula alternative.
+
+## D17 - M1 accepted, M2 authorized with manual gates (2026-11-10T12:03:52+02:00)
+
+Owner accepted M1 comparison. Retain OpenAI default. Store a future-only GOOGLE_CLOUD_TRANSLATION_API_KEY locally, no Google adapter/calls. Owner enters key; never echo value. Commit/push M1 only after checks; M2 changes stay uncommitted until owner SQL application, demo email configuration and manual acceptance are verified. Do not start M3.
