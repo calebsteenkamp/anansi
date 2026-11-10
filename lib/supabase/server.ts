@@ -10,7 +10,7 @@ export async function serverClient(){
  }});
 }
 export async function requireUser(){
- const db=await serverClient();const {data,error}=await db.auth.getClaims();
- if(error||!data?.claims.sub)redirect("/sign-in");
- return {db,userId:data.claims.sub as string};
+ const db=await serverClient();const {data,error}=await db.auth.getUser();
+ if(error||!data.user)redirect("/sign-in");
+ return {db,userId:data.user.id,email:data.user.email??""};
 }

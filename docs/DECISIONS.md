@@ -91,3 +91,21 @@ LAN regression additionally proved internal request.url can be localhost while t
 Both phones now pass actual sign-in/upload/playback. Publish M3 after repeated checks, then implement M4 only. At most two cleared Phrase1/2 OpenAI ASR requests approved under existing USD500 allowance. M4 SQL stays owner-applied; M4 remains uncommitted until required manual verification. No M5.
 
 Later server log captured Failed to find Server Action / HTTP409 from an older page. This supports stale action references as one observed failure path; the accepted JSON sign-in no longer uses that transport.
+
+## D26 - M4 implementation and gated verification - 2026-11-10T19:15:59+02:00
+
+M3 pushed as ade9f2b9a688def6aadca05138ddb88dc3360a31, remote hash matched after all gates. M4 only authorized. Keep gpt-transcribe, text-only JSON, labelled estimates; do not switch to deprecated timing models. Use authenticated guarded save RPC and service-only claim/finish/publish to prevent forged provider/task metadata. SQL remains owner-applied. Pending English creation is M4 preparation; processing is M5. Two approved live calls succeeded1706/1536ms with USD2 conservative reservations, no retry/phone recordings; report ignored/local. Current priceUSD0.0045/min checked against official model page, not billed usage. M4 remains uncommitted awaiting actual SQL/browser/manual gates.
+
+## D27 - M4 applied-schema verification repairs - 2026-11-10T20:01:49+02:00
+
+Owner applied migration; read-only schema, function ACLs, private helper and RLS/grants match. Recovery test now uses an unambiguously past fixture timestamp rather than assuming local/database clocks match. Actual integration16/16 passes. LAN browser exposed unavailable crypto.randomUUID on HTTP; editor creates RFCv4 IDs using crypto.getRandomValues instead. Mock transcription network assertion allows30s for real Supabase round trips. No SQL changes, new paid calls, M4 commit or M5 work.
+
+## D28 - M4 manual access/navigation feedback - 2026-11-10T22:25:46+02:00
+
+Owner reports checks1–4 passed, check5 B editing allowed in a different browser, check6 editing works but protected links remain Rendering. Actual persisted B edit and exact story URL await clarification; do not attribute this report to shared tabs. Existing direct writes remain denied and real integration16/16 passes. Separate-context browser test submits B save and verifies rejection/unchanged published text.
+
+Protected renders now verify getUser each request and show current signed-in email. Published originals use the same plain read-only view for author and other readers. Open draft editors verify current access on mount/focus/visibility/pageshow and close on identity/access change; backend identity/ownership checks remain independent. Shared-tab regression is additional coverage. Native document links for profile/capture/story navigation avoid repeated stalled RSC transitions and obtain fresh session-rendered content; keep Cache Components. Unsaved changes use native beforeunload on those links. No SQL changes or paid calls. Manual retest remains mandatory.
+
+## D29 - M4 accepted, M5 authorized - 2026-11-10T23:10:31+02:00
+
+Owner confirms access/navigation retests5/6 pass. Commit/push M4 after repeated verification; implement M5 only. Owner-applied SQL and required human tests remain gates before M5 commit. No M6.

@@ -1,6 +1,6 @@
 # Architecture blueprint
 
-Approved design, 2026-11-09. M1 provider adapters and M2 auth/profile foundation are accepted/published. M3 capture/draft code is implemented pending SQL/manual verification; remaining workflows are planned. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
+Approved design, 2026-11-09. M1 provider adapters and M2 auth/profile foundation are accepted/published. M3 capture/drafts are accepted and published; M4 transcript/publish code is implemented pending SQL/manual verification; later workflows are planned. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
 
 ## Boundaries and services
 
@@ -101,3 +101,15 @@ References: [Mediabunny reading/media packets](https://mediabunny.dev/guide/read
 ## Auth transport repair during M3
 
 Sign-in/up moved from action Flight responses to same-origin JSON POST /api/auth/[mode]. Verified mode, <=16KiB actual body, validated credentials, Supabase SSR cookie writes, private/no-store and sanitized errors. The controlled form preserves entries through failures and enables only after hydration; success performs a fresh same-origin document navigation to clear private client caches. Sign-out/profile remain validated actions. ANANSI_DEV_HOSTS supplies exact additional development resource hosts; it does not widen action CSRF or capture origin checks.
+
+## M4 implementation pending owner SQL/verification
+
+GET transcript reads caller-RLS snapshots only. PUT transcript is a bounded same-origin request using verified Auth user plus caller-session m4_save_transcript. Intentional SECURITY DEFINER SQL is narrowly guarded by auth.uid/owner/state/revision, with empty search_path, private segment helper and explicit ACLs; direct table writes remain denied. Caller timings are recomputed server/database-side.
+
+Transcription POST verifies identity/ownership/consent and uses service-role-only claim/finish capabilities with explicit actor. Claims expire after5min; adapter timeout160s; no auto-retry or processing GET. Completed transcripts bypass providers; persistence errors preserve recovery state. Only current unexpired claim can finalize. Manual save after expiry invalidates stale completion. Original provider/model and manual/provider/provider-edited origin are distinct.
+
+Publish POST supplies provider/model from server config, not browser input, and invokes server-only transaction with repeated owner/revision guards. Story lock + unique parent/language + task uniqueness make repeated/concurrent publish idempotent. Freeze original/create linked English/tasks commit together; SHA256 fingerprint covers segment ID/text/language pair/provider/model. Pending English metadata is author-readable; ordinary task access stays denied. No translation endpoint is wired.
+
+Server pages remain uncached/authenticated under Suspense. Editor owns its title/status/audio view so save/publish is immediately reflected; controlled hydration-ready fields, explicit Save, split/merge IDs and unsaved-navigation warnings. Current ASR JSON supplies no timestamps; pure timing contract supports validated optional provider timings but defaults to proportional estimates. Reference: https://developers.openai.com/api/docs/guides/speech-to-text .
+
+M4 access/navigation hardening (D28): protected page identity uses verified getUser, with a current-account label. Published pages are non-editable views for every account. Draft editor access is revalidated on mount/focus/visibility/pageshow, with backend authorization independently enforced on every mutation. Native protected navigation deliberately avoids reusing a cached RSC transition/session view. No database grants changed.

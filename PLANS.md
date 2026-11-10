@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0-M2 are committed/pushed. Owner accepted M2 manual checks and explicitly authorized M3 only. M3 remains uncommitted until T3 and actual phone/audio checks pass. M4 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0-M3 are accepted, committed and pushed. M3 is ade9f2b. Owner authorized M4 only; M4 remains uncommitted until applied SQL, automated and actual desktop/phone acceptance pass. M5 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -106,6 +106,12 @@ Gate: full E2E record/upload -> transcript edit -> publish -> translation -> pla
 
 Keep local demo first; deployment optional and excluded here. Owner-approved cut order: M10, sharing, search/filters, corrected toggle, device English speech. Keep core capture/transcript/translation/listen/verify. Synchronize scope/tests/demo after approved cut. Halt at failed gate or missing consequential evidence; ask only for the blocking decision, never silently broaden scope.
 
-## Active M3 implementation note
+## M3 implementation history (completed)
 
-D22 combines draft creation/upload finalization into one authenticated multipart POST; audio metadata SQL and private-bucket restrictions await owner application. Mediabunny inspection approved, no conversion. Read [M3_VERIFICATION](docs/M3_VERIFICATION.md) for exact SQL, local workflow, phone/browser handoff and crash limitations. Owner-confirmed device string Huawei i14; actual format/browser/audio evidence pending. M4 remains unauthorized.
+D22 combines draft creation/upload finalization into one authenticated multipart POST; audio metadata SQL and private-bucket restrictions await owner application. Mediabunny inspection approved, no conversion. Read [M3_VERIFICATION](docs/M3_VERIFICATION.md) for exact SQL, local workflow, phone/browser handoff and crash limitations. At that checkpoint actual phone evidence was pending; owner later accepted both phones and authorized M4 in D25.
+
+## Active M4 implementation contract
+
+Explicit owner transcribe, typed/pasted fallback, title/segment edit/split/merge/save, valid labelled timing and atomic immutable publish. No translation calls. Five-minute durable claim/token; stale completions rejected; completed transcripts reused; failed/expired work requires explicit retry. Save compares revision; publish uses trusted server provider/model and creates unique pending English story/tasks transactionally. Limits50,000 characters/500 segments; initial chunks<=300 code points. Owner applies 20261110165905_m4_transcript_publish.sql. Read M4_VERIFICATION before network checks.
+
+Owner permits at most two live OpenAI requests using previously cleared Phrase1/2. Both completed successfully and authorization is consumed; no retry/new phone audio. Unit/E2E providers are mocks, not accuracy evidence. M4 stops for owner SQL and real desktop/phone checklist; no M4 commit/push or M5 before that gate.

@@ -1,11 +1,11 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
 Current commands: npm run lint, npm run build, npm run dev -- --port 3000.
-Planned from M1: npm run test:unit (Vitest), npm run benchmark:providers (explicit live only).
+Available from M1: npm run test:unit (Vitest), npm run benchmark:providers (explicit live only).
 Available from M2 (manual prerequisites required): npm run test:integration (real Supabase), npm run test:e2e (Playwright).
 
 Run common lint/build and all implemented applicable suites before completing each milestone. Unit/component tests cover synchronous logic/UI; async server pages use browser tests. Deterministic provider mocks are the ordinary default. Never let normal tests accidentally call paid APIs.
@@ -136,3 +136,14 @@ M2 manual-feedback regression: E2E now checks all fields before refresh against 
 M3 follow-up unit case: intrinsic Opus TOC durations (20/60/120ms and invalid frame counts), exercised by real browser WebM recording. Browser queries are author-scoped; sign-out awaits redirect and timer/feedback locators are distinct.
 
 M3 phone regression: tests/auth-api.test.ts checks same-origin/validation/private JSON/16KiB body bounds/sanitized failures. tests/audio-request.test.ts covers internal localhost versus actual LAN Host and spoofed forwarded host denial. tests/e2e/mobile-auth.spec.ts uses Pixel7 viewport/input emulation through ANANSI_DEV_HOSTS: slow typing retains both fields, HTML/network failure retains credentials, successful real sign-in/session refresh, LAN draft upload/reload and sign-out. This requires exact LAN configuration and is not an actual Huawei/Oppo device pass.
+
+## Executable T4 mapping
+
+- transcript.test.ts: sentences/long chunks/empty/limits, bounded timing and provider fallback, stable split/merge IDs, title/revision/browser-timing validation.
+- workflow.test.ts: claim-before-provider, completed reuse/no provider, failed claim, sanitized failure/no retry, persistence failure/no duplicate call.
+- workflow-request.test.ts + workflow-api.test.ts: bounded same-origin JSON, safe RPC errors, verified author/no unauthenticated provider work, consent, zero-work GET/reuse, user-session save/trusted server publish metadata.
+- integration/workflow.test.ts: actual user/anonymous ACLs and ownership, revision/foreign-segment rollback, claims/expiry/stale completion, failed-ASR manual fallback, atomic/concurrent/idempotent publish, pending translation privacy, unchanged original metadata and immutable published transcript. Admin fixture operations are distinct from user-token assertions.
+- e2e/workflow.spec.ts: mock ASR->correction/split/merge/save/reload/publish->account B read-only; interrupted transcription->manual paste/save/publish on LAN mobile-sized browser. All provider calls mocked. Actual desktop/phone/audibility/linguistic checks remain owner manual gate in M4_VERIFICATION.
+- global browser setup blocks on missing M4 SQL. Live checks do not run in ordinary suites. Two cleared-sample live calls completed separately, not accuracy proof.
+
+D28 regressions: session.test.ts proves verified user retrieval per protected render and rejection of invalid sessions; workflow browser tests prove separate-session B persistence denial with reload, no published editing fields, phone profile/record navigation, and closure of an open draft after a shared-context account switch. The latter is additional coverage, not a claimed reproduction of the owner's separate-browser report.

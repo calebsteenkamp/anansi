@@ -35,7 +35,7 @@ test("mobile LAN sign-in keeps typing and recovers from transport failures",asyn
   await page.getByRole("button",{name:"Save private draft"}).click();expect((await saved).status()).toBe(201);
   await expect(page.getByLabel("Saved draft audio")).toBeVisible();await page.reload();await expect(page.getByLabel("Saved draft audio")).toBeVisible();
   await page.goto("/account");
-  await page.getByRole("button",{name:"Sign out",exact:true}).click();await expect(page).toHaveURL(/sign-in/);
+  await page.getByRole("button",{name:"Sign out",exact:true}).click();await expect(page).toHaveURL(/sign-in/,{timeout:30000});
   expect(errors).toEqual([]);
  }finally{await context.close();
   const rows=await f.admin.from("stories").select("audio_path").in("author_id",f.ids).not("audio_path","is",null);

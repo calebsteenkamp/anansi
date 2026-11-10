@@ -4,7 +4,7 @@ export class ProviderError extends Error {
   constructor(public readonly code: ErrorCode) { super(`Provider request failed: ${code}`); this.name = "ProviderError"; }
 }
 export interface Provenance { provider: Provider; model: string; mock: boolean }
-export interface Transcript { text: string; provenance: Provenance }
+export interface Transcript { text: string; provenance: Provenance; timings?: {text:string;startMs:number;endMs:number}[] }
 export interface Translation { text: string; provenance: Provenance }
 export interface AudioInput { bytes: Uint8Array; filename: string; mimeType: string }
 export interface Adapters {

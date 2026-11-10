@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M1 and M2 are accepted, committed and pushed (M2: 5b9a1a2). M3 capture/private-draft code and owner-applied SQL are verified; owner confirms both phones pass sign-in, upload and playback. The app supports account/profile editing, recording/upload preview, consent, validated private draft saves and expiring signed playback once M3 SQL is applied. Transcription, translation, review and discovery remain unimplemented. See [M3 setup and verification](docs/M3_VERIFICATION.md), [M2 verification](docs/M2_VERIFICATION.md), and [milestone evidence](docs/MILESTONES.md).
+M1 and M2 are accepted, committed and pushed (M2: 5b9a1a2). M3 capture/private-draft code and owner-applied SQL are verified; owner confirms both phones pass sign-in, upload and playback. The app supports account/profile editing, recording/upload preview, consent, validated private draft saves and expiring signed playback once M3 SQL is applied. M4 transcript/editor/publish code is implemented pending owner SQL and verification. Translation processing, review and discovery remain unimplemented. See [M3 setup and verification](docs/M3_VERIFICATION.md), [M2 verification](docs/M2_VERIFICATION.md), and [milestone evidence](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -110,3 +110,15 @@ Set ANANSI_DEV_HOSTS in ignored .env.local to the PC's exact LAN IP/hostname (no
 Sign-in/up now use bounded same-origin POST /api/auth/{sign-in|sign-up} JSON endpoints with Supabase SSR cookies; credentials stay in component memory through rejected/network/non-JSON responses. Inputs are disabled until handlers hydrate, and editing is disabled during a submission. Successful sign-in performs a fresh same-origin document navigation to clear private client caches. Nothing stores passwords in localStorage or logs. Sign-out and profile edits retain server actions.
 
 If the hydration diff specifically shows data-new-gr-c-s-check-loaded/data-gr-ext-installed on body, a browser extension changed the DOM before React hydrated. Disable Grammarly/site modification on the local app or compare with a clean browser profile. Do not globally suppress hydration warnings. Report any different diff separately.
+
+## M4 transcript and publishing setup
+
+Follow [M4_VERIFICATION](docs/M4_VERIFICATION.md): owner reviews/applies the additive M4 SQL before story pages/tests use the new schema. Authors explicitly transcribe or paste text, edit title/segments, split/merge, Save, then Publish. Saved transcripts are revision-checked; published originals are read-only and visible to signed-in users by direct URL. Audio remains unchanged. Publication only prepares pending English metadata/tasks; M5 generation is not implemented.
+
+The author confirms permission to send audio to the displayed provider. Repeated completed transcription reuses saved text; retry after failure/interruption is explicit. Timings for current text-only ASR are approximate. Manual/provider/provider-edited origin is recorded separately from provider-attempt metadata. Unsaved app links and full reload warn; copy text before resolving a revision conflict.
+
+Playwright-managed servers force mock providers; M4 tests fail closed if the displayed provider is live. Browser setup also verifies M4 SQL before starting cases. Stop any manual server before npm run test:e2e. Credentials, actual Supabase test project and ANANSI_DEV_HOSTS remain required.
+
+verify:m4:live is an explicit paid two-cleared-sample check, not part of normal tests. Its existing authorization has been used:2/2 succeeded, no retries. It refuses an existing ignored report and reserves USD1 per call in the shared local benchmark ledger; reservations are not invoices or account-wide/app billing enforcement. Do not rerun/delete local evidence to bypass permission. Current official gpt-transcribe pricing checked2026-11-10: USD0.0045/minute; see https://developers.openai.com/api/docs/models/gpt-transcribe .
+
+M4 manual-feedback hardening: protected pages show the verified current account, published originals contain no editor fields for anyone, and draft editors revalidate access when focus/session changes. Profile/capture/story links request fresh documents rather than cached client transitions. Use distinct accounts in separate browsers for acceptance; browser tabs share a session. Report any actual cross-account persisted edit with its plain story URL.

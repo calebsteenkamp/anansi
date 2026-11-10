@@ -1,5 +1,5 @@
 import {Suspense} from "react";
-import Link from "next/link";
+import {SessionLink as Link} from "../../session-link";
 import {connection} from "next/server";
 import {requireUser} from "../../../lib/supabase/server";
 import {CaptureForm} from "./capture-form";

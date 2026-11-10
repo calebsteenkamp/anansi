@@ -1,0 +1,11 @@
+import {it,expect,vi} from "vitest";
+import {transcribeStory} from "../lib/workflow";
+import {ProviderError} from "../lib/providers/types";
+const id=()=>"11111111-1111-4111-8111-111111111111";
+function fixture(){return {claim:vi.fn().mockResolvedValue({reused:false,token:"token",audio_path:"owner/file.mp3",audio_duration_ms:1000,audio_media_type:"audio/mpeg"}),download:vi.fn().mockResolvedValue(new Uint8Array([1])),finish:vi.fn().mockResolvedValue(undefined)};}
+const result={text:"Molo.",provenance:{provider:"mock" as const,model:"synthetic-v1",mock:true}};
+it("persists a successful result once with estimated timings",async()=>{const store=fixture(),adapter=vi.fn().mockResolvedValue(result);await transcribeStory(store,adapter,false,id);expect(store.claim).toHaveBeenCalledWith(false);expect(adapter).toHaveBeenCalledOnce();expect(store.finish).toHaveBeenCalledWith("token",[expect.objectContaining({text:"Molo.",end_ms:1000,timing_source:"estimated"})],null);});
+it("reuses completed work with zero provider/download calls",async()=>{const store=fixture();store.claim.mockResolvedValue({reused:true});const adapter=vi.fn();expect(await transcribeStory(store,adapter,false,id)).toEqual({reused:true});expect(adapter).not.toHaveBeenCalled();expect(store.download).not.toHaveBeenCalled();});
+it("never calls provider after a denied/active claim",async()=>{const store=fixture();store.claim.mockRejectedValue(new Error("processing"));const adapter=vi.fn();await expect(transcribeStory(store,adapter,true,id)).rejects.toThrow("processing");expect(adapter).not.toHaveBeenCalled();});
+it("persists sanitized failure and does not retry paid calls",async()=>{const store=fixture(),adapter=vi.fn().mockRejectedValue(new ProviderError("quota"));await expect(transcribeStory(store,adapter,true,id)).rejects.toMatchObject({code:"transcription_failed"});expect(adapter).toHaveBeenCalledOnce();expect(store.finish).toHaveBeenCalledWith("token",null,"quota");});
+it("does not repeat provider on persistence failure",async()=>{const store=fixture(),adapter=vi.fn().mockResolvedValue(result);store.finish.mockRejectedValue(new Error("stale"));await expect(transcribeStory(store,adapter,false,id)).rejects.toThrow("stale");expect(adapter).toHaveBeenCalledOnce();expect(store.finish).toHaveBeenCalledOnce();});

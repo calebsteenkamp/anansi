@@ -43,3 +43,5 @@ If microphone unavailable, upload prepared cleared clip. If ASR fails, show erro
 | Video/submission artifact if requested | Not produced |
 
 Update actual inputs/outcomes before calling this the final runnable demo. One informal tester is evidence about workflow usability, not general accuracy or cultural validity.
+
+M4 partial-demo note: after SQL/manual verification, capture -> corrected transcript -> frozen publication can be demonstrated. English is only a pending linked record at this milestone; generation/full script still requires later approved milestones. Do not present pending metadata as translated output.

@@ -7,8 +7,8 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | M0 Foundation + documentation | T0 | Owner-approved docs step | Complete | 2026-11-09T23:29:10+02:00 | T0 passed; first commit 3287918; recorded in subsequent docs commit. |
 | M1 Provider feasibility | T1 | M0 complete + owner confirmation | Complete | 2026-11-10T12:03:52+02:00 | Owner accepted M1; 545e449 committed/pushed and remote verified. Google key later verified nonempty/ignored; no Google calls. |
 | M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 committed/pushed as 5b9a1a2; origin/main hash verified identical. Owner authorizes M3 only. |
-| M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Verified / commit pending | 2026-11-10T18:55:00+02:00 | Owner confirms both phones pass sign-in/upload/playback; earlier1/2/3/6 pass retained. Final repeated checks/publication pending. |
-| M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
+| M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Complete | 2026-11-10T19:15:59+02:00 | Accepted on both phones; repeated74 unit/9 integration/6 browser/lint/build pass; committed/pushed ade9f2b, remote matched. |
+| M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Verified / publication pending | 2026-11-10T23:10:31+02:00 | Owner confirms5/6 now pass;1–4 passes retained. Final repeated checks and commit/push pending. |
 | M5 Linked English translation | T5 | M4/T4 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M6 Reading/listening | T6 | M5/T5 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
@@ -182,3 +182,31 @@ Owner confirms manual checks passed and explicitly requests M2 commit/push, foll
 Owner confirms both Huawei and Oppo now pass sign-in, upload and playback. Together with earlier1/2/3/6 this satisfies manual acceptance. Actual browser versions/file extensions were not supplied; do not invent them. Owner authorizes M3 commit/push then M4 only, including at most two cleared Phrase1/2 OpenAI transcription calls under existing USD500 allowance, no automated retry or new phone recordings.
 
 M3 publication verification 2026-11-10T18:58:29+02:00: unit74/74 exit0; integration9/9 exit0; browser6/6 exit0 (1.2m); lint/build exit0 (compile1.795s, TypeScript5.0s); dependency/whitespace exit0. Owner actual phone acceptance recorded above.
+
+### M4 implementation checkpoint - 2026-11-10T19:15:59+02:00
+
+- M3 published as ade9f2b9a688def6aadca05138ddb88dc3360a31; origin/main matched. No M4 changes were introduced before publication.
+- M4 pure logic/routes/editor/migration/tests implemented. Unit run19:13:25+02:00 exit0:93/93,14 files,2.37s. Build exit0 compile3.4s/TypeScript9.5s.
+- Live approved ASR check exit0: exactly2 requests, Phrase1/2 only,1706ms/1536ms; no retries or phone audio. Local report data/benchmark-results/m4-asr-live-check.json; no accuracy claim. USD2 reserved, not billed usage.
+- Integration19:13:29+02:00 exit1:9 existing pass,7 T4 cases BLOCKED on unapplied owner SQL (Vitest skipped after failed prerequisite). Not a pass. Browser gate uses the same explicit prerequisite. Owner handoff prepared in M4_VERIFICATION.
+
+M4 final independent checks 2026-11-10T19:18:53+02:00: lint/build exit0 (compile2.7s/TypeScript7.6s); npm ls and whitespace exit0. Browser command exit1 before cases: M4 migration prerequisite blocked. Read-only schema confirms M4 columns absent and SHA256 available;0 disposable test users remain. M4 not complete, uncommitted; no M5.
+
+### M4 applied verification - 2026-11-10T20:30:15+02:00
+
+- Schema/constraint/function search paths and ACLs verified read-only: authenticated guarded save only; server-only claim/finish/publish; private helper denied to users; RLS/direct-write denial intact. Intentional save SECURITY DEFINER advisor warning documented in M4_VERIFICATION alongside existing Auth warning/task-denial INFO.
+- Unit94/94 exit0,4.08s; integration16/16 exit0,38.41s after fixing local-clock-sensitive expiry fixture. HTTP LAN crypto.randomUUID failure fixed with getRandomValues v4 IDs; explicit accessible segment labels added.
+- Dedicated M4 browser2/2 exit0,1.3m. Combined browser run6 passed/2 failed (suspension/short network waits); focused reruns: LAN auth passed, final remaining auth/audio case passed29.7s (command exit0,44.8s). All8 cases have passing evidence across runs; no claim of one uninterrupted all-green run. Assertion timeout30s, application processing limits unchanged.
+- Final lint/build/whitespace exit0; compile4.4s/TypeScript15.1s. Failed-run fixture cleanup removed only two confirmed disposable accounts and owned fixture audio; no unrelated data touched. No new live calls after approved two-sample check.
+- Manual desktop and both-phone checklist remains pending. M4 uncommitted/unpushed; M5 not started.
+
+### M4 access/navigation repair verification - 2026-11-10T22:29:37+02:00
+
+- Owner confirms different browsers; cannot retrieve affected URL while manual server stopped. Exact persisted B edit remains unconfirmed; do not claim shared tabs explain the report. New separate-context test denies B save and checks unchanged content after reload.
+- Current identity verified by getUser per protected render, no client privileged key (publishable classification verified), published read-only for all, focus access recheck, native protected navigation. No SQL/paid-provider changes.
+- Unit96/96 exit0,4.73s; integration16/16 exit0,49.33s; focused workflow3/3 exit0,2.3m; full browser9/9 exit0,3.5m. Final lint/build/whitespace exit0, compile7.0s/TypeScript12.1s.0 disposable test users remain.
+- Manual passes1–4 retained; exact steps5/6 must be retested. M4 uncommitted/unpushed; M5 not started.
+
+M4 owner acceptance 2026-11-10T23:10:31+02:00: owner confirms5/6 pass, authorizes M4 commit/push then M5 only. Retain prior failed results as history; do not infer a proven cause for original reported B persistence. No M6.
+
+M4 publication gate 2026-11-10T23:22:26+02:00: unit96/96 exit0 (6.99s); integration16/16 exit0 (48.81s); isolated mock browser9/9 exit0 (4.3m); lint/build exit0 (compile4.7s/TypeScript13.6s); dependency/whitespace exit0. Initial browser run used a live-configured manual server and safely failed its mock-provider guards (7 pass/2 fail, zero provider calls); corrected managed-server rerun passed all9. Owner manual acceptance complete. Read-only RPC ACLs reverified.
