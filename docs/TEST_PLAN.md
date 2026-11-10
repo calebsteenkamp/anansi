@@ -1,6 +1,6 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
@@ -121,3 +121,18 @@ Profile/credential validation and Proxy cookie-refresh/no-shared-cache units pas
 M2 applied-environment update: 39 unit / 5 real-user integration / 2 browser tests passed; latest lint/build passed. Private-object case uses a real disposable stored object, not merely a missing-object denial. Signup/profile/logout and cross-user updates tested with isolated accounts; zero fixtures remain. Owner manual check and advisor follow-up remain open. Historical blocked runs remain historical, not current results.
 
 M2 manual-feedback regression: E2E now checks all fields before refresh against stored data, different language/checkbox combinations, repeated same-browser B->A->B sign-in after logout, and hydration console errors. It failed on the pre-fix preferred-language reset, then passed after repair (2 tests, 25.5s). Explicit M2_REUSE_SERVER=1 permits using the owner test server; default still starts an isolated managed server. No screenshot/trace/password retention.
+
+## Executable T3 coverage and remaining manual gate
+
+- tests/audio.test.ts: consent, byte/duration boundaries and MIME choice.
+- tests/audio-probe.test.ts: actual synthetic WAV, 179.9/180/180.1 seconds, malformed/empty/truncated headers, unchanged bytes.
+- tests/audio-request.test.ts: same-origin, bounded actual multipart stream (including no content-length), malformed form.
+- tests/drafts.test.ts: owner paths, unchanged upload, finalization/uncertain-response/cleanup failures.
+- tests/draft-api.test.ts: authentication/origin/consent, forged actor/type/status/duration ignored, sanitized errors and real probe before writes.
+- tests/integration/audio.test.ts: real private Storage, user-token upload/replace/delete denial, own/foreign/anonymous read checks, unchanged download, real rejected-finalization cleanup and metadata constraints. Administrative setup/persistence is explicitly distinct from user-token RLS assertions.
+- tests/e2e/audio.spec.ts: anonymous redirects, denied microphone upload fallback, consent, save/reload/renew/playback, cross-user404, malformed/overlong rejection and real Chromium MediaRecorder with a synthetic audio stream. M3 SQL application verified. Synthetic playback is not actual microphone/audibility proof.
+- Human actual phone format and audible playback: **pending**, owner named Huawei i14. Follow M3_VERIFICATION. Missing SQL is blocked/not run. Never infer a manual pass from automation.
+
+M3 follow-up unit case: intrinsic Opus TOC durations (20/60/120ms and invalid frame counts), exercised by real browser WebM recording. Browser queries are author-scoped; sign-out awaits redirect and timer/feedback locators are distinct.
+
+M3 phone regression: tests/auth-api.test.ts checks same-origin/validation/private JSON/16KiB body bounds/sanitized failures. tests/audio-request.test.ts covers internal localhost versus actual LAN Host and spoofed forwarded host denial. tests/e2e/mobile-auth.spec.ts uses Pixel7 viewport/input emulation through ANANSI_DEV_HOSTS: slow typing retains both fields, HTML/network failure retains credentials, successful real sign-in/session refresh, LAN draft upload/reload and sign-out. This requires exact LAN configuration and is not an actual Huawei/Oppo device pass.

@@ -17,7 +17,7 @@ export async function preflight(browser=false){
  return c;
 }
 export async function fixtures(){
- const c=await preflight();const ids:string[]=[];const sessions:ReturnType<typeof c.anonymous>[]=[];
+ const c=await preflight();const ids:string[]=[];const emails:string[]=[];const sessions:ReturnType<typeof c.anonymous>[]=[];
  const password=randomUUID()+"!aA1";
  async function cleanup(){
   const results=await Promise.allSettled(sessions.map(s=>s.auth.signOut()));
@@ -25,9 +25,9 @@ export async function fixtures(){
   for(const id of ids){const {error}=await c.admin.auth.admin.deleteUser(id);if(error)throw new Error("Fixture user cleanup failed; inspect test-run users.");}
  }
  try{
-  for(let i=0;i<2;i++){const email="anansi-t2-"+randomUUID()+"@example.com";const {data,error}=await c.admin.auth.admin.createUser({email,password,email_confirm:true});if(error||!data.user)throw new Error("Disposable account setup failed.");ids.push(data.user.id);
+  for(let i=0;i<2;i++){const email="anansi-t2-"+randomUUID()+"@example.com";const {data,error}=await c.admin.auth.admin.createUser({email,password,email_confirm:true});if(error||!data.user)throw new Error("Disposable account setup failed.");ids.push(data.user.id);emails.push(email);
    const session=c.anonymous();sessions.push(session);if((await session.auth.signInWithPassword({email,password})).error)throw new Error("Fixture sign-in failed.");
   }
-  return {...c,ids,sessions,cleanup};
+  return {...c,ids,emails,password,sessions,cleanup};
  }catch(e){await cleanup();throw e;}
 }

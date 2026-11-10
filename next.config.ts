@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Exact additional development hostnames only; does not relax Server Action CSRF.
+  allowedDevOrigins: (process.env.ANANSI_DEV_HOSTS ?? "").split(",").map(host => host.trim()).filter(Boolean),
   experimental: {
     agentFeedback: true,
   },

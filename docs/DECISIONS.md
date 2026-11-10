@@ -69,3 +69,25 @@ Manual feedback exposed missing regression coverage. React action-form reset cha
 ## D21 - M2 publication and M3 authorization (2026-11-10T14:04:56+02:00)
 
 Owner authorizes commit/push M2 following passed manual checks, then M3 capture/draft work only. M3 must remain uncommitted until required phone/audio/manual verification passes. No M4 authorization.
+
+## D22 - M3 guarded capture and actual-byte inspection (2026-11-10T16:25:00+02:00)
+
+Owner authorizes M3 only, approves adding the media probe, and names Huawei i14 for manual testing (browser/OS still unknown). Pin Mediabunny 1.65.2; no native binary or conversion. Technical default: combine proposed upload/finalize calls into one bounded authenticated, same-origin POST so ordinary clients cannot bypass duration/consent validation. Retain ordinary story/Storage write denial. Use a narrow server-only service-role capability only after identity/input validation, with generated owner paths, unchanged bytes and explicit failure cleanup/reconciliation. Capture metadata migration remains owner-controlled.
+
+Enforce <=180 seconds against actual encoded packets, not browser duration/container overall-duration claims; 25 MB file cap conservatively bounds local upload/probe memory. Allowed codecs/containers are explicitly limited and codec corruption/audibility remain manual limitations. Recorder auto-stop at ~179s leaves final-packet margin, server accepts exactly180s. Signed playback lasts300s and is transferable until expiry; renew with current session RLS. No direct-upload URLs, conversion, new external service or M4 behavior. Storage/Postgres crash recovery is documented, not promised atomic across systems. M3 stays uncommitted until actual phone/audio gate passes.
+
+## D23 - M3 verification repairs (2026-11-10)
+
+Owner applied M3 SQL; schema/bucket/ordinary write denials verified read-only. Disable capture controls until hydration installs handlers. Browser tests wait for completed sign-out and target timer/feedback separately; queries count only their author fixtures. Real Chromium MediaRecorder exposed zero container durations on Opus packets: derive encoded duration from RFC6716 TOC/frame count instead of rejecting valid packets or trusting client duration. Regression tests cover intrinsic20/60/120ms and invalid counts. Source: https://www.rfc-editor.org/rfc/rfc6716.html#section-3.1 . No conversion/provider calls; phone audibility still manual.
+
+## D24 - Repair phone sign-in and distinguish extension hydration (2026-11-10)
+
+Owner's real Huawei/Oppo checks fail before media upload. Evidence: blocked LAN dev HMR, repeated sign-in GETs, generic unexpected action response, body data-gr-* hydration diff. Configure exact dev host through ignored ANANSI_DEV_HOSTS (safe example blank). Replace sign-in/up Flight transport with small bounded same-origin JSON endpoint and controlled hydration-gated forms; retain credentials on recoverable failures, no browser persistent password storage. Keep sign-out/profile actions, default CSRF and RLS unchanged. Do not claim the generic response's precise cause was proven or globally suppress extension warnings. LAN mobile-sized regression and real owner phone retest are separate evidence.
+
+LAN regression additionally proved internal request.url can be localhost while the actual HTTP Host is the LAN address. Auth and capture use shared same-origin validation against actual Host/protocol, ignoring forwarded-host overrides; foreign origins remain denied. Auth success performs fresh document navigation because JSON cookie changes do not invalidate the private router cache. This is an intentional scoped exception to the relative-location navigation lint preference. Failures preserve fields.
+
+## D25 - M3 accepted and M4 authorized - 2026-11-10T18:55:00+02:00
+
+Both phones now pass actual sign-in/upload/playback. Publish M3 after repeated checks, then implement M4 only. At most two cleared Phrase1/2 OpenAI ASR requests approved under existing USD500 allowance. M4 SQL stays owner-applied; M4 remains uncommitted until required manual verification. No M5.
+
+Later server log captured Failed to find Server Action / HTTP409 from an older page. This supports stale action references as one observed failure path; the accepted JSON sign-in no longer uses that transport.

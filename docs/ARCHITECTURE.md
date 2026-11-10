@@ -1,6 +1,6 @@
 # Architecture blueprint
 
-Approved design, 2026-11-09. M1 provider adapters and CLI benchmark are now implemented; routes/data/UI below remain planned for M2-M9. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
+Approved design, 2026-11-09. M1 provider adapters and M2 auth/profile foundation are accepted/published. M3 capture/draft code is implemented pending SQL/manual verification; remaining workflows are planned. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
 
 ## Boundaries and services
 
@@ -39,12 +39,12 @@ Database constraints enforce keys/uniqueness/rating bounds/relationships rather 
 
 ## Proposed interfaces
 
-All routes below are **planned**, not existing endpoints. Auth sign-up/in/out uses Supabase Auth through validated UI/server boundaries. Use a consistent typed result: success data or sanitized error code/message with retryability. Distinguish invalid input (400), unauthenticated (401), forbidden (403), missing/inaccessible resource (404), state conflict (409), provider failure (502), and timeout (504). Never return raw secrets/provider payloads.
+M3 POST /api/stories/drafts and GET /api/stories/{id}/audio are implemented. The separate upload-finalize boundary is superseded by D22: validation/upload/finalization happen in one bounded POST. Other story mutations below remain **planned**. Auth sign-up/in/out uses Supabase Auth through validated UI/server boundaries. Use a consistent typed result: success data or sanitized error code/message with retryability. Distinguish invalid input (400), unauthenticated (401), forbidden (403), missing/inaccessible resource (404), state conflict (409), provider failure (502), and timeout (504). Never return raw secrets/provider payloads.
 
 | Mutation boundary | Input / effect |
 | --- | --- |
-| POST /api/stories/drafts | Title/metadata, consent, proposed file type; create owner-scoped upload authorization. |
-| POST /api/stories/{id}/upload-finalize | Storage reference; probe actual type/duration, validate <=180s, finalize draft or clean failed object. |
+| POST /api/stories/drafts | Implemented M3: multipart audio + explicit consent; verified identity/origin, actual-byte validation, unchanged upload and draft finalization. No caller-supplied actor/path/status. |
+| GET /api/stories/{id}/audio | Implemented M3: current user/RLS-authorized 300-second signed playback link; no provider calls. |
 | POST /api/stories/{id}/transcribe | Owner draft; claim state, call configured adapter, persist transcript/timings/error. |
 | PUT /api/stories/{id}/transcript | Title and ordered edited segments; author-only draft update. |
 | POST /api/stories/{id}/publish | Validate and atomically freeze original, create/retrieve translation plus pending tasks. M4 prepares state; M5 wires provider processing. |
@@ -86,4 +86,18 @@ OpenAI is the configured default; translation snapshot gpt-5.4-mini-2026-03-17. 
 
 ## M2 implementation status
 
-Auth/profile pages, server actions and Supabase clients/Proxy are implemented; authenticated account reads stream under Suspense, profile writes use verified user identity and RLS, and refreshed responses are private/no-store. Migration 20261110105042_m2_foundation.sql creates all eight domain tables/private bucket but remains owner-applied. Ordinary write grants are restricted to profile fields; later workflow writes/uploads are denied. No M3 feature UI. See M2_VERIFICATION for exact setup and test gates.
+Auth/profile pages, server actions and Supabase clients/Proxy are implemented; authenticated account reads stream under Suspense, profile writes use verified user identity and RLS, and refreshed responses are private/no-store. Migration 20261110105042_m2_foundation.sql creates all eight domain tables/private bucket but remains owner-applied. Ordinary write grants are restricted to profile fields; later workflow writes/uploads are denied. M3 UI is described below. See M2_VERIFICATION for historical setup and test gates.
+
+## M3 implementation (D22)
+
+Capture is one bounded same-origin authenticated multipart POST. It checks verified claims and explicit consent before reading media. Streaming body cap is 25,000,000 bytes +65,536 multipart overhead; the actual file cap is 25,000,000 bytes. Server-side Mediabunny inspects only in-memory allowed containers, one audio track/no video, recognized codec, nonempty packets and their end timestamps; <=180s before millisecond rounding. It does not decode, convert or call providers. Browser file name/MIME/duration/actor/status are untrusted and ignored for persistence.
+
+Only after validation, server-only draftStore uses a privileged capability to upload unchanged bytes with upsert:false to {verified-user}/{generated-draft}/original.{detected-extension}, then inserts original/xh/draft with server consent time, detected type/size/duration. No arbitrary actor/path from browser. M3 SQL adds metadata/constraint and private-bucket limits, retaining all ordinary write denials. Upload/finalization failure removes the attempted object; if insertion response is lost, confirm matching finalized row before cleanup. Uncertain reconciliation or cleanup produces an actionable draft ID. A process crash can still leave an orphan between systems; see M3_VERIFICATION recovery. No distributed transaction or exactly-once save claim.
+
+Private GET playback uses only caller-session RLS, not service-role. Links are bearer capabilities valid 300 seconds; sign-out prevents new links but cannot revoke existing ones. Request-time pages stream under Suspense and Proxy marks account/story/API responses private/no-store. Capture releases microphone tracks/timers and preview URLs on unmount; only event handlers inspect browser APIs, avoiding server/client initial-render divergence.
+
+References: [Mediabunny reading/media packets](https://mediabunny.dev/guide/reading-media-files), [Supabase private buckets](https://supabase.com/docs/guides/storage/buckets/fundamentals), [Storage access controls](https://supabase.com/docs/guides/storage/security/access-control). These establish API behavior; actual support is bounded by tests/manual device evidence.
+
+## Auth transport repair during M3
+
+Sign-in/up moved from action Flight responses to same-origin JSON POST /api/auth/[mode]. Verified mode, <=16KiB actual body, validated credentials, Supabase SSR cookie writes, private/no-store and sanitized errors. The controlled form preserves entries through failures and enables only after hydration; success performs a fresh same-origin document navigation to clear private client caches. Sign-out/profile remain validated actions. ANANSI_DEV_HOSTS supplies exact additional development resource hosts; it does not widen action CSRF or capture origin checks.

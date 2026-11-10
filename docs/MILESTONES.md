@@ -5,9 +5,9 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | Milestone | Gate | Dependency | Status | Status timestamp | Evidence / blocker / commit |
 | --- | --- | --- | --- | --- | --- |
 | M0 Foundation + documentation | T0 | Owner-approved docs step | Complete | 2026-11-09T23:29:10+02:00 | T0 passed; first commit 3287918; recorded in subsequent docs commit. |
-| M1 Provider feasibility | T1 | M0 complete + owner confirmation | Complete | 2026-11-10T12:03:52+02:00 | Owner accepted M1; 545e449 committed/pushed and remote verified. Google key remains separately pending. |
-| M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 uncommitted; M3 unauthorized. |
-| M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q5 device/format evidence pending. |
+| M1 Provider feasibility | T1 | M0 complete + owner confirmation | Complete | 2026-11-10T12:03:52+02:00 | Owner accepted M1; 545e449 committed/pushed and remote verified. Google key later verified nonempty/ignored; no Google calls. |
+| M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 committed/pushed as 5b9a1a2; origin/main hash verified identical. Owner authorizes M3 only. |
+| M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Verified / commit pending | 2026-11-10T18:55:00+02:00 | Owner confirms both phones pass sign-in/upload/playback; earlier1/2/3/6 pass retained. Final repeated checks/publication pending. |
 | M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M5 Linked English translation | T5 | M4/T4 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M6 Reading/listening | T6 | M5/T5 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
@@ -140,3 +140,45 @@ GOOGLE_CLOUD_TRANSLATION_API_KEY now verified nonempty through Next environment 
 ## M2 publication authorized - 2026-11-10T14:04:56+02:00
 
 Owner confirms manual checks passed and explicitly requests M2 commit/push, followed by M3 only. Recorded automated checks 39 unit/5 integration/2 browser plus lint/build passed on current code. No manual M2 gate remains. M3 code starts only after remote M2 commit verification.
+
+## M2 publication / M3 start
+
+- M2 commit 5b9a1a2e52e1aa32e97551b7a2e2c1cf46b350cf, message feat: complete milestone m2 authentication and profiles; normal push origin/main succeeded, ls-remote matched exactly. No force push. Owner manual acceptance and publication authorization recorded in D21.
+- 2026-11-10T16:19:15+02:00 test:unit exit0, 61 tests; 16:21:02 expanded unit run exit0, 66 tests/9 files. Lint exit0. Production build exit0, compile10.7s/TypeScript14.8s; account/new/draft streamed, two story API endpoints dynamic.
+- 2026-11-10T16:23:57+02:00 test:integration exit1: M2 five tests pass; four T3 cases not run because owner M3 migration not yet applied. Vitest reports skipped after failed prerequisite; these are BLOCKED, not passed.
+- M3 dependency approved; Mediabunny1.65.2 installed. npm reports seven moderate advisories (existing lint chain); no force upgrades. Actual phone/audio verification pending; no M3 commit/push and no M4. See M3_VERIFICATION for exact owner steps.
+
+### M3 checkpoint - 2026-11-10T16:31:10+02:00
+
+- Final offline unit run at 16:28:09+02:00: exit0; 9 files, **67 tests passed**, 2.30s. Added RIFF envelope regression because demuxer tolerated a truncated WAV payload.
+- Local-only sample probe: Phrase1 MP3 6531ms, Phrase2 MP3 15073ms; actual bytes recognized without upload/provider requests.
+- Final lint exit0; build exit0: compiled4.3s, TypeScript10.1s, all10 static shell pages generated; private story routes stream, API routes dynamic.
+- Full integration exit1: **5 passed / 4 blocked** (Vitest skipped after beforeAll prerequisite failure). Exact blocker: "BLOCKED: owner must review/apply the M3 audio-drafts migration before T3 network tests."
+- Full Playwright exit1: **3 passed / 2 blocked**, 1.4m. M2 flows and anonymous story protections passed; both authenticated M3 flows stopped at the same SQL prerequisite. No claim that save/record E2E passed.
+- npm ls --depth=0 exit0; git diff --check exit0; source whitespace0, broken local Markdown links0. Private configured values found in generated client JS:0 of15 files; .env.local remains ignored. Read-only check found0 disposable test users remaining.
+- Security advisor: intentional translation_tasks default-denial INFO; hosted Auth leaked-password-protection WARN remains (not changed automatically). See https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . Seven moderate npm advisories remain; no production-readiness claim.
+- M3 code is uncommitted/unpushed. Required next actions: owner applies reviewed M3 SQL; Codex verifies it read-only and reruns network suites; owner performs actual Huawei i14/desktop audio checklist. M4 not authorized.
+
+### M3 applied-schema verification and final rerun - 2026-11-10T17:13:20+02:00
+
+- Owner reports M3 migration applied. Read-only verified three metadata columns/types, full constraint, private bucket25000000-byte/audio MIME limits, RLS and denied ordinary story INSERT/UPDATE; Storage retains authenticated SELECT only.
+- Found/fixed capture readiness and missing Opus packet-duration handling; narrowed browser status locators and author fixture queries and awaited sign-out completion. One later account run timed out during an unexplained ~10-minute stall; final complete rerun passed. Failed runs remain historical failures, not passes.
+- Final test:unit exit0:68/68, 9 files,2.98s. test:integration exit0:9/9,22.02s. Final full test:e2e exit0:5/5,1.3m (includes all3 T3 flows and existing account regressions). Lint exit0, build exit0 compiled5.0s/TypeScript9.7s, git diff --check exit0.
+- Cleanup found two disposable accounts from the timed-out run; verified their IDs/prefix/no stories and removed only those two using Auth Admin. No unreferenced original objects found. No paid provider requests or remote schema writes by Codex.
+- Remaining gate: owner actual desktop microphone/audibility and Huawei i14 file/browser playback/privacy checklist in M3_VERIFICATION. M3 remains uncommitted/unpushed; no M4.
+
+### Real-device feedback and auth/LAN repair - 2026-11-10T18:12:27+02:00
+
+- Owner: desktop checks1/2/3 and privacy6 pass. Huawei i14/HuaweiOS and Oppo17/Android never reached phone media checks4/5 because sign-in inputs reset; phone file formats/audio remain unverified.
+- Logs: blocked LAN Next dev HMR, repeated sign-in GETs; generic unexpected Server Action response; captured hydration diff only body data-gr-* extension attributes. Do not infer a proven underlying HTTP failure for the generic error.
+- Fixes D24: exact ANANSI_DEV_HOSTS, controlled hydration-ready auth form, bounded same-origin JSON auth with sanitized failures, fresh document on auth success, actual Host-based origin checks for auth and uploads. No forwarded-host trust/CSRF relaxation/global hydration suppression.
+- First browser run failed account navigation/LAN origin; recorded, then corrected. Final full test:e2e exit0:6/6,1.6m. Targeted final mobile LAN auth+draft upload/reload run exit0:1/1,31.6s. Emulation is not actual Huawei/Oppo acceptance.
+- Final test:unit exit0:74/74,2.79s; test:integration exit0:9/9,19.84s; lint exit0 without warnings; build exit0 compiled14.2s/TypeScript39.5s. git diff --check exit0; no staged/committed M3 changes.
+- Two disposable accounts left by the earlier timeout were identified by exact IDs/run prefixes and no-story ownership, then removed only those two. No schema/provider changes.
+- Remaining: owner closes old phone tabs, disables Grammarly/site DOM modification for the captured hydration warning, retests phone sign-in/file upload/audible saved playback. M3 stays uncommitted; no M4.
+
+### M3 owner acceptance - 2026-11-10T18:55:00+02:00
+
+Owner confirms both Huawei and Oppo now pass sign-in, upload and playback. Together with earlier1/2/3/6 this satisfies manual acceptance. Actual browser versions/file extensions were not supplied; do not invent them. Owner authorizes M3 commit/push then M4 only, including at most two cleared Phrase1/2 OpenAI transcription calls under existing USD500 allowance, no automated retry or new phone recordings.
+
+M3 publication verification 2026-11-10T18:58:29+02:00: unit74/74 exit0; integration9/9 exit0; browser6/6 exit0 (1.2m); lint/build exit0 (compile1.795s, TypeScript5.0s); dependency/whitespace exit0. Owner actual phone acceptance recorded above.

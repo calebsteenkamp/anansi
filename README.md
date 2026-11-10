@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M1 provider feasibility is accepted and pushed. M2 account/profile code has passing automated checks against the owner-applied schema; the owner confirms the reported hydration/sign-in issues are resolved; permission hardening is verified. M2 changes remain uncommitted. The landing page now links to sign-up, sign-in, and protected profile editing. Recording, story translation/review workflows and discovery remain unimplemented. See [M2 manual setup and verification](docs/M2_VERIFICATION.md) and [actual milestone evidence](docs/MILESTONES.md).
+M1 and M2 are accepted, committed and pushed (M2: 5b9a1a2). M3 capture/private-draft code and owner-applied SQL are verified; owner confirms both phones pass sign-in, upload and playback. The app supports account/profile editing, recording/upload preview, consent, validated private draft saves and expiring signed playback once M3 SQL is applied. Transcription, translation, review and discovery remain unimplemented. See [M3 setup and verification](docs/M3_VERIFICATION.md), [M2 verification](docs/M2_VERIFICATION.md), and [milestone evidence](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -34,7 +34,7 @@ Stop dev before starting production on the same port. Start requires a successfu
 
 M0 uses lint, production build, and local HTTP verification. M1 adds Vitest and an explicit benchmark command. Integration/browser commands are installed but require the M2 prerequisites:
 
-| Introduced | Command (M1 available; M2 planned) | Purpose |
+| Introduced | Command (available; network prerequisites required) | Purpose |
 | --- | --- | --- |
 | M1 | npm run test:unit | Vitest logic/adapter/component checks |
 | M1 | npm run benchmark:providers | Explicit live benchmark; sends recordings and may incur usage |
@@ -96,3 +96,17 @@ Zero-budget verification: invoke with both caps 0; expected exit 1, all outcomes
 See [M2_VERIFICATION](docs/M2_VERIFICATION.md) for exact SQL/email/manual steps. Pinning: Supabase JS 2.119.0, SSR 0.12.7, Playwright 1.65.0, CLI 3.1.0. Run npm run test:integration and npm run test:e2e only against the approved Anansi demo project. These suites fail visibly on missing setup; no skip is a pass. Unit discovery excludes the integration/e2e suites and never contacts providers. Every milestone report must state completion, blockers, commands/results and exact manual next steps.
 
 M2 profile forms preserve controlled values across saves and account changes. Browser regression checks all fields before refresh and repeated account switching, not only separate browser sessions. Use M2_REUSE_SERVER=1 explicitly to run E2E against an existing local server; otherwise stop that server so Playwright can manage port 3000.
+
+## M3 capture and private drafts
+
+Apply the owner-reviewed M3 migration after M2; follow [M3_VERIFICATION](docs/M3_VERIFICATION.md). Authenticated /stories/new records or uploads; /account lists the latest 50 private audio drafts; /stories/{id} plays saved audio. Supabase service-role credentials are now required server-side for the narrowly validated capture write/cleanup path, never in browser code. Ordinary clients still cannot insert stories or upload/replace/delete audio directly.
+
+Mediabunny 1.65.2 inspects actual container, codec and encoded packets. One audio track/no video; MP3, AAC M4A/MP4, PCM WAV, Opus/Vorbis WebM; <=180 seconds, <=25,000,000 bytes. No audio conversion or provider calls. Preview remains after save errors. Playback links expire in five minutes; Renew playback reauthorizes through the current session. Desktop synthetic playback does not establish actual phone/audio acceptance. No resumable uploads or production resource guarantees are claimed.
+
+## Phone/LAN development sign-in
+
+Set ANANSI_DEV_HOSTS in ignored .env.local to the PC's exact LAN IP/hostname (no scheme or port; comma-separated if needed), then restart npm run dev -- --port 3000. Open its Network URL on the same trusted Wi-Fi. Update this value if the PC's IP changes. It authorizes development resources only; same-origin mutation checks remain enforced. No wildcard, public tunnel or firewall change is required by this fix.
+
+Sign-in/up now use bounded same-origin POST /api/auth/{sign-in|sign-up} JSON endpoints with Supabase SSR cookies; credentials stay in component memory through rejected/network/non-JSON responses. Inputs are disabled until handlers hydrate, and editing is disabled during a submission. Successful sign-in performs a fresh same-origin document navigation to clear private client caches. Nothing stores passwords in localStorage or logs. Sign-out and profile edits retain server actions.
+
+If the hydration diff specifically shows data-new-gr-c-s-check-loaded/data-gr-ext-installed on body, a browser extension changed the DOM before React hydrated. Disable Grammarly/site modification on the local app or compare with a clean browser profile. Do not globally suppress hydration warnings. Report any different diff separately.
