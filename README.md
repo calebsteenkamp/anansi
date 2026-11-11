@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M9 accepted/published (M9:9fbd552). M10 opt-in intent examples, warm paper/teal UI, direct private uploads and four-account access passed local automated and Edge verification. Publication and staged Vercel release are pending; no hosted availability is claimed yet. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
+M0–M10 implementations are committed/pushed (M9:9fbd552; M10:d4290a9). M10 opt-in intent examples, warm paper/teal UI, direct private uploads and four-account access passed local automated and Edge verification. Staged Vercel release is pending; no hosted availability is claimed yet. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
