@@ -8,7 +8,9 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
   const body=await workflowBody(request);const {db,userId}=await workflowSession();const story=await storySnapshot(db,(await params).id);
   if(story.author_id!==userId)throw new AudioError("not_found","Story not found.",404);
   if(!Number.isSafeInteger(body.revision)||Number(body.revision)<0)throw new AudioError("invalid_input","Reload the saved transcript before publishing.",400);
+  if(story.status!=="published"&&body.translationConsent!==true)throw new AudioError("consent_required","Confirm permission to translate the saved transcript before publishing.",400);
   const config=configFromEnv(process.env);
+  if(story.status!=="published"&&body.translationProvider!==config.translation)throw new AudioError("provider_changed","Translation provider changed. Reload and review permission again.",409);
   const model=config.translation==="mock"?"synthetic-v1":config.translation==="vulavula"?"vulavula-translate-api":config.openaiTranslationModel;
   const result=await workflowAdmin().rpc("m4_publish",{p_story:story.id,p_actor:userId,p_revision:body.revision,p_provider:config.translation,p_model:model});
   rpcError(result.error);

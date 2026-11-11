@@ -8,8 +8,8 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | M1 Provider feasibility | T1 | M0 complete + owner confirmation | Complete | 2026-11-10T12:03:52+02:00 | Owner accepted M1; 545e449 committed/pushed and remote verified. Google key later verified nonempty/ignored; no Google calls. |
 | M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 committed/pushed as 5b9a1a2; origin/main hash verified identical. Owner authorizes M3 only. |
 | M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Complete | 2026-11-10T19:15:59+02:00 | Accepted on both phones; repeated74 unit/9 integration/6 browser/lint/build pass; committed/pushed ade9f2b, remote matched. |
-| M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Verified / publication pending | 2026-11-10T23:10:31+02:00 | Owner confirms5/6 now pass;1–4 passes retained. Final repeated checks and commit/push pending. |
-| M5 Linked English translation | T5 | M4/T4 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
+| M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Complete | 2026-11-10T23:32:25+02:00 | Accepted;96 unit/16 integration/9 browser/lint/build pass. fb985ff5a9e40bb3d4126e1ed334a4f350867cf5 committed/pushed; remote matched. |
+| M5 Linked English translation | T5 | M4/T4 + owner confirmation | Verified / commit pending | 2026-11-10T23:50:57+02:00 | SQL/permissions verified;117 unit/22 integration/11 browser/lint/build pass. Owner accepts all manual tests; final publication checks pending. |
 | M6 Reading/listening | T6 | M5/T5 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
@@ -210,3 +210,25 @@ M4 final independent checks 2026-11-10T19:18:53+02:00: lint/build exit0 (compile
 M4 owner acceptance 2026-11-10T23:10:31+02:00: owner confirms5/6 pass, authorizes M4 commit/push then M5 only. Retain prior failed results as history; do not infer a proven cause for original reported B persistence. No M6.
 
 M4 publication gate 2026-11-10T23:22:26+02:00: unit96/96 exit0 (6.99s); integration16/16 exit0 (48.81s); isolated mock browser9/9 exit0 (4.3m); lint/build exit0 (compile4.7s/TypeScript13.6s); dependency/whitespace exit0. Initial browser run used a live-configured manual server and safely failed its mock-provider guards (7 pass/2 fail, zero provider calls); corrected managed-server rerun passed all9. Owner manual acceptance complete. Read-only RPC ACLs reverified.
+
+### M5 applied verification checkpoint — 2026-11-10T23:41:45+02:00
+
+Owner confirms migration applied. Read-only verification confirms consent column, unique source alignment index, error-code constraint, task RLS/default denial and all three invoker functions with empty search_path; anon/authenticated EXECUTE false, service_role true. No SQL applied by Codex. No duplicate alignments/conflicting errors found.
+
+Unit117/117 exit0,17 files,23:34:35+02:00,7.05s. Integration22/22 exit0,4 files,23:39:10+02:00,71.59s. Final lint/build exit0 (compile4.2s,TypeScript10.5s); browser11-case suite running. Earlier blocked integration/browser runs retained as blocked, not passes. During development a stale error-message assertion, React memoization dependency mismatch and redundant TypeScript narrowed comparison failed; corrected and repeated checks passed. No new paid provider calls.
+
+Security advisors contain no new M5 finding. Existing intentional default-denial task INFO and guarded m4_save_transcript SECURITY DEFINER warning remain, plus demo leaked-password-protection warning. See M4_VERIFICATION for rationale. M5 manual acceptance remains pending; no M5 commit/push or M6.
+
+### M5 final automated gate — 2026-11-10T23:50:57+02:00
+
+- npm run test:unit:117 passed(117),17 files, exit0,7.05s.
+- npm run test:integration:22 passed(22),4 files, exit0,71.59s.
+- npm run test:e2e:11 passed, exit0,5.1m, managed mock providers. Earlier full run9 passed/2 failed due ambiguous legacy Provider/permission selectors; selectors anchored to audio and the complete repeated11-case suite passed. No product authorization bypass or live call was used to repair tests.
+- npm run lint: final exit0. npm run build: exit0, compile4.2s/TypeScript10.5s. npm ls --depth=0, documentation-link and whitespace checks exit0. Production client secret-value scan passed across16 JavaScript assets; no values printed.
+- Owner-applied schema/index/constraint/function ACLs and task RLS/default denial verified read-only; security advisor findings unchanged from documented baseline.0 disposable test accounts remain.
+- Manual server running on localhost:3000 and192.168.18.157:3000, default OpenAI/gpt-5.4-mini-2026-03-17. No new agent live provider calls. Ordinary tests used mocks.
+- M5 manual desktop/phone acceptance remains pending. M5 uncommitted/unpushed. M6 not started or authorized. Browser-driven processing, interrupted-response billing risk and lack of account-wide app spend enforcement remain documented limitations.
+
+M5 owner acceptance 2026-11-11T08:34:02+02:00: owner reports all requested tests pass and authorizes commit/push M5 then M6 only. This resolves the manual acceptance gate; no additional device/version or quality measurements were supplied. Final publication checks pending. M7 is unauthorized.
+
+M5 publication gate 2026-11-11T08:38:59+02:00: repeated unit117/117 exit0 (5.53s); integration22/22 exit0 (76.00s); full browser11/11 exit0 (4.9m); lint/build exit0 (compile3.6s/TypeScript10.0s); whitespace exit0. Owner manual acceptance recorded above. No new paid calls.

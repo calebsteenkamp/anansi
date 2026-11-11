@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0-M3 are accepted, committed and pushed. M3 is ade9f2b. Owner authorized M4 only; M4 remains uncommitted until applied SQL, automated and actual desktop/phone acceptance pass. M5 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0-M4 are accepted, committed and pushed. M4 is fb985ff; remote hash matched. Owner authorized M5 only; its SQL, automated and manual gates must pass before commit. M6 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -110,8 +110,14 @@ Keep local demo first; deployment optional and excluded here. Owner-approved cut
 
 D22 combines draft creation/upload finalization into one authenticated multipart POST; audio metadata SQL and private-bucket restrictions await owner application. Mediabunny inspection approved, no conversion. Read [M3_VERIFICATION](docs/M3_VERIFICATION.md) for exact SQL, local workflow, phone/browser handoff and crash limitations. At that checkpoint actual phone evidence was pending; owner later accepted both phones and authorized M4 in D25.
 
-## Active M4 implementation contract
+## Completed M4 implementation contract
 
 Explicit owner transcribe, typed/pasted fallback, title/segment edit/split/merge/save, valid labelled timing and atomic immutable publish. No translation calls. Five-minute durable claim/token; stale completions rejected; completed transcripts reused; failed/expired work requires explicit retry. Save compares revision; publish uses trusted server provider/model and creates unique pending English story/tasks transactionally. Limits50,000 characters/500 segments; initial chunks<=300 code points. Owner applies 20261110165905_m4_transcript_publish.sql. Read M4_VERIFICATION before network checks.
 
-Owner permits at most two live OpenAI requests using previously cleared Phrase1/2. Both completed successfully and authorization is consumed; no retry/new phone audio. Unit/E2E providers are mocks, not accuracy evidence. M4 stops for owner SQL and real desktop/phone checklist; no M4 commit/push or M5 before that gate.
+Owner permits at most two live OpenAI requests using previously cleared Phrase1/2. Both completed successfully and authorization is consumed; no retry/new phone audio. Unit/E2E providers are mocks, not accuracy evidence. M4 stopped for owner SQL and real desktop/phone acceptance. That gate passed; fb985ff was committed/pushed before M5 began.
+
+## Active M5 implementation contract
+
+A post-publish event starts sequential explicit POST /api/stories/[id]/translation calls, one segment each. Existing published pages/GETs never start work. TranslationPanel exposes saved partial results, Refresh (read-only), Continue and explicit Retry. Permission to submit text is required; OpenAI remains default; stored task provider/model is authoritative. Provider clients remain server-only.
+
+Owner reviews/applies 20261110212329_m5_translation_processing.sql. Parent English row lock serializes active claims,5min expiry, fingerprint verification, stale-token rejection, completed reuse, unfinished-only reset, transactional aligned result/task/status persistence. Claims/results/retry SQL executable only by service_role with verified actor repeated inside SQL; ordinary tables retain RLS/default-denial. Crash after response before persistence can incur another paid call after explicit recovery. No automatic retry/fallback, background queue, M6 highlighting/device speech, or new live benchmark. Read M5_VERIFICATION for application and acceptance handoff.

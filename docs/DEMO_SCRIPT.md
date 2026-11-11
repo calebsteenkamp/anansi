@@ -45,3 +45,5 @@ If microphone unavailable, upload prepared cleared clip. If ASR fails, show erro
 Update actual inputs/outcomes before calling this the final runnable demo. One informal tester is evidence about workflow usability, not general accuracy or cultural validity.
 
 M4 partial-demo note: after SQL/manual verification, capture -> corrected transcript -> frozen publication can be demonstrated. English is only a pending linked record at this milestone; generation/full script still requires later approved milestones. Do not present pending metadata as translated output.
+
+M5 rehearsal addition (unverified until M5 acceptance): after transcript Save, confirm text-submission permission and Publish. Observe segment progress and AI/mock label; reload shows saved text without processing. Demonstrate Refresh, and Continue/Retry only for unfinished work. English remains awaiting human verification; no M6 synchronized playback or M7 review is claimed.

@@ -1,18 +1,21 @@
 "use client";
 import {useEffect,useRef,useState,useSyncExternalStore} from "react";
 import {newSegmentId,estimateTimings,initialText,mergeSegment,splitSegment} from "../../../lib/transcript";
+import {TranslationPanel} from "./translation-panel";
 import {DraftAudio} from "./draft-audio";
 import type {StorySnapshot} from "../../../lib/supabase/story-workflow";
 const subscribe=()=>()=>{};
 const clientReady=()=>true;
 const serverReady=()=>false;
-export function TranscriptEditor({initial,provider,audioUrl}:{initial:StorySnapshot;provider:string;audioUrl?:string}){
+export function TranscriptEditor({initial,provider,translationProvider,audioUrl}:{initial:StorySnapshot;provider:string;translationProvider:string;audioUrl?:string}){
  const ready=useSyncExternalStore(subscribe,clientReady,serverReady);
  const [story,setStory]=useState(initial);
  const [title,setTitle]=useState(initial.title);
  const [segments,setSegments]=useState(initial.segments);
  const [pasted,setPasted]=useState("");
  const [consent,setConsent]=useState(false);
+ const [translationConsent,setTranslationConsent]=useState(false);
+ const [startTranslation,setStartTranslation]=useState(false);
  const [dirty,setDirty]=useState(false);
  const [pending,setPending]=useState(false);
  const [message,setMessage]=useState("");
@@ -49,7 +52,7 @@ export function TranscriptEditor({initial,provider,audioUrl}:{initial:StorySnaps
   active.current=true;setPending(true);setMessage(kind==="transcribe"?"Transcribing… this may take a few minutes.":"Working…");
   try{
    const route=kind==="save"||kind==="reload"?"transcript":kind;
-   const body=kind==="save"?{title,revision:story.transcript_revision,segments}:kind==="publish"?{revision:story.transcript_revision}:{consent,retry:story.status==="transcription_failed"||story.status==="transcribing"};
+   const body=kind==="save"?{title,revision:story.transcript_revision,segments}:kind==="publish"?{revision:story.transcript_revision,translationConsent,translationProvider}:{consent,retry:story.status==="transcription_failed"||story.status==="transcribing"};
    const response=await fetch("/api/stories/"+story.id+"/"+route,{method:kind==="reload"?"GET":kind==="save"?"PUT":"POST",...(kind==="reload"?{cache:"no-store" as const}:{headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})});
    if(!response.headers.get("content-type")?.includes("application/json"))throw new Error("Unexpected response. Copy unsaved text and reload before retrying.");
    const result=await response.json();
@@ -59,7 +62,8 @@ export function TranscriptEditor({initial,provider,audioUrl}:{initial:StorySnaps
    }
    if(kind==="reload"){if(result.canEdit!==true){setSessionChanged(true);setDirty(false);return;}setSessionValid(true);}
    apply(result.story);
-   setMessage(kind==="save"?"Transcript saved.":kind==="publish"?"Published. English translation is prepared; generation starts in M5.":kind==="transcribe"?(result.reused?"Saved transcript reused; no provider request.":"Transcription saved. Review and correct it before publishing."):"Saved state reloaded.");
+   if(kind==="publish"&&!result.already_published)setStartTranslation(true);
+   setMessage(kind==="save"?"Transcript saved.":kind==="publish"?"Published. English translation processing is starting.":kind==="transcribe"?(result.reused?"Saved transcript reused; no provider request.":"Transcription saved. Review and correct it before publishing."):"Saved state reloaded.");
   }catch(error){setMessage(error instanceof Error?error.message:"Request failed. Your unsaved text is still here.");}
   finally{active.current=false;setPending(false);}
  }
@@ -75,7 +79,7 @@ export function TranscriptEditor({initial,provider,audioUrl}:{initial:StorySnaps
   try{setSegments(mergeSegment(segments,index,story.audio_duration_ms));setDirty(true);setMessage("");}
   catch(error){setMessage((error as Error).message);}
  }
- if(published)return <section><h1 className="text-3xl">{story.title}</h1><p className="mt-4">Published story · isiXhosa · {(story.audio_duration_ms/1000).toFixed(1)} seconds</p><p>State: published. Original transcript is read-only.</p>{audioUrl&&<DraftAudio id={story.id} initialUrl={audioUrl}/>}<h2 className="mt-8 text-2xl">Published transcript</h2><ol className="mt-4 space-y-3">{segments.map(row=><li key={row.id}><p>{row.text}</p><p>{row.timing_source==="estimated"?"Approximate":"Provider"} timing: {(row.start_ms/1000).toFixed(2)}–{(row.end_ms/1000).toFixed(2)} seconds</p></li>)}</ol><p>English translation is pending M5.</p></section>;
+ if(published)return <section><h1 className="text-3xl">{story.title}</h1><p className="mt-4">Published story · isiXhosa · {(story.audio_duration_ms/1000).toFixed(1)} seconds</p><p>State: published. Original transcript is read-only.</p>{audioUrl&&<DraftAudio id={story.id} initialUrl={audioUrl}/>}<h2 className="mt-8 text-2xl">Published transcript</h2><ol className="mt-4 space-y-3">{segments.map(row=><li key={row.id}><p>{row.text}</p><p>{row.timing_source==="estimated"?"Approximate":"Provider"} timing: {(row.start_ms/1000).toFixed(2)}–{(row.end_ms/1000).toFixed(2)} seconds</p></li>)}</ol><TranslationPanel storyId={story.id} initial={null} owner={true} provider={translationProvider} autoStart={startTranslation}/></section>;
  if(sessionChanged)return <section role="alert"><h1 className="text-2xl">Session or story access changed</h1><p>This editor has been closed. Reload to verify the current account and story permissions.</p><button className="underline" onClick={()=>window.location.reload()}>Reload story</button></section>;
  return <><h1 className="text-3xl">{story.title}</h1><p className="mt-4">{published?"Published story":"Private draft"} · isiXhosa · {(story.audio_duration_ms/1000).toFixed(1)} seconds</p>
   {audioUrl?<DraftAudio id={story.id} initialUrl={audioUrl}/>:<p role="alert">Playback unavailable. Refresh to retry.</p>}
@@ -102,8 +106,9 @@ export function TranscriptEditor({initial,provider,audioUrl}:{initial:StorySnaps
    {!published&&<div className="mt-2 flex flex-wrap gap-4"><button className="underline disabled:opacity-50" disabled={!ready||!sessionValid||pending} onClick={()=>split(index)}>Split segment {index+1} at cursor</button><button className="underline disabled:opacity-50" disabled={!ready||!sessionValid||pending||index===segments.length-1} onClick={()=>merge(index)}>Merge segment {index+1} with next</button></div>}
   </li>)}</ol>
   {!published&&<p className="mt-4">Publishing makes this original visible to signed-in users and prevents further transcript editing.</p>}
+  <p className="mt-4">Translation provider: {translationProvider}. Publishing starts English translation from the saved transcript.</p><label className="mt-3 flex gap-2"><input type="checkbox" checked={translationConsent} disabled={!ready||!sessionValid||pending} onChange={event=>setTranslationConsent(event.target.checked)}/>I have permission to send this transcript text for translation after publishing.</label>
   <div className="mt-5 flex flex-wrap gap-4">
-   {!published&&<><button className="rounded border px-3 py-2 disabled:opacity-50" disabled={!ready||!sessionValid||pending||!segments.length||!!pasted.trim()} onClick={()=>operation("save")}>Save transcript</button><button className="rounded border px-3 py-2 disabled:opacity-50" disabled={!ready||!sessionValid||pending||dirty||!segments.length||story.status!=="transcript_ready"} onClick={()=>operation("publish")}>Publish story</button></>}
+   {!published&&<><button className="rounded border px-3 py-2 disabled:opacity-50" disabled={!ready||!sessionValid||pending||!segments.length||!!pasted.trim()} onClick={()=>operation("save")}>Save transcript</button><button className="rounded border px-3 py-2 disabled:opacity-50" disabled={!ready||!sessionValid||pending||dirty||!translationConsent||!segments.length||story.status!=="transcript_ready"} onClick={()=>operation("publish")}>Publish story</button></>}
    <button className="underline disabled:opacity-50" disabled={!ready||pending} onClick={()=>operation("reload")}>Reload saved state</button>
   </div>
   {published&&<p className="mt-4">The original transcript and audio are preserved. English translation is pending; translation processing arrives in M5.</p>}

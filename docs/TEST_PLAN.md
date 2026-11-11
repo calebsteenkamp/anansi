@@ -1,6 +1,6 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5 now has executable cases pending owner SQL/verification; T6-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
@@ -147,3 +147,11 @@ M3 phone regression: tests/auth-api.test.ts checks same-origin/validation/privat
 - global browser setup blocks on missing M4 SQL. Live checks do not run in ordinary suites. Two cleared-sample live calls completed separately, not accuracy proof.
 
 D28 regressions: session.test.ts proves verified user retrieval per protected render and rejection of invalid sessions; workflow browser tests prove separate-session B persistence denial with reload, no published editing fields, phone profile/record navigation, and closure of an open draft after a shared-context account switch. The latter is additional coverage, not a claimed reproduction of the owner's separate-browser report.
+
+## Executable T5 coverage
+
+- translation.test.ts: claim-before-adapter, completed reuse with zero extra calls, claim conflict/no billing, malformed/provenance mismatch, sanitized errors, no automatic retry and uncertain persistence.
+- translation-api.test.ts: read-only GET, verified actor/ownership/state, same-origin/permission/action validation, guarded retry and safe errors. Existing workflow API checks preserve server-configured publish metadata; publish now requires text consent.
+- integration/translation.test.ts: real ordinary-user/anonymous capability denial, concurrent publication/claims, private partial results, immutable completed result, alignment/provenance, unfinished-only retry, expiry/stale worker, fingerprint rejection, atomic failure/original preservation. Admin fixture setup and guarded server capabilities are distinct from actual user-token RLS assertions.
+- e2e/workflow.spec.ts now checks automatic mock translation after Publish. e2e/translation.spec.ts checks zero POST on page/reload, interrupted request recovery, completed work reuse, explicit failed-task Retry and another user's completed read/no mutation controls. Mock guards must pass before any processing.
+- Browser global preflight requires M5 SQL. Missing prerequisite means blocked/not run, not passed. No live benchmark added. Exact SQL and real desktop/phone acceptance are in M5_VERIFICATION.

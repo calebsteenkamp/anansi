@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M1 and M2 are accepted, committed and pushed (M2: 5b9a1a2). M3 capture/private-draft code and owner-applied SQL are verified; owner confirms both phones pass sign-in, upload and playback. The app supports account/profile editing, recording/upload preview, consent, validated private draft saves and expiring signed playback once M3 SQL is applied. M4 transcript/editor/publish code is implemented pending owner SQL and verification. Translation processing, review and discovery remain unimplemented. See [M3 setup and verification](docs/M3_VERIFICATION.md), [M2 verification](docs/M2_VERIFICATION.md), and [milestone evidence](docs/MILESTONES.md).
+M0–M4 are accepted, committed and pushed (M4: fb985ff). Accounts/profiles, private audio capture/upload/playback, explicit transcription, editable/manual transcripts and immutable publication are implemented. M5 linked English translation, progress and recovery are implemented but await manual desktop/phone acceptance. SQL/permissions and automated tests are verified; M5 is uncommitted. Review/discovery and M6 listening enhancements remain planned. See [M5 setup/verification](docs/M5_VERIFICATION.md), [M4 evidence](docs/M4_VERIFICATION.md), and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -113,12 +113,20 @@ If the hydration diff specifically shows data-new-gr-c-s-check-loaded/data-gr-ex
 
 ## M4 transcript and publishing setup
 
-Follow [M4_VERIFICATION](docs/M4_VERIFICATION.md): owner reviews/applies the additive M4 SQL before story pages/tests use the new schema. Authors explicitly transcribe or paste text, edit title/segments, split/merge, Save, then Publish. Saved transcripts are revision-checked; published originals are read-only and visible to signed-in users by direct URL. Audio remains unchanged. Publication only prepares pending English metadata/tasks; M5 generation is not implemented.
+Follow [M4_VERIFICATION](docs/M4_VERIFICATION.md): owner reviews/applies the additive M4 SQL before story pages/tests use the new schema. Authors explicitly transcribe or paste text, edit title/segments, split/merge, Save, then Publish. Saved transcripts are revision-checked; published originals are read-only and visible to signed-in users by direct URL. Audio remains unchanged. Publication atomically prepares English metadata/tasks. M5 now starts explicit processing after the Publish event; see its setup and acceptance status below.
 
 The author confirms permission to send audio to the displayed provider. Repeated completed transcription reuses saved text; retry after failure/interruption is explicit. Timings for current text-only ASR are approximate. Manual/provider/provider-edited origin is recorded separately from provider-attempt metadata. Unsaved app links and full reload warn; copy text before resolving a revision conflict.
 
-Playwright-managed servers force mock providers; M4 tests fail closed if the displayed provider is live. Browser setup also verifies M4 SQL before starting cases. Stop any manual server before npm run test:e2e. Credentials, actual Supabase test project and ANANSI_DEV_HOSTS remain required.
+Playwright-managed servers force mock providers; M4 tests fail closed if the displayed provider is live. Browser setup verifies M5 and prerequisite SQL before starting cases. Stop any manual server before npm run test:e2e. Credentials, actual Supabase test project and ANANSI_DEV_HOSTS remain required.
 
 verify:m4:live is an explicit paid two-cleared-sample check, not part of normal tests. Its existing authorization has been used:2/2 succeeded, no retries. It refuses an existing ignored report and reserves USD1 per call in the shared local benchmark ledger; reservations are not invoices or account-wide/app billing enforcement. Do not rerun/delete local evidence to bypass permission. Current official gpt-transcribe pricing checked2026-11-10: USD0.0045/minute; see https://developers.openai.com/api/docs/models/gpt-transcribe .
 
 M4 manual-feedback hardening: protected pages show the verified current account, published originals contain no editor fields for anyone, and draft editors revalidate access when focus/session changes. Profile/capture/story links request fresh documents rather than cached client transitions. Use distinct accounts in separate browsers for acceptance; browser tabs share a session. Report any actual cross-account persisted edit with its plain story URL.
+
+## M5 translation setup
+
+After prior migrations, review/apply only supabase/migrations/20261110212329_m5_translation_processing.sql in the confirmed Anansi SQL Editor. Do not reset the project or rerun older migrations. Follow [M5_VERIFICATION](docs/M5_VERIFICATION.md). There are no new dependencies or secret variables. Keep OpenAI as configured default; Google is stored only for future use.
+
+After saving a corrected transcript, consent to send its text and publish. Translation begins through explicit POST requests, with one English story per original. Leaving interrupts subsequent requests; refresh shows persisted results without generating more. Continue handles pending work; Retry resets failed/expired work only. Claims last five minutes. Completed segments retain their original provider/model; changing environment configuration does not silently retranslate them. Costs may repeat after a response/persistence crash; app processing does not enforce an account-wide provider spending limit.
+
+For automated browser tests, stop the manual server and run npm run test:e2e normally. Its managed server forces mock providers. Do not reuse a live-configured server; guards deliberately fail before live processing. Mocks prove workflow only. No new live benchmark is included in M5.

@@ -63,3 +63,5 @@ On each phone, open a story -> Your profile and stories -> its story link -> Rec
 Owner acceptance 2026-11-10T23:10:31+02:00:5/6 now pass;1–4 retained. M4 manual gate passed; publish after repeated checks. M5 only subsequently authorized, no M6.
 
 M4 publication gate 2026-11-10T23:22:26+02:00: unit96/96 exit0 (6.99s); integration16/16 exit0 (48.81s); isolated mock browser9/9 exit0 (4.3m); lint/build exit0 (compile4.7s/TypeScript13.6s); dependency/whitespace exit0. Initial browser run used a live-configured manual server and safely failed its mock-provider guards (7 pass/2 fail, zero provider calls); corrected managed-server rerun passed all9. Owner manual acceptance complete. Read-only RPC ACLs reverified.
+
+Publication record: fb985ff5a9e40bb3d4126e1ed334a4f350867cf5 committed and pushed after repeated checks and owner acceptance; remote matched before any M5 implementation. Subsequent M5 status lives in MILESTONES/M5_VERIFICATION.

@@ -7,4 +7,4 @@ it("reads bounded JSON and denies foreign/malformed requests",async()=>{
  await expect(workflowBody(make("["))).rejects.toMatchObject({status:400});
  await expect(workflowBody(make("x".repeat(256001)))).rejects.toMatchObject({status:413});
 });
-it("maps state conflicts and hides raw database errors",()=>{expect(()=>rpcError({message:"revision_conflict"})).toThrow(/changed elsewhere/);expect(()=>rpcError({message:"private database password"})).toThrow("Story operation unavailable. Check the M4 setup or try again.");});
+it("maps state conflicts and hides raw database errors",()=>{expect(()=>rpcError({message:"revision_conflict"})).toThrow(/changed elsewhere/);expect(()=>rpcError({message:"private database password"})).toThrow("Story operation unavailable. Check the active milestone setup or try again.");});

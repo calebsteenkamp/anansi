@@ -1,2 +1,2 @@
-import {workflowPreflight} from "./workflow-project";
-export default async function setup(){await workflowPreflight(true);}
+import {translationPreflight} from "./translation-project";
+export default async function setup(){await translationPreflight(true);}

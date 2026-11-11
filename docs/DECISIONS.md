@@ -109,3 +109,11 @@ Protected renders now verify getUser each request and show current signed-in ema
 ## D29 - M4 accepted, M5 authorized - 2026-11-10T23:10:31+02:00
 
 Owner confirms access/navigation retests5/6 pass. Commit/push M4 after repeated verification; implement M5 only. Owner-applied SQL and required human tests remain gates before M5 commit. No M6.
+
+## D30 — M5 processing boundary (2026-11-10T23:32:25+02:00)
+
+Status: implementation choice within owner-approved M5, verification pending. M4 accepted/published as fb985ff; only M5 authorized. Use one claimed segment per explicit POST, serial parent locking,5min expiry, stored provider/model/fingerprint, completed-result reuse and explicit unfinished-only retry. OpenAI remains default; no new live benchmark. Rationale: durable progress and bounded requests without provider calls from reads. Consequence: leaving the page stops further work; crash-after-provider/before-save can require a paid repeat. M5 SQL stays owner-applied; no M5 commit until actual manual verification passes. M6 remains unauthorized.
+
+## D31 — M5 accepted; M6 authorized (2026-11-11T08:34:02+02:00)
+
+Owner reports all tests pass, authorizes M5 commit/push and M6 only. Record manual acceptance without inventing device/browser versions or accuracy evidence. Repeat required automated gates, publish M5 and verify remote before M6 code. M6 still requires actual desktop/phone listening checks before its commit. M7 remains unauthorized.
