@@ -1,0 +1,11 @@
+import {beforeEach,it,expect,vi} from "vitest";
+const m=vi.hoisted(()=>({session:vi.fn(),story:vi.fn(),state:vi.fn(),rpc:vi.fn()}));
+vi.mock("../lib/supabase/story-workflow",()=>({workflowSession:m.session,storySnapshot:m.story}));vi.mock("../lib/supabase/reviews",()=>({reviewState:m.state}));
+import {GET,PUT} from "../app/api/stories/[id]/reviews/route";
+import {AudioError} from "../lib/audio";
+const ctx={params:Promise.resolve({id:"story"})};function req(body:object={},origin="http://localhost:3000"){return new Request("http://localhost:3000/api",{method:"PUT",headers:{origin,"content-type":"application/json"},body:JSON.stringify({expectedUserId:"u",decision:"approve",rating:4,intent:"",edits:[],...body})});}
+beforeEach(()=>{vi.resetAllMocks();m.session.mockResolvedValue({db:{rpc:m.rpc},userId:"u"});m.story.mockResolvedValue({id:"story"});m.state.mockResolvedValue({translationId:"linked",eligible:true,reviews:[],userId:"u"});m.rpc.mockResolvedValue({error:null});});
+it("GET is read-only and private",async()=>{const r=await GET(new Request("http://localhost:3000"),ctx);expect(r.status).toBe(200);expect(r.headers.get("cache-control")).toContain("no-store");expect(m.rpc).not.toHaveBeenCalled();});
+it("rejects foreign origin, invalid rating, stale identity and ineligible users",async()=>{expect((await PUT(req({},"https://evil.example"),ctx)).status).toBe(403);expect((await PUT(req({rating:2.5}),ctx)).status).toBe(400);expect((await PUT(req({expectedUserId:"other"}),ctx)).status).toBe(409);m.state.mockResolvedValue({eligible:false});expect((await PUT(req(),ctx)).status).toBe(403);expect(m.rpc).not.toHaveBeenCalled();});
+it("uses the user-session capability and ignores forged actor/translation fields",async()=>{expect((await PUT(req({reviewer_id:"evil",translationId:"evil"}),ctx)).status).toBe(200);expect(m.rpc).toHaveBeenCalledWith("m7_save_review",{p_translation:"linked",p_decision:"approve",p_rating:4,p_intent:"",p_edits:[]});});
+it("rejects missing authentication and sanitizes errors",async()=>{m.session.mockRejectedValueOnce(new AudioError("unauthenticated","Sign in",401));expect((await PUT(req(),ctx)).status).toBe(401);m.rpc.mockRejectedValue(new Error("secret"));const r=await PUT(req(),ctx);expect(r.status).toBe(503);expect(await r.text()).not.toContain("secret");});

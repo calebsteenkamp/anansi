@@ -10,8 +10,8 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Complete | 2026-11-10T19:15:59+02:00 | Accepted on both phones; repeated74 unit/9 integration/6 browser/lint/build pass; committed/pushed ade9f2b, remote matched. |
 | M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Complete | 2026-11-10T23:32:25+02:00 | Accepted;96 unit/16 integration/9 browser/lint/build pass. fb985ff5a9e40bb3d4126e1ed334a4f350867cf5 committed/pushed; remote matched. |
 | M5 Linked English translation | T5 | M4/T4 + owner confirmation | Complete | 2026-11-11T09:28:08+02:00 | Owner accepted all manual checks. Repeated117 unit/22 integration/11 browser/lint/build passed;9872f29cc17d9891c794786e1ba81c85c90322e6 committed/pushed, remote matched. |
-| M6 Reading/listening | T6 | M5/T5 + owner confirmation | Automated verified / manual acceptance pending | 2026-11-11T09:42:56+02:00 |132 unit/22 integration/14 browser + focused accessibility/lint/build pass. Manual desktop/Huawei/Oppo listening pending. Uncommitted/unpushed; no M7. |
-| M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
+| M6 Reading/listening | T6 | M5/T5 + owner confirmation | Complete | 2026-11-11T10:21:10+02:00 | Owner accepted; repeated132 unit/22 integration/14 browser/lint/build passed.20bf76146b8d25e4687f364249adb5f6f276c5c2 committed/pushed; remote matched. |
+| M7 Verification/corrections | T7 | M6/T6 + owner confirmation | In progress / manual verification pending | 2026-11-11T10:21:10+02:00 | Review/overlay/API/SQL/tests implemented.144 unit tests pass. SQL/permissions verified;144 unit/26 integration/15 browser/lint/build pass. Manual desktop/phone acceptance pending. Uncommitted. |
 | M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M9 Demo/submission evidence | T9 | M8/T8 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q6 tester/narrative/rehearsals pending. |
 
@@ -252,3 +252,13 @@ M6 adds profile-aware original/English aligned reading, click/keyboard seeking, 
 Owner acceptance 2026-11-11T10:07:45+02:00: all requested M6 tests pass; owner authorizes M6 commit/push, then M7 only. No further device/version observations supplied. M8 unauthorized. Repeated publication checks pending.
 
 M6 publication recheck 2026-11-11T10:12:37+02:00:132 unit (4.11s),22 integration (63.70s),14 browser (4.7m), lint passed exit0. Owner manual acceptance recorded. Production build repeated before commit. No paid calls.
+
+M7 checkpoint 2026-11-11T10:22:54+02:00: unit144/144 exit0,21 files,4.35s; lint/build exit0 (compile2.0s/TypeScript5.1s) after correcting nullable query capture. Integration command exit1:22 existing pass,4 M7 cases blocked/skipped at unapplied SQL preflight (62.95s). Browser likewise blocked before cases; not passed. Dependency/whitespace checks pass. Owner SQL and subsequent manual acceptance pending. No M7 commit/push or M8 work.
+
+M7 applied verification 2026-11-11T10:34:18+02:00: owner applied SQL; read-only definition matches migration, empty search_path, anonymous/PUBLIC execute denied, authenticated execute granted. Reviews/review_edits RLS true; anonymous select and direct authenticated insert/update false. Advisor intentionally flags guarded m7_save_review SECURITY DEFINER (alongside prior M4 save and demo password warning); no broad grants added. Unit144/144 exit0 (3.23s), integration26/26 exit0 (77.08s), lint exit0. Browser15-case gate running; manual acceptance pending. No M7 commit/push or M8.
+
+M7 final applied verification 2026-11-11T10:38:39+02:00: unit144/144 exit0 (3.23s); integration26/26 exit0 (77.08s); full browser15/15 exit0 (5.2m); lint/build exit0 (compile2.7s/TypeScript10.8s); dependency/whitespace checks passed.0 disposable test users remain. Schema/function/ACL/RLS verified read-only, including no PUBLIC execution and no direct ordinary review/edit writes. Intentional guarded SECURITY DEFINER advisor warning documented above. No new code repairs or paid provider calls. Required owner manual verification remains pending; M7 uncommitted/unpushed, M8 not started. Next.js feedback review: no qualifying framework issue in this verification pass.
+
+Owner acceptance 2026-11-11T11:05:16+02:00: all manual tests pass; M7 commit/push authorized, then M8 only. No M9 authorization. Repeated publication checks pending.
+
+M7 publication recheck 2026-11-11T11:09:25+02:00: unit144/144 exit0 (3.94s), integration26/26 exit0 (74.42s), full browser15/15 exit0 (5.2m), lint exit0. Owner manual acceptance recorded; production build repeated before commit. No paid calls.

@@ -125,3 +125,11 @@ Status: technical implementation under owner-approved M6; acceptance pending. M5
 ## D33 — M6 accepted; M7 authorized (2026-11-11T10:07:45+02:00)
 
 Owner confirms all tests pass and authorizes normal M6 commit/push, then M7 only. M7 SQL remains owner-applied and manual verification required before its commit. M8 is unauthorized.
+
+## D34 — M7 guarded review capability (2026-11-11T10:21:10+02:00)
+
+Technical implementation under authorized M7; owner SQL/manual verification pending. Use authenticated narrow SECURITY DEFINER function, with auth.uid/profile/translation/input checks and empty search_path, to save reviews/edits atomically without broad table grants. Preserve AI and original; corrections are version overlays. Recheck current self-declared bilingual eligibility at writes, retain historical reviews after language changes. Technical input bounds5000 intent/500 edits/50000 correction characters; own-review saves last-write-wins. No delete/moderation/ranking features invented. M8 remains unauthorized.
+
+## D35 — M7 accepted; M8 authorized (2026-11-11T11:05:16+02:00)
+
+Owner confirms all tests pass and authorizes normal M7 commit/push then M8 only. M8 SQL remains owner-applied; no M8 commit until required manual verification passes. M9 unauthorized.

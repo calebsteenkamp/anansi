@@ -42,3 +42,5 @@ Timing is segment-level and often estimated; English is aligned to original segm
 Owner acceptance 2026-11-11T10:07:45+02:00: all requested M6 tests pass; owner authorizes M6 commit/push, then M7 only. No further device/version observations supplied. M8 unauthorized. Repeated publication checks pending.
 
 M6 publication recheck 2026-11-11T10:12:37+02:00:132 unit (4.11s),22 integration (63.70s),14 browser (4.7m), lint passed exit0. Owner manual acceptance recorded. Production build repeated before commit. No paid calls.
+
+M6 published as20bf76146b8d25e4687f364249adb5f6f276c5c2 after owner acceptance/repeated checks; remote matched before M7 code.

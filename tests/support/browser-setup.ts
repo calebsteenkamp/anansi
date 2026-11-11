@@ -1,2 +1,2 @@
-import {translationPreflight} from "./translation-project";
-export default async function setup(){await translationPreflight(true);}
+import {reviewPreflight} from "./review-project";
+export default async function setup(){await reviewPreflight(true);}

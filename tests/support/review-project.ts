@@ -1,0 +1,2 @@
+import {translationPreflight} from "./translation-project";
+export async function reviewPreflight(browser=false){const c=await translationPreflight(browser);const r=await c.admin.rpc("m7_save_review",{p_translation:"11111111-1111-4111-8111-111111111111",p_decision:"approve",p_rating:3,p_intent:"",p_edits:[]});if(!r.error||!(r.error.message==="unauthenticated"||r.error.code==="42501"))throw new Error("BLOCKED: owner must apply 20261111081510_m7_reviews.sql and verify permissions before T7 tests.");return c;}

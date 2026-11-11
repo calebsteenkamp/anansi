@@ -1,14 +1,16 @@
 "use client";
-import {useEffect,useRef,useState} from "react";
+import {useCallback,useEffect,useRef,useState} from "react";
 import type {StorySnapshot} from "../../../lib/supabase/story-workflow";
 import type {TranslationView} from "../../../lib/translation";
 import {activeSegment,alignTranslations,seekTime} from "../../../lib/playback";
 import {DeviceNarrator,englishDeviceVoices} from "../../../lib/device-speech";
 import {DraftAudio} from "./draft-audio";
+import {ReviewPanel} from "./review-panel";
 import {TranslationPanel} from "./translation-panel";
 export function StoryReader({story,audioUrl,initialTranslation,owner,provider,preferredLanguage,autoStart=false}:{story:StorySnapshot;audioUrl?:string;initialTranslation:TranslationView|null;owner:boolean;provider:string;preferredLanguage:"xh"|"en";autoStart?:boolean}){
  const [language,setLanguage]=useState(preferredLanguage),[translation,setTranslation]=useState(initialTranslation),[time,setTime]=useState(-1),[speechId,setSpeechId]=useState<string|null>(null),[message,setMessage]=useState("");
  const [voices,setVoices]=useState<SpeechSynthesisVoice[]>([]),[voiceId,setVoiceId]=useState(""),[voiceReady,setVoiceReady]=useState(false);
+ const [overlay,setOverlay]=useState<Record<string,string>>({}),[reviewer,setReviewer]=useState<string|null>(null);
  const audio=useRef<HTMLAudioElement|null>(null),narrator=useRef<DeviceNarrator|null>(null),alive=useRef(false);
  useEffect(()=>{
   alive.current=true;
@@ -18,7 +20,8 @@ export function StoryReader({story,audioUrl,initialTranslation,owner,provider,pr
   const hide=()=>controller.stop();update();engine.addEventListener("voiceschanged",update);window.addEventListener("pagehide",hide);
   return()=>{alive.current=false;controller.stop();narrator.current=null;engine.removeEventListener("voiceschanged",update);window.removeEventListener("pagehide",hide);};
  },[]);
- const aligned=alignTranslations(story.segments,translation?.segments??[]);
+ const applyOverlay=useCallback((edits:Record<string,string>,name:string|null)=>{narrator.current?.stop();setOverlay(edits);setReviewer(name);},[]);
+ const aligned=alignTranslations(story.segments,(translation?.segments??[]).map(row=>({...row,text:overlay[row.id]??row.text})));
  const current=speechId??activeSegment(story.segments,time);
  const complete=!!translation&&translation.total>0&&translation.complete===translation.total&&aligned.every(Boolean);
  function seek(index:number){
@@ -39,6 +42,7 @@ export function StoryReader({story,audioUrl,initialTranslation,owner,provider,pr
   <label className="my-4 block">Reading language<select aria-label="Reading language" className="mt-2 block max-w-full rounded border p-2 sm:ml-3 sm:inline" value={language} onChange={event=>{narrator.current?.stop();setLanguage(event.target.value as "xh"|"en");}}><option value="xh">isiXhosa original</option><option value="en">Original + English</option></select></label>
   <p>Your profile sets the initial reading language; this selector changes only this page.</p>
   {audioUrl?<DraftAudio id={story.id} initialUrl={audioUrl} audioRef={audio} onTimeChange={setTime}/>:<p role="alert">Playback unavailable. Refresh to retry.</p>}
+  {language==="en"&&<p>{reviewer?"Reading community corrections by "+reviewer+". AI text is preserved.":"Reading AI English text."}</p>}
   <h2 className="mt-8 text-2xl">Published transcript</h2><p>Activate a segment with mouse, Enter or Space to seek the original audio. Highlight follows the audio playhead or device narration.</p>
   <p>{story.segments.some(row=>row.timing_source==="estimated")?"Timings marked approximate are estimated from text; they may not follow the exact spoken words.":"Timings are provider supplied."}</p>
   <ol className="my-4 space-y-3">{story.segments.map((row,index)=><li key={row.id} data-testid={"reading-segment-"+index} data-active={current===row.id?"true":"false"} className={"rounded border p-3 "+(current===row.id?"border-amber-700 bg-amber-100 text-black":"")}>
@@ -52,5 +56,6 @@ export function StoryReader({story,audioUrl,initialTranslation,owner,provider,pr
   </section>}
   <p role="status" data-testid="reader-message">{message}</p>
   <TranslationPanel storyId={story.id} initial={initialTranslation} owner={owner} provider={provider} autoStart={autoStart} renderSegments={false} onTranslationChange={setTranslation}/>
+ {complete&&translation&&<ReviewPanel storyId={story.id} translation={translation} original={story.segments} onOverlay={applyOverlay}/>}
  </section>;
 }
