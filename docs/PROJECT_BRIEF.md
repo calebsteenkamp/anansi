@@ -1,6 +1,6 @@
 # Project brief
 
-Owner-approved direction: 2026-11-09. Features remain planned; see [MILESTONES](MILESTONES.md).
+Owner-approved direction: 2026-11-09. Implementation evidence and outstanding human gates are recorded in [MILESTONES](MILESTONES.md).
 
 ## Problem, aim, and users
 

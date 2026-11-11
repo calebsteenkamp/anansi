@@ -6,13 +6,13 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M7 accepted/published (M7:4069742). M8 discovery, follow/repost and filters are implemented with owner-applied SQL and all automated gates passing, pending manual verification; M8 remains uncommitted. M9 demo/submission work is not started. See [M8 verification](docs/M8_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
+M0–M8 accepted/published (M8:00fbdfb). M9 demo tools and automated gates pass (165 unit/30 integration/18 browser, lint/build and fresh-source install checks); owner has accepted reviews and5:00/5:15 rehearsals with an explicit slight-overrun exception. M9 publication and M10/UI/hosting are authorized. See [M9 verification](docs/M9_VERIFICATION.md), [demo script](docs/DEMO_SCRIPT.md), [submission readiness](docs/SUBMISSION_CHECKLIST.md), and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
 - Node.js >=20.9, npm, Git, and a modern browser.
 - Internet for dependency installation and existing build-time Geist/Geist Mono downloads through next/font/google. Offline/proxy failures are recorded in the milestone log; fonts have not been replaced.
-- Supabase and provider credentials are prerequisites for later milestones, not the starter page.
+- Supabase credentials and owner-applied migrations are required for accounts, stories and network tests. Provider credentials are needed for live processing; explicit mock mode does not need provider keys. The public home page needs neither.
 
 ```powershell
 npm ci
@@ -47,7 +47,7 @@ See [TEST_PLAN](docs/TEST_PLAN.md) for T0-T9, environments, and fixtures. Missin
 
 | Location | Purpose |
 | --- | --- |
-| app/ | Current App Router page, layout, global styles, favicon |
+| app/ | App Router auth/profile, audio capture, transcript/reader/review, discovery and guarded API routes |
 | public/ | Current starter assets |
 | docs/ | Brief, scope, architecture, decisions, tests, progress, demo |
 | PLANS.md | Approved milestone implementation sequence |
@@ -60,16 +60,16 @@ See [TEST_PLAN](docs/TEST_PLAN.md) for T0-T9, environments, and fixtures. Missin
 
 - [PROJECT_BRIEF](docs/PROJECT_BRIEF.md) - problem, objectives, capstone alignment, sources.
 - [PRODUCT_SCOPE](docs/PRODUCT_SCOPE.md) - authoritative requirements and exclusions.
-- [ARCHITECTURE](docs/ARCHITECTURE.md) - planned boundaries, records, processing/security.
+- [ARCHITECTURE](docs/ARCHITECTURE.md) - implemented boundaries, records, processing/security.
 - [PLANS](PLANS.md) - tasks, dependencies, acceptance gates.
 - [MILESTONES](docs/MILESTONES.md) - actual progress, checks, commits.
 - [TEST_PLAN](docs/TEST_PLAN.md) - T0-T9 validation.
 - [DECISIONS](docs/DECISIONS.md) - choices and rationale.
 - [OPEN_QUESTIONS](docs/OPEN_QUESTIONS.md) - unresolved evidence and owner answers.
-- [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) - planned demonstration and rehearsal record.
+- [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) - exact demonstration, preparation and recovery.
 - [PROJECT_CONTEXT](docs/PROJECT_CONTEXT.md) - optional historical background.
 
-data/ and PDFs are ignored and absent from a normal clone. Committed docs explain the project independently. Live benchmarks need the owner's Phrase 1/Phrase 2 materials or explicit replacements; never substitute fabricated findings. Demo accounts/fixtures arrive in later milestones. Local demonstration is the default; deployment is optional and not configured here.
+data/ and PDFs are ignored and absent from a normal clone. Committed docs explain the project independently. Live benchmarks need the owner's Phrase 1/Phrase 2 materials or explicit replacements; never substitute fabricated findings. Use existing accounts and the M9 scoped seed command below. Local demonstration is the default; deployment is optional and not configured here.
 
 ## M1 provider spike
 
@@ -148,3 +148,14 @@ The reader defaults to AI text. Show latest community corrections overlays the m
 Review/apply supabase/migrations/20261111092155_m8_discovery_relationships.sql once in Anansi SQL Editor; no reset or reapplication of earlier SQL. No new dependencies/credentials. Open Discover stories from Your profile or a story. Apply Feed, Story language and Title search together; Clear filters restores newest. Newest means creation time then ID, limited to50 matching language versions; reposts do not bump order.
 
 Follow author/reposter toggles a personal relationship. Repost in Anansi adds the story to your in-app reposts; Remove repost removes only yours. Following includes followed authors and their reposts, deduplicated per story ID. Original/English versions remain separate cards. English Story link opens the original source page with English explicitly selected, without changing profile preference. Only published originals/completed English are discoverable; no paid work occurs while browsing.
+
+
+## Demo preparation and clean setup verification (M9)
+
+Use only the supplied Phrase1/2 recordings and references. `npm run seed:demo -- --storyteller-id <uuid> --verifier-id <uuid> --sample 1` defaults to a dry run; inspect IDs before adding `--apply`. Set existing profiles as directed in [DEMO_SCRIPT](docs/DEMO_SCRIPT.md). The server-only CLI requires local Supabase administration credentials; it writes only its deterministic demo story/audio paths and guarded mock tasks, creates no accounts, and refuses changed backup content. It never calls paid providers or resets human reviews. Mock text is not language-quality evidence.
+
+`npm run verify:fresh-setup` copies Git-visible source (including uncommitted M9 files) into an isolated ignored `data/verification/fresh-*` directory, without credentials/recordings or existing dependencies. It runs npm ci, offline unit tests, lint and production build; internet is still required for packages/fonts. It retains the snapshot for inspection. This verifies source setup, not independent provisioning of a new Supabase project. Local recordings/reports/snapshots are excluded from lint/type-check source discovery. Run integration/browser suites separately with the known demo project's credentials, applied migrations and provided audio; install Chromium with `npx playwright install chromium` if missing. Network tests create/remove only tagged disposable fixtures. Do not run browser suites while a manual dev server occupies port3000.
+
+For a new environment, configure `.env.local` from the safe example, have the owner review/apply `supabase/migrations/` in filename order, and configure demo-only email confirmation per M2_VERIFICATION. Never paste server credentials into public variables. No new migration is needed for M9. Complete the manual evidence in [M9_VERIFICATION](docs/M9_VERIFICATION.md) before claiming demo readiness.
+
+Current verification also reports7 moderate transitive ESLint-tooling audit findings (0 high/critical); no automatic dependency upgrade was made. See M9_VERIFICATION for exact evidence and remaining limitations.

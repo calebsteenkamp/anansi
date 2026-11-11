@@ -10,17 +10,17 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Anansi: persistent project instructions
 
-Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. Current source is a foundation, not the product.
+Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. M0–M8 are accepted/published; M9 is accepted; M10/UI/hosting are authorized by the latest owner plan. See the milestone log for current status.
 
 ## Read before working
 
 1. This file and [product scope](docs/PRODUCT_SCOPE.md).
-2. [Milestone status](docs/MILESTONES.md), active [PLANS](PLANS.md) section, and its matching T0-T9 in [TEST_PLAN](docs/TEST_PLAN.md).
+2. [Milestone status](docs/MILESTONES.md), active [PLANS](PLANS.md) section, and its matching T0-T10 in [TEST_PLAN](docs/TEST_PLAN.md).
 3. [Architecture](docs/ARCHITECTURE.md) and [decisions](docs/DECISIONS.md) when relevant. [Brief](docs/PROJECT_BRIEF.md) explains why; [PROJECT_CONTEXT](docs/PROJECT_CONTEXT.md) holds optional background. Earlier chats are not required.
 
 ## Scope, stack, and coding
 
-- Implement only the explicitly authorized milestone. Confirm each M1-M9 separately; passing tests does not authorize the next. M10 deferred.
+- Implement only the explicitly authorized milestone. Confirm each milestone separately; passing tests does not authorize another. M10/UI/hosting are explicitly authorized (D39).
 - Do not invent requirements, providers, features, accuracy claims, or test results. Latest explicit owner instruction overrides historical sources; record material changes.
 - Put consequential unknowns in [OPEN_QUESTIONS](docs/OPEN_QUESTIONS.md), name the blocked milestone, and ask the owner; continue independent authorized work where possible.
 - Before coding, restate criteria and affected files. Afterward report changes, actual checks, limitations, next approval gate.
@@ -45,7 +45,7 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 
 - Update [README](README.md) whenever setup, commands, dependencies, environment variables, capabilities change.
 - Update [DECISIONS](docs/DECISIONS.md) for material product/technical choices and rationale.
-- Update [MILESTONES](docs/MILESTONES.md) when work starts, blocks, verifies, commits; map M0-M9 to T0-T9.
+- Update [MILESTONES](docs/MILESTONES.md) when work starts, blocks, verifies, commits; map M0-M9 to T0-T10.
 - Brief defines why; scope what; architecture how; PLANS sequence; TEST_PLAN proof; MILESTONES actual progress. Keep links synchronized and planned commands visibly distinct from installed scripts.
 - Use [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) for rehearsal. Preserve ignored source materials; committed docs must stand alone.
 

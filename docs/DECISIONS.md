@@ -141,3 +141,11 @@ Technical defaults under authorized M8, owner SQL/manual acceptance pending. Fol
 ## D37 — M8 accepted; M9 authorized (2026-11-11T12:30:05+02:00)
 
 Owner reports all tests pass and authorizes M8 publication then M9 only. M9 requires real bilingual observations and two timed rehearsals before commit. M10 stays deferred; no deployment/submission is implicitly authorized.
+
+## D38 — Provided audio only for M9 (2026-11-11)
+
+Owner-approved restriction: use only the provided audio. Phrase1 primary/Phrase2 alternate replace the earlier proposed 20–40second narrative collection. Short samples limit what can be claimed about narrative/cultural quality; they do not waive actual bilingual feedback or two timed rehearsals. M9 agent work adds no live benchmark. Seed English is explicitly synthetic; supplied source reference is not measured ASR output. Technical default: explicit existing demo UUIDs, dry-run then --apply, no account creation or reset. No new SQL/dependency; isolated credential-free source install check. M10 remains deferred.
+
+## D39 — M9 accepted; M10/UI/hosting authorized (2026-11-11T18:41:07+02:00)
+
+Owner reports reviews passed and rehearsals5:00/5:15; expressly permits the slight overrun. Record missing measurements as unreported. Publish M9, then implement M10 opt-in intent examples, warm paper/teal UI, private direct audio upload preserving25MB/180seconds, four permanent demo accounts and Vercel hosting. Six new OpenAI requests total permitted across local/hosted checks using only provided Phrase1/2; ordinary tests remain mocks. Owner creates the additional two accounts and applies reviewed SQL. No paid hosting upgrade or new provider authorized.

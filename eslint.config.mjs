@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "data/**", // Local recordings/reports and isolated fresh-setup snapshots.
   ]),
 ]);
 

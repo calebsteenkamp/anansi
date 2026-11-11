@@ -1,6 +1,6 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5 now has executable cases pending owner SQL/verification; T6 has executable coverage pending verification/manual acceptance; T7-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T0–T8 have implemented coverage and owner acceptance. T9 now adds executable provided-audio journey, seed and fresh-source checks; human observations/rehearsals remain required. [MILESTONES](MILESTONES.md) owns actual results; planned or blocked checks are not passes.
 
 ## Environments, commands, and evidence
 
@@ -100,7 +100,7 @@ T0.1-T0.3 are owner's M0 runtime criteria. T0.4 validates this documentation del
 - T9.1 E2E: two-user capture/upload -> edit -> publish -> English -> playback -> correction/review -> discover; refresh proves persistence.
 - T9.2 E2E: provider failure/partial recovery and explicit mock backup; all labels honest.
 - T9.3 Integration: repeatable seeds affect named fixtures only; no broad reset/credential exposure.
-- T9.4 Manual: bilingual cleared narrative session, elapsed review time, rating, correction clarity, meaning/intent errors; limitations recorded.
+- T9.4 Manual: bilingual provided-Phrase1/2 session (owner restriction D38), elapsed review time, rating, correction clarity, meaning/intent errors; limitations recorded.
 - T9.5 Manual: execute exact DEMO_SCRIPT twice, uninterrupted <=5 minutes each, real dates/outcomes.
 - T9.6 Fresh setup check, lint, build, all applicable suites; README commands accurately reflect installed scripts. No demo/video/submission completion claim without artifact/evidence.
 
@@ -171,3 +171,11 @@ reviews.test.ts tests confidence fractions/ties/rejection precedence and latest-
 ## Executable T8 coverage
 
 discovery.test.ts covers filters, literal title query bounds, relationship validation and canonical language links. discovery-api.test.ts covers private read-only feed, same-origin/identity/input/auth denial, user-session capabilities and sanitized errors. integration/discovery.test.ts covers real anonymous/direct-write/self-follow/draft denial, language/search/order, conflict-safe actions, deduplication, followed repost inclusion, own-only removal and unfollow. e2e/discovery.spec.ts covers mobile discover/follow/repost/filter/English-link/unfollow empty state. Global preflight requires M8 SQL. Missing environment/SQL is blocked, never passed. All prior suites remain required.
+
+## Executable T9 coverage
+
+- demo.test.ts: dry-run default, explicit apply, distinct UUIDs, strict argument rejection, deterministic author/audio/purpose-scoped IDs and missing-source rejection; no network.
+- integration/demo.test.ts: only provided Phrase1, disposable users, repeated exact seed IDs/results/audio, completed-task attempts unchanged, human correction/repost preserved, changed backup refused, scoped cleanup. Real user tokens submit reviews/reposts; admin only sets up its named fixture/workflow.
+- e2e/journey.spec.ts: two complete two-user upload→transcript→publish→mock-English→native audio→review/correction→Following/repost/discovery flows, one with ASR failure/manual reference and interrupted partial translation/explicit Continue. Only provided MP3/references; technical fixture reviews/rating are not human evidence. Existing earlier format fixtures remain unchanged.
+- verify:fresh-setup: isolated Git-visible source snapshot, no .env.local/audio/dependencies copied; npm ci, unit/lint/build. External Supabase provisioning and human setup remain separate. Snapshot is ignored data, excluded from source lint/type checking.
+- T9 human gates: exact M9_VERIFICATION checks and DEMO_SCRIPT, actual bilingual time/rating/intent/corrections plus two real <=5min rehearsals. Missing observation stays pending; no inferred linguistic quality from mocks or earlier technical benchmarks.

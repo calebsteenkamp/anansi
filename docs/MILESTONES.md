@@ -12,10 +12,10 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | M5 Linked English translation | T5 | M4/T4 + owner confirmation | Complete | 2026-11-11T09:28:08+02:00 | Owner accepted all manual checks. Repeated117 unit/22 integration/11 browser/lint/build passed;9872f29cc17d9891c794786e1ba81c85c90322e6 committed/pushed, remote matched. |
 | M6 Reading/listening | T6 | M5/T5 + owner confirmation | Complete | 2026-11-11T10:21:10+02:00 | Owner accepted; repeated132 unit/22 integration/14 browser/lint/build passed.20bf76146b8d25e4687f364249adb5f6f276c5c2 committed/pushed; remote matched. |
 | M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Complete | 2026-11-11T11:28:08+02:00 | Owner accepted;144 unit/26 integration/15 browser/lint/build passed.40697425c7a7e4f6692ea89f8342582bf875829e committed/pushed; remote matched. |
-| M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | In progress / manual verification pending | 2026-11-11T11:28:08+02:00 | Discovery/relationships/filter UI, SQL and tests implemented.154 unit tests passed. SQL/permissions verified;154 unit/29 integration/16 browser/lint/build pass. Manual acceptance pending. Uncommitted; no M9. |
-| M9 Demo/submission evidence | T9 | M8/T8 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q6 tester/narrative/rehearsals pending. |
+| M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | Complete | 2026-11-11T12:34:50+02:00 | Owner accepted.154 unit/29 integration/16 browser/lint/build pass;00fbdfb4006cccaf8de9d052e4e4b33a94d90575 committed/pushed; remote matched before M9. |
+| M9 Demo/submission evidence | T9 | M8/T8 + owner confirmation | Accepted / commit pending | 2026-11-11T18:41:07+02:00 | 165 unit/30 integration/18 browser/lint/build/fresh setup pass. Owner accepts reviews and5:00/5:15 rehearsals with explicit overrun exception; unspecified measurements unreported. Publication authorized. |
 
-M10 intent-example prompting is deferred, outside the nine upcoming milestones. No other milestone is implicitly authorized by M0.
+M10 intent-example prompting, UI refresh and hosting are explicitly authorized by D39; owner SQL/account handoffs remain required. No other milestone is implicitly authorized by M0.
 
 ## Historical planning verification, 9 November 2026
 
@@ -270,3 +270,9 @@ M8 final automated gate 2026-11-11T11:46:24+02:00: unit154/154 exit0 (23 files,5
 Owner acceptance 2026-11-11T12:30:05+02:00: all M8 manual tests pass. Owner authorizes M8 commit/push then M9 only; M10 deferred. Repeated publication checks pending.
 
 M8 publication recheck 2026-11-11T12:33:50+02:00:154 unit exit0 (3.90s),29 integration exit0 (96.10s),16 browser exit0 (6.8m), lint exit0. Owner manual acceptance recorded; production build repeated before commit. No paid calls.
+
+## M9 automated verification / manual stop (2026-11-11T15:38:27+02:00)
+
+Only provided Phrase1/2 audio permitted by owner (D38). Implemented scoped dry-run/mock seed, source fresh-install verifier and full two-user normal/recovery journey. All implemented suites passed:165 unit,30 integration,18 browser; lint/build/dependency/whitespace/links/known-secret checks passed. Fresh source npm ci/unit/lint/build passed; no credentials copied. No tagged test accounts remain. npm audit reports7 moderate transitive tooling findings (0 high/critical), unresolved. See M9_VERIFICATION for actual command output, earlier repaired test failures, setup warnings and exact required manual observations.
+
+M8 HEAD/origin remains00fbdfb4006cccaf8de9d052e4e4b33a94d90575. M9 working files remain uncommitted/unstaged. Local dev server is running for human checks. No new agent live provider call, migration, deployment, submission or M10 implementation.

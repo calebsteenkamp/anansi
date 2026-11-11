@@ -11,7 +11,9 @@
     "benchmark:providers": "tsx scripts/benchmark-providers.ts",
     "test:integration": "vitest run --config vitest.integration.config.mts",
     "test:e2e": "playwright test",
-    "verify:m4:live": "tsx scripts/verify-m4-live.ts"
+    "verify:m4:live": "tsx scripts/verify-m4-live.ts",
+    "seed:demo": "tsx scripts/seed-demo.ts",
+    "verify:fresh-setup": "tsx scripts/verify-fresh-setup.ts"
   },
   "dependencies": {
     "@next/env": "16.4.5",

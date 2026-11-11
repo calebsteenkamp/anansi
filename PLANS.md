@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0-M7 accepted/published; M7 is4069742 and remote matched before M8 code. Owner authorizes M8 only, with owner-applied SQL and actual manual verification before M8 commit/push. M9 unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0–M8 accepted/published; M8 is00fbdfb and remote matched before M9 code. Owner authorizes M9 only. Required human bilingual feedback and two <=5minute rehearsals gate M9 commit/push. M10 deferred. Milestone approval is never inferred from test passes.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -96,7 +96,7 @@ Gate: real integration ownership/duplicate/unfollow/feed inclusion/dedupe/search
 
 ## M9 / T9: demo/submission evidence
 
-Dependency: M8/T8 + confirmation; Q6 permission-cleared narrative and tester session.
+Dependency satisfied: accepted/published M8/T8 and explicit owner authorization. Owner now restricts M9 to provided Phrase1/2 audio; Q6 tester observations/rehearsals remain open (D38).
 
 Tasks: repeatable seed command scoped to named demo records, labelled mock backup, loading/error/accessibility polish, tester observations, final docs. Implement exact DEMO_SCRIPT with two users; rehearse twice. Verify setup from a fresh checkout/environment, not destructive reset of working project.
 
@@ -138,10 +138,18 @@ Confidence follows PRODUCT_SCOPE exactly: none Awaiting; majority rejection Disp
 
 Technical input limits:5000 intent characters,500 edits/50000 correction characters. Review submissions are last-write-wins for the current user's review; no deletion UI or reviewer-ranking system. Test units, real Supabase ACL/atomicity and browser review/update/overlay/ineligible checks, then owner desktop/phone acceptance per M7_VERIFICATION. No M8.
 
-## Active M8 implementation contract
+## Completed M8 implementation contract
 
 Owner applies 20261111092155_m8_discovery_relationships.sql. m8_relationship is authenticated SECURITY DEFINER with auth.uid, self-follow/profile/published-target checks, conflict-safe insertion and own-row deletion. No ordinary direct write grants. m8_feed is SECURITY INVOKER with caller RLS, published-original/completed-English filtering, literal case-insensitive substring search and all/following/language validation. EXISTS includes followed authors/reposters without duplicating a story ID.
 
 Creation timestamp descending then UUID descending defines newest order; reposting does not bump it. Original and English are distinct language versions. Return newest50 matches; UI discloses bound and permits refining search, no infinite-feed requirement invented. Reposter attribution enables following people who only repost. English links use original parent plus language=en to select that reading view without profile mutation.
 
-Discovery SSR requires verified identity/connection/Suspense; subsequent filtered GET and same-origin POST use user session and private/no-store. Expected identity rejects stale account writes. No read initiates providers. No dependencies/secrets/deployment. Run all T0–T8 implemented suites, then desktop/two-account/Huawei/Oppo checklist in M8_VERIFICATION; no M8 commit until accepted. M9 not authorized.
+Discovery SSR requires verified identity/connection/Suspense; subsequent filtered GET and same-origin POST use user session and private/no-store. Expected identity rejects stale account writes. No read initiates providers. No dependencies/secrets/deployment. M8 completed all T0–T8 implemented suites and owner manual acceptance before publication. M9 is separately authorized by D37; M10 remains deferred.
+
+## Active M9 implementation contract
+
+Use only the supplied Phrase1/2 MP3/reference files; no newly invented narrative or live benchmark. `seed:demo` requires explicit existing storyteller/verifier UUIDs and suitable profiles, defaults to dry-run and writes only deterministic content-hash/author-scoped demo IDs/audio. Mock-only adapter and guarded M4/M5 capabilities prepare a reference-seeded source transcript and synthetic English backup; preserve changed/published records, reviews and completed tasks. No new dependency, account provisioning or SQL application. Repeated interrupted preparation may leave scoped rows/objects, reconciled on retry without broad reset.
+
+Unit safety checks, actual Supabase repeatability/contribution preservation, and two provided-audio full-journey browser cases (normal and simulated failure/recovery) establish workflow evidence. `verify:fresh-setup` uses a credential-free source snapshot within ignored local data, npm ci, unit/lint/build. Record exact final outputs in M9_VERIFICATION/MILESTONES; no claim of a fresh cloud deployment. Maintain honest demo/submission docs and home copy. All earlier suites remain required.
+
+Owner selects demo accounts, runs inspected seed, supplies bilingual correction/time/rating/intent observations and performs DEMO_SCRIPT twice uninterrupted <=5minutes. Mock feedback proves workflow only. No M9 commit/push before those observations pass; no M10/deployment/submission authority.

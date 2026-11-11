@@ -14,7 +14,7 @@ The 9 November review found a starter page, mostly empty planning files, two com
 
 The ignored data directory contains the three sources in [PROJECT_BRIEF](PROJECT_BRIEF.md) plus Phrase 1 and Phrase 2 folders. Each has a numbered MP3, original OGG recording, isiXhosa.txt, English.txt, and Intent.txt.
 
-These short greetings/appreciation statements support a first benchmark, not conclusions about narrative idioms or cultural nuance. M9 needs a permission-cleared storytelling sample and tester observations. Distinguish reference text, ASR text, reference-text translation, and ASR-text translation in benchmark evidence.
+These short greetings/appreciation statements support a first benchmark, not conclusions about narrative idioms or cultural nuance. For M9 the owner explicitly chose only the provided audio (D38); do not collect/invent a longer narrative. Actual tester observations and the resulting sample limitation remain required. Distinguish reference text, ASR text, reference-text translation, and ASR-text translation in benchmark evidence.
 
 Preserve ignored recordings/PDFs and .env.local. Do not commit recordings merely to make tests run. Later tracked synthetic fixtures must be labelled synthetic; real fixtures require permission. Never invent linguistic evaluation findings.
 
