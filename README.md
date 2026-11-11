@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M6 are accepted/published (M6:20bf761). M7 bilingual review, confidence and community-correction overlay are implemented with owner-applied SQL and all automated gates passing, pending manual verification; M7 is uncommitted. Discovery remains planned. See [M7 verification](docs/M7_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
+M0–M7 accepted/published (M7:4069742). M8 discovery, follow/repost and filters are implemented with owner-applied SQL and all automated gates passing, pending manual verification; M8 remains uncommitted. M9 demo/submission work is not started. See [M8 verification](docs/M8_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -142,3 +142,9 @@ When English is displayed and all translation segments are aligned/saved, Device
 Review/apply supabase/migrations/20261111081510_m7_reviews.sql once in Anansi SQL Editor; do not reset the project or rerun old migrations. No new dependency or secret. Follow [M7_VERIFICATION](docs/M7_VERIFICATION.md). On a completed translation, profiles listing both isiXhosa/English may approve/reject, rate1–5, comment on intent and enter optional segment corrections. Save updates that user's single review atomically. Blank correction fields remove their prior corrections.
 
 The reader defaults to AI text. Show latest community corrections overlays the most recently updated review with edits; it labels the reviewer and preserves AI/original storage. Device narration follows the displayed version and stops when switching versions. Ratings express human confidence, not measured accuracy. Eligibility is self-declared and rechecked at every save.
+
+## M8 discovery setup
+
+Review/apply supabase/migrations/20261111092155_m8_discovery_relationships.sql once in Anansi SQL Editor; no reset or reapplication of earlier SQL. No new dependencies/credentials. Open Discover stories from Your profile or a story. Apply Feed, Story language and Title search together; Clear filters restores newest. Newest means creation time then ID, limited to50 matching language versions; reposts do not bump order.
+
+Follow author/reposter toggles a personal relationship. Repost in Anansi adds the story to your in-app reposts; Remove repost removes only yours. Following includes followed authors and their reposts, deduplicated per story ID. Original/English versions remain separate cards. English Story link opens the original source page with English explicitly selected, without changing profile preference. Only published originals/completed English are discoverable; no paid work occurs while browsing.

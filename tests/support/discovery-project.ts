@@ -1,0 +1,2 @@
+import {reviewPreflight} from "./review-project";
+export async function discoveryPreflight(browser=false){const c=await reviewPreflight(browser);const r=await c.admin.rpc("m8_feed",{p_feed:"all",p_language:"all",p_query:""});if(!r.error||!(r.error.message==="unauthenticated"||r.error.code==="42501"))throw new Error("BLOCKED: owner must apply 20261111092155_m8_discovery_relationships.sql before T8 integration/browser tests.");return c;}

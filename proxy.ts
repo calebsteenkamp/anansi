@@ -11,4 +11,4 @@ export async function proxy(request:NextRequest){
  response.headers.set("Pragma","no-cache");response.headers.set("Expires","0");
  return response;
 }
-export const config={matcher:["/account/:path*","/sign-in","/sign-up","/stories/:path*","/api/stories/:path*","/api/auth/:path*"]};
+export const config={matcher:["/discover","/api/discover","/api/social","/account/:path*","/sign-in","/sign-up","/stories/:path*","/api/stories/:path*","/api/auth/:path*"]};

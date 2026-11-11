@@ -30,3 +30,5 @@ M7 final applied verification 2026-11-11T10:38:39+02:00: unit144/144 exit0 (3.23
 Owner acceptance 2026-11-11T11:05:16+02:00: all manual tests pass; M7 commit/push authorized, then M8 only. No M9 authorization. Repeated publication checks pending.
 
 M7 publication recheck 2026-11-11T11:09:25+02:00: unit144/144 exit0 (3.94s), integration26/26 exit0 (74.42s), full browser15/15 exit0 (5.2m), lint exit0. Owner manual acceptance recorded; production build repeated before commit. No paid calls.
+
+M7 published as40697425c7a7e4f6692ea89f8342582bf875829e after owner acceptance/rechecks. Remote matched before M8 code.

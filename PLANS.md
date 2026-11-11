@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0-M6 accepted/published; M6 is20bf761 and remote matched before M7 code. Owner authorizes M7 only, with owner-applied SQL and required manual acceptance before M7 commit/push. M8 unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0-M7 accepted/published; M7 is4069742 and remote matched before M8 code. Owner authorizes M8 only, with owner-applied SQL and actual manual verification before M8 commit/push. M9 unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -130,10 +130,18 @@ DraftAudio accepts a reader ref/time callback, renews private URLs, and stops on
 
 Verification: npm run test:unit, test:integration, test:e2e, lint, build, dependency/whitespace/client-secret checks. T6 units cover boundaries, identity alignment, arbitration, chunking, sequencing and cancellation/errors; browser uses actual stored synthetic audio plus deterministic speech stubs. Owner manually verifies real desktop/Huawei/Oppo audibility and voice/fallback, seeking and navigation per M6_VERIFICATION. M6 remains uncommitted until that acceptance; M7 not authorized.
 
-## Active M7 implementation contract
+## Completed M7 implementation contract
 
 GET/PUT /api/stories/[id]/reviews use verified session identity, same-origin bounded JSON and caller RLS. PUT guards expectedUserId against account switches and calls user-session m7_save_review. SQL checks auth.uid, current locked profile with both xh/en, completed English/published parent, rating/decision and correction ownership. Upsert one review, replace only its corrections atomically; no original/AI segment writes. Owner applies 20261111081510_m7_reviews.sql.
 
 Confidence follows PRODUCT_SCOPE exactly: none Awaiting; majority rejection Disputed; otherwise unrounded mean<3 Fairly confident, >=3 Confident. AI remains default on reload; latest updated review containing edits (descending review-ID tie break) supplies a labelled overlay. Empty correction fields remove that review's prior edits, not AI text. Version switching cancels device narration. Existing reviews remain historical if the reviewer later removes languages; further writes require current eligibility.
 
 Technical input limits:5000 intent characters,500 edits/50000 correction characters. Review submissions are last-write-wins for the current user's review; no deletion UI or reviewer-ranking system. Test units, real Supabase ACL/atomicity and browser review/update/overlay/ineligible checks, then owner desktop/phone acceptance per M7_VERIFICATION. No M8.
+
+## Active M8 implementation contract
+
+Owner applies 20261111092155_m8_discovery_relationships.sql. m8_relationship is authenticated SECURITY DEFINER with auth.uid, self-follow/profile/published-target checks, conflict-safe insertion and own-row deletion. No ordinary direct write grants. m8_feed is SECURITY INVOKER with caller RLS, published-original/completed-English filtering, literal case-insensitive substring search and all/following/language validation. EXISTS includes followed authors/reposters without duplicating a story ID.
+
+Creation timestamp descending then UUID descending defines newest order; reposting does not bump it. Original and English are distinct language versions. Return newest50 matches; UI discloses bound and permits refining search, no infinite-feed requirement invented. Reposter attribution enables following people who only repost. English links use original parent plus language=en to select that reading view without profile mutation.
+
+Discovery SSR requires verified identity/connection/Suspense; subsequent filtered GET and same-origin POST use user session and private/no-store. Expected identity rejects stale account writes. No read initiates providers. No dependencies/secrets/deployment. Run all T0–T8 implemented suites, then desktop/two-account/Huawei/Oppo checklist in M8_VERIFICATION; no M8 commit until accepted. M9 not authorized.

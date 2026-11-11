@@ -133,3 +133,11 @@ Technical implementation under authorized M7; owner SQL/manual verification pend
 ## D35 — M7 accepted; M8 authorized (2026-11-11T11:05:16+02:00)
 
 Owner confirms all tests pass and authorizes normal M7 commit/push then M8 only. M8 SQL remains owner-applied; no M8 commit until required manual verification passes. M9 unauthorized.
+
+## D36 — M8 feed semantics (2026-11-11T11:28:08+02:00)
+
+Technical defaults under authorized M8, owner SQL/manual acceptance pending. Follow/repost use narrow authenticated guarded transaction; feed is invoker/RLS. Original and completed-English language versions are separate cards, deduplicated by story ID across Following paths. Creation-time/UUID ordering is stable; reposts do not bump stories. Bound results to newest50 and literal100-character search; disclose limit instead of inventing pagination/recommendations. Reposter attribution enables following nonauthor repost users. English card opens explicit English view without changing preferences. M9 remains unauthorized.
+
+## D37 — M8 accepted; M9 authorized (2026-11-11T12:30:05+02:00)
+
+Owner reports all tests pass and authorizes M8 publication then M9 only. M9 requires real bilingual observations and two timed rehearsals before commit. M10 stays deferred; no deployment/submission is implicitly authorized.
