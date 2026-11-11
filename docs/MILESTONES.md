@@ -2,7 +2,7 @@
 
 Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TEST_PLAN.md) defines proof. Status vocabulary: not started, in progress, blocked, verified/commit pending, complete. Dates are ISO +02:00. Complete requires evidence, not planned tests.
 
-Current M10 checkpoint (2026-11-11T20:37:29+02:00):188 unit,35 real integration,19 mocked browser tests, lint/build and fresh install/unit/lint/build pass. Owner SQL/four-account allowlist/closed signup verified. Local production Edge upload/playback, corrected transcript/publish/translation, consent persistence/revocation and B published/private isolation passed. M10 commit/release pending; no Vercel deployment exists. Three local slots accounted for conservatively; three remain for hosted verification. See [M10_VERIFICATION](M10_VERIFICATION.md) for evidence and7 remaining moderate tooling audit findings.
+M10 complete checkpoint (2026-11-11T21:26:23+02:00):188 unit,35 real integration,19 mocked browser tests, lint/build and fresh setup pass;2 focused local-production auth tests also passed after the Site URL change. Owner SQL/accounts and local/staged Edge gates passed. Implementationd4290a9 and packaging7f05aaf pushed; the tested artifact is live at https://anansi-gray.vercel.app. Production HTTPS/home/anonymous protection verified. Six live slots are accounted for and closed. See [M10_VERIFICATION](M10_VERIFICATION.md) for evidence, historical failures and7 remaining moderate tooling audit findings.
 
 | Milestone | Gate | Dependency | Status | Status timestamp | Evidence / blocker / commit |
 | --- | --- | --- | --- | --- | --- |
@@ -16,9 +16,9 @@ Current M10 checkpoint (2026-11-11T20:37:29+02:00):188 unit,35 real integration,
 | M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Complete | 2026-11-11T11:28:08+02:00 | Owner accepted;144 unit/26 integration/15 browser/lint/build passed.40697425c7a7e4f6692ea89f8342582bf875829e committed/pushed; remote matched. |
 | M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | Complete | 2026-11-11T12:34:50+02:00 | Owner accepted.154 unit/29 integration/16 browser/lint/build pass;00fbdfb4006cccaf8de9d052e4e4b33a94d90575 committed/pushed; remote matched before M9. |
 | M9 Demo/submission evidence | T9 | M8/T8 + owner confirmation | Complete | 2026-11-11T18:41:07+02:00 | Owner accepts reviews and5:00/5:15 rehearsals with explicit overrun exception; measurements unreported.9fbd552d00f0068afa9b2400b11df87560195b32 committed/pushed, remote matched. |
-| M10 Intent examples/UI/hosted demo | T10 | Accepted M9 + explicit owner plan | Implementation published / hosted release pending | 2026-11-11T20:37:29+02:00 |188 unit/35 integration/19 browser/lint/build/fresh setup pass. Owner SQL/accounts and local Edge gates passed. Implementationd4290a9 committed/pushed, remote matched. No hosted deployment yet. |
+| M10 Intent examples/UI/hosted demo | T10 | Accepted M9 + explicit owner plan | Complete | 2026-11-11T21:26:23+02:00 |188 unit/35 integration/19 browser/lint/build/fresh setup; local/staged/live-domain Edge checks passed. d4290a9 implementation,7f05aaf release pushed/verified. Tested deployment dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw promoted to anansi-gray.vercel.app. |
 
-M10 intent-example prompting, UI refresh and hosting are explicitly authorized by D39; owner SQL/account handoffs remain required. No other milestone is implicitly authorized by M0.
+M10 intent-example prompting, UI refresh and hosting were explicitly authorized by D39; owner SQL/account/credential handoffs are complete. Additional milestones/provider verification are not implicitly authorized.
 
 ## Historical planning verification, 9 November 2026
 

@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M10 implementations are committed/pushed (M9:9fbd552; M10:d4290a9). M10 opt-in intent examples, warm paper/teal UI, direct private uploads and four-account access passed local automated and Edge verification. Staged Vercel release is pending; no hosted availability is claimed yet. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
+Live demo: **https://anansi-gray.vercel.app**. M0–M10 implementations are committed/pushed (M9:9fbd552; M10:d4290a9). Release7f05aaf passed local automated/Edge and staged production Edge checks, then the same artifact was promoted. The warm paper/teal UI, opt-in examples, direct private uploads and four-account access are implemented. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md) for evidence and prototype limitations.
 
 ## Prerequisites and setup
 
@@ -161,9 +161,11 @@ For a new environment, configure `.env.local` from the safe example, have the ow
 Current verification also reports7 moderate transitive ESLint-tooling audit findings (0 high/critical); no automatic dependency upgrade was made. See M9_VERIFICATION for exact evidence and remaining limitations.
 
 
-## M10 / hosted demo (verification in progress)
+## M10 / hosted demo
 
 Owner applied the reviewed M10 migrations, cleanup guard and four-UUID activation. Read-only inspection confirms exactly four permanent members, private staging and RLS; Supabase settings confirm public signup is closed and demo email confirmation remains disabled. See M10_VERIFICATION for the complete ordered migration history. Do not automatically db push/reset. Other Auth accounts and content remain intact. Tests use expiring tagged memberships, never permanent membership edits.
+
+Supabase's single Site URL is https://anansi-gray.vercel.app. Keep localhost in additional Redirect URLs for redirect-based local auth flows. Existing email/password sign-in stays local through /account; the two-account browser tests passed on localhost:3001 after the production URL change. The same four-account restriction applies locally. See [Supabase redirect configuration](https://supabase.com/docs/guides/auth/redirect-urls).
 
 Review reuse is opt-in and defaults false. Eligible real OpenAI corrections/intent can be bounded prompt examples for new translations; snapshots preserve retry consistency. Opt-out affects future selection, not earlier requests/history. No model training or accuracy guarantee. Provider defaults/models are unchanged.
 
@@ -171,4 +173,4 @@ Browser uploads now use private signed staging then server-byte finalization, pr
 
 Before an approved live verification operation, `npm run reserve:m10:live -- --calls=3 --phase=local` (or hosted) reserves slots in the existing local budget ledger and the separate six-slot M10 record. No provider request is made by this command. Never reset reservations/locks to bypass limits; reservations are not actual billed usage. This verification guard does not impose an account-wide production spending limit.
 
-Vercel project anansi exists in Caleb Steenkamp's projects, Node26; no deployment/availability is claimed until final release evidence. Production variable metadata is verified; secret values were entered directly by the owner. Required variables are the public Supabase URL/anon key and Secret Supabase service-role/OpenAI keys plus the existing provider/model configuration. Do not copy unused Google/Vulavula keys. GitHub integration currently returns Bad credentials; the owner approved CLI deployment of verified committed source, with automatic GitHub deployment deferred. The .vercelignore excludes local secrets, recordings, dependencies and generated artifacts. Owner handoffs and exact evidence are in M10_VERIFICATION.
+Vercel project anansi in Caleb Steenkamp's projects uses Node26. Its verified production URL is https://anansi-gray.vercel.app, serving deployment dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw from release7f05aaf. It was staged/tested/promoted without rebuilding or a paid hosting upgrade. Required public Supabase URL/anon key and Secret Supabase service-role/OpenAI keys were entered directly by the owner, alongside provider/model configuration. Unused Google/Vulavula keys remain local. Automatic GitHub deployment is deferred after Bad credentials; release used the approved CLI source path. The .vercelignore excludes credentials, recordings, dependencies and generated artifacts, including next-env.d.ts. See M10_VERIFICATION for release evidence and7 remaining moderate tooling audit findings.

@@ -18,3 +18,12 @@ Keep answered rows, actual resolution dates, and decision links. Unknown evidenc
 | Q12 | M8 actual two-account and Huawei/Oppo discovery acceptance? M8/T8 | Owner | Owner-applied SQL/automation are separate from human acceptance. | Resolved: owner reports all tests pass, accepts M8 and authorizes normal publication;00fbdfb pushed before M9. | D36; opened 2026-11-11 |
 
 On resolution, preserve question/history, add actual answer, evidence, decision ID, and date. Blocked/not-run tests remain so until genuinely verified.
+
+## M10 release answers (2026-11-11T21:26:23+02:00)
+
+- Four accounts: owner supplied storyteller@example.com and verifier@example.com in addition to A/B; exact UUID activation and closed signup verified (M10_VERIFICATION).
+- Hosting path: owner approved CLI deployment after GitHub Bad credentials; exact tested artifact promoted successfully. Automatic GitHub deployment repair is deferred by the owner and does not block this release (D40/D41).
+- Local versus production URL: owner replaced the single Site URL with production, preserving localhost redirects. Two local-production auth browser tests passed afterward; password login remains local through relative navigation (D41).
+- Live verification: the six-slot allowance is closed. New agent provider calls require fresh authorization; existing reference reviews/short recordings do not establish general accuracy.
+
+No required M10 owner handoff remains open. Unreported historical M9 measurements remain unreported rather than invented.

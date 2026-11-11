@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Anansi: persistent project instructions
 
-Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. M0–M9 are accepted/published; M10/UI/hosting are authorized by the latest owner plan. See the milestone log for current status.
+Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. M0–M9 are accepted/published; M10 is implemented, verified and published, with the hosted demo at https://anansi-gray.vercel.app. See the milestone log for evidence. Further feature work requires owner authorization.
 
 ## Read before working
 
@@ -33,7 +33,7 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 - Never overwrite original audio/published transcript or replace AI text with review edits. Translations are separate linked stories.
 - Persist translation results/task claims. GET/page rendering never calls paid providers; retry unfinished work only. Do not promise exactly-once billing across crashes.
 
-- M10: example reuse requires explicit opt-in and a frozen bounded context; never describe it as training. Hosted demo has four permanent owner-selected UUIDs. Temporary test memberships must expire and be removed. Six new live OpenAI verification calls total; reserve before acting, only provided Phrase1/2. No automatic retry or new provider.
+- M10: example reuse requires explicit opt-in and a frozen bounded context; never describe it as training. Hosted demo has four permanent owner-selected UUIDs. Temporary test memberships must expire and be removed. The six-slot live verification allowance is closed; additional agent provider work requires fresh owner authorization. No automatic retry or new provider. Do not use vercel curl: this installed CLI creates a persistent bypass secret; keep existing Vercel protection and use ordinary owner sign-in for protected browser verification.
 
 ## Security and tests
 

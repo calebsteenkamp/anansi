@@ -154,7 +154,7 @@ The Node CLI imports lib/demo directly; it is never browser-imported or exposed 
 
 Fresh-source verification copies only Git-visible regular files into ignored local data and runs install/unit/lint/build without local secrets or recordings. It does not create a new cloud project. Human feedback/rehearsal gates remain independent of deterministic mock workflow proof.
 
-## M10 intent context and hosted boundaries (in progress)
+## M10 intent context and hosted boundaries (implemented/verified)
 
 Review reuse consent is an additional false-by-default field. User-session m10_save_review wraps validated own-review save and consent atomically. Server-only m10_claim_translation retains M5 parent locking and chooses/fixes private context on first claim; old translations are backfilled baseline. Examples contain aligned source/corrected English/intent and review IDs for audit; provider input omits IDs/profile data. Only metadata count/version is exposed through guarded context-info. Untrusted text remains delimited data in static instructions. No training/automatic retranslation; non-prompt providers keep baseline.
 
@@ -163,3 +163,5 @@ Capture reserves private staging with an authenticated small JSON request; the b
 Private demo membership adds restrictive policies alongside existing RLS, guards ordinary/privileged writes and actor capabilities. Four permanent UUIDs are owner-selected; no other Auth accounts are deleted/banned. Expiring test memberships require service-role access and tagged fresh test users. Signup is closed at app and Supabase configuration after owner setup. Auth's internal profile bootstrap remains allowed; client data access still requires membership. Private session responses remain no-store; protected navigation requests a fresh document to avoid prior account-switch bugs.
 
 Node26/Cache Components retained; no runtime export because this Next version rejects it with Cache Components. Long provider/finalize routes use maxDuration300. Vercel Production receives only required public Supabase configuration and server-only Supabase/OpenAI secrets; unused Google/Vulavula credentials remain local. No source data/dependencies/build output is committed.
+
+Production https://anansi-gray.vercel.app resolves to the exact CLI-built7f05aaf artifact verified in staged Edge before promotion. Production-domain anonymous navigation, HTTPS and mutation denial were checked afterward. Four-account Supabase authorization remains independent of Vercel preview protection. Owner-controlled auth Site URL is production; additional localhost redirects and relative password-login navigation preserve local development. Automatic GitHub deployment is deferred; future releases must repeat verified source/staging/promotion gates. See M10_VERIFICATION for actual checks and remaining limitations.

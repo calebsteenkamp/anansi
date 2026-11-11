@@ -153,3 +153,9 @@ Owner reports reviews passed and rehearsals5:00/5:15; expressly permits the slig
 ## D40 — CLI release while GitHub integration is unavailable (2026-11-11T20:02:10+02:00)
 
 Owner-approved release path: deploy the verified committed source with Vercel CLI; repair automatic GitHub deployment later. Vercel's GitHub connection returned Bad credentials through MCP and CLI, while Vercel account access works. Keep normal Git commit/push verification independently. Inspect the CLI source manifest, exclude local credentials/data/generated artifacts with .vercelignore, stage a production deployment without a domain, test it in Edge, and promote that same artifact. No new credential transfer or paid upgrade is authorized.
+
+## D41 — M10 verified release and local auth continuity (2026-11-11T21:26:23+02:00)
+
+Status: verified implementation/release under the owner's D39/D40 plan. Implementationd4290a9 and packaging7f05aaf published; the exact staged/tested production artifact was promoted to https://anansi-gray.vercel.app. Owner set Supabase Site URL to production and preserved localhost redirect entries. Local password auth retains relative /account navigation and passed two real production-server browser cases afterward. Normal signup remains closed in both environments.
+
+Six verification slots are conservatively accounted for and closed. Hosted translation used1 frozen opted-in example; revocation stopped future eligibility while retaining that snapshot. Technical reference reviews are not new human accuracy evidence, and both are now opted out. CLI65.14 vercel curl unexpectedly created a persistent bypass; it was revoked,0 bypasses/unchanged SSO verified, and ordinary owner sign-in used for Edge. Future releases must avoid that command's implicit access change. GitHub auto-deployment stays deferred; no additional feature milestone or agent live-provider work is authorized by completion.

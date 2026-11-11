@@ -1,6 +1,6 @@
-# M10 verification and owner handoffs
+# M10 verification and release evidence
 
-M9 published as9fbd552d00f0068afa9b2400b11df87560195b32, remote verified. M10/UI/direct uploads/four-account hosting authorized. Implementation/verification in progress; no M10 completion or deployment claimed.
+M10 is complete: implementationd4290a9 and release7f05aaf are pushed, and https://anansi-gray.vercel.app serves the exact tested deployment dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw. M9 remains published as9fbd552d00f0068afa9b2400b11df87560195b32. Required automated/local/staged checks passed; final production anonymous/HTTPS checks passed. The six-slot verification allowance is closed. Earlier checkpoints below preserve their then-pending states and failures as history.
 
 ## Owner SQL application (apply in order)
 
@@ -25,7 +25,7 @@ D: verifier@example.com /e8dc3c22-6e54-4c2c-a6c2-67d0829119cb.
 
 These exact four accounts were verified read-only. Owner applied 20261111175548_activate_four_demo_accounts.sql and disabled public signup. Read-only verification confirms restriction=true and exactly those four permanent UUIDs. Auth settings HTTP200 confirms disable_signup=true and mailer_autoconfirm=true. No other users were banned/deleted. Tagged test memberships expire after two hours and are removed with their disposable test accounts.
 
-## Other handoffs and limits
+## Initial handoffs and limits (history; completed below)
 
 - Six new OpenAI requests maximum across local Edge and hosted smoke checks, provided Phrase1/2 only, no automatic retries; include each segment call. Ordinary suites remain mocked. No live requests have been made for M10 yet.
 - Owner applies SQL; agent verifies schema/permissions read-only and runs actual unit/integration/browser/lint/build/fresh-setup checks.
@@ -33,7 +33,7 @@ These exact four accounts were verified read-only. Owner applied 20261111175548_
 - Browser/Edge visual/functional checks and hosted verification remain pending. Autofill is permitted; saved passwords are never extracted. Owner sign-in handoff may be needed on the new domain.
 - No M10 commit/push until required SQL/account setup and local verification pass. No hosting completion until actual ready deployment, Edge smoke and promotion are confirmed.
 
-## Current implementation evidence
+## Implementation iterations (history)
 
 M10 unit iteration1 exposed old auth/upload mocks:156 passed,4 failed and one import suite failed. Updated mocks/contracts to exercise membership and staged finalization. Next iterations174 then180 unit tests pass; lint passes. Production build compiled11.3s, TypeScript26.7s,14 pages, exit0. These are intermediate checks, not the final release gate.
 
@@ -69,7 +69,7 @@ The full browser run failed its real MediaRecorder case: a zero-byte recording w
 - CLI dry deployment:179 files/1,019,677 bytes; .env.local/.env.example/.git/.next/data/node_modules/Supabase CLI cache/test-results excluded. This command uploaded nothing and created no deployment.
 - Local production server runs on http://localhost:3001 for Edge; full mocked browser suite manages port3000 separately. Owner signed in A; Edge shows the correct profile and capture form. Three local live request slots are reserved, three remain unreserved; actual M10 live provider calls=0. Do not reset these reservations or automatically retry calls.
 
-## Edge verification stopped / remaining exact checks
+## Earlier Edge stop / recovery checklist (completed)
 
 At20:15+02:00, extension file selection failed because Edge's extension lacks file-URL access. The native-picker fallback was then stopped by Computer Use because it could not confidently determine the active browser URL. Do not bypass this safety stop. No M10 commit/push/deployment has occurred. The capture page and account A are verified, but production upload/transcription/translation/review checks remain incomplete.
 
@@ -97,3 +97,35 @@ Live-slot accounting:3 local slots reserved;2 known new translation requests and
 At20:37:29+02:00 local Edge gate passed. Owner supplied private draft46ff232a-27ae-4501-a586-8c1bba9c5a6f and signed B in. Edge shows accountb@example.com/Listener, private URL returns404; read-only SQL confirms it is A's actual draft, with0 segments/no provider. B opens the published sample with English preference and0 title fields/0 publishing buttons. B's ineligible profile cannot submit a review or change A's consent. Translation attempts remain2 after reload/read-only refresh; consent restored true. No M10 source changes after the passed automated suites, only evidence/documentation updates. Required local checks passed; authorize the already-requested normal commit/push and staged CLI release, with hosted verification still required before promotion.
 
 M10 implementation committed/pushed asd4290a9504e3c7eaad9e78718d296658967a03c2; remote main verified identical. The staged whitespace gate first found an extra blank line at the membership migration EOF; removed only that blank line before commit, no SQL logic change. Release dry-manifest guard then found generated next-env.d.ts outside Git, so no deployment started. Added its exclusion; the passed credential-free fresh setup already proves Next regenerates it when absent. Packaging/evidence follow-up has no application logic or dependency change.
+
+## Staged release before final checks (history)
+
+Packaging commit7f05aaf0d2ea36dd477695abe2ba317790e6887c pushed normally; origin/main matched. Clean upload manifest178 tracked files/1,028,399 bytes,0 unsafe/untracked entries. CLI production deployment with --skip-domain completed READY: dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw, https://anansi-qhm69f2oc-caleb-steenkamps-projects.vercel.app. Vercel metadata confirms CLI source, production target and matching7f05aaf SHA. Build completed in2m, basic plan-default machine; no paid upgrade. Production domain anansi-gray.vercel.app verified via project domain API; no production alias assigned yet.
+
+Final3 hosted live slots reserved; all6 verification slots now allocated. Do not reserve extra slots/reset counters or automatically retry. Owner Vercel/Anansi sign-in and hosted provided-audio upload handoff pending. Supabase production URL handoff pending. Hosted completion/promotion not claimed.
+
+HTTP-check incident: documented vercel curl unexpectedly created a persistent automation bypass. Its newly created timestamp/scope were identified, and only that secret was revoked through stdin API input with regenerate=false. Subsequent read-only protection state confirms0 automation bypasses and unchanged all_except_custom_domains SSO. The settings command unexpectedly displayed its secret-map key before revocation; the revoked value must never be reused/copied. No further vercel curl calls are allowed in this release. Use existing Edge owner sign-in; never weaken protection or create a share link. Closed signup endpoint returned200 with private/no-store headers and registrationOpen=false. Protected /account HEAD returned a streamed shell200, which is not proof of anonymous access or redirect; actual browser navigation is required.
+
+Edge hosted sign-in reached GitHub's Authorize Vercel screen (calebsteenkamp identity/read email). The agent did not authorize this new access grant; the owner must review/complete it or use an existing alternative sign-in. The tab is retained for handoff. Supabase production Site URL/redirect confirmation, Anansi A sign-in and hosted Phrase1 upload remain pending. No hosted provider request has been made; three hosted slots are reserved and unused. Do not promote until hosted checks pass. Current-request Next.js feedback review found no new qualifying framework issue; do not duplicate the previously presented cleanup draft.
+
+## Hosted Edge evidence (2026-11-11T21:14:41+02:00)
+
+Owner completed sign-in and confirms production URLs saved. Replacing localhost in the single Site URL is expected: that field supplies the default auth redirect. Localhost remains in additional Redirect URLs; password sign-in uses this application's relative /account redirect. Re-ran existing auth.spec.ts against the actual local production server at localhost:3001 using an ignored verification config:2/2 passed,45.2s, exit0, after the URL change. This includes two real isolated profile sessions, repeated account switching, logout/protected redirects and invitation-only signup. No provider work;0 disposable accounts remain.
+
+Hosted draftf23587f3-767c-4835-8376-77672a5c8ea7 matches supplied Phrase2,241162 bytes/15073ms. Both supplied samples are permission-cleared; owner selected the second sample. A typed unsaved title triggered the normal discard confirmation before transcription; browser control stalled on that modal, database state remained draft, and the owner clicked OK once. One OpenAI/gpt-transcribe request then succeeded, revision1, no retries. Corrected both segments against the supplied source reference, saved revision2/title Phrase2 — M10 hosted verification, then published.
+
+Exactly2 hosted translation attempts completed, OpenAI/gpt-5.4-mini-2026-03-17. Linked Englishb8d10efe-ff64-40e8-b965-5660d6bc3407 has1 frozen opted-in example and promptVersion intent-v1. UI displays the same count/version. Saved supplied English/intent as technical review input (approve/rating3,2 corrections,reuse=false), not a new bilingual quality measurement. An expired five-minute playback capability produced the documented error; Renew playback recovered readyState4, advancing audio time and no media error. Keyboard Enter sought segment2 successfully.
+
+Revoked the original technical example's consent through hosted A's review UI. SQL verifies opt-out=true while the completed hosted context retains1 example and task attempts remain2. Original and AI text are preserved. This demonstrates non-retroactive snapshots without another provider request. Hosted sign-out passed; navigating /account after logout redirects to /sign-in. B sign-in/isolation/discovery remains the final staged handoff before promotion.
+
+Six-slot allowance is closed:2 known local translations +1 conservatively charged stored-transcription slot +1 observed hosted transcription +2 hosted translations. No further live verification or automatic retries. Both technical reviews now have reuse=false; future real reuse requires a new deliberate reviewer opt-in. All4 permanent memberships remain unchanged.
+
+## Final release checkpoint (2026-11-11T21:26:23+02:00)
+
+Hosted B identity/profile verified in Edge. A's real private draft46ff232a-27ae-4501-a586-8c1bba9c5a6f returns404 to B. Hosted discovery title+English filtering opens the published Phrase2 result. B sees English/intent-v1/1 frozen example, confidence/reference review and0 title editors/0 publishing buttons/0 provider-mutation buttons. Original/AI are read-only; English-only B cannot change A's review. Required staged gate passed.
+
+Re-read deployment metadata and verified READY/production/project/SHA7f05aaf before promotion. Vercel request_promote promoted the same dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw artifact, no rebuild. Authoritative production alias lookup confirms anansi-gray.vercel.app maps to that deployment/project. The normalized project's generic live/alias fields were not treated as availability evidence; actual alias resolution, HTTP and browser behavior establish release success.
+
+Unauthenticated production HTTP: homepage200 with Anansi and HSTS; /api/auth/mode200 registrationOpen=false/private-no-store; same-origin anonymous draft POST401/private-no-store. Edge production homepage loads over HTTPS, Profile redirects to /sign-in, and /sign-up shows invitation-only access without account-creation fields. Final live home remains open in Edge. Full authenticated journey was verified on the exact production artifact's staged hostname before promotion; no further provider calls were made on the final domain.
+
+Vercel runtime-error query found0 errors for the preceding1h during staged verification. Four permanent memberships/0 disposable test users verified; local and hosted translation attempts remain2 each after read-only refresh and consent revocation. No schema reset/account deletion outside exact disposable fixtures; no new provider, paid hosting upgrade, custom domain or automatic GitHub connection repair. Remaining limitations:7 moderate tooling audit findings, deferred GitHub auto-deploy, short-sample workflow evidence rather than population accuracy, and normal crash/retry billing uncertainty. No submission/video or new bilingual quality measurement is claimed.
