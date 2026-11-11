@@ -13,7 +13,9 @@
     "test:e2e": "playwright test",
     "verify:m4:live": "tsx scripts/verify-m4-live.ts",
     "seed:demo": "tsx scripts/seed-demo.ts",
-    "verify:fresh-setup": "tsx scripts/verify-fresh-setup.ts"
+    "verify:fresh-setup": "tsx scripts/verify-fresh-setup.ts",
+    "cleanup:uploads": "tsx scripts/cleanup-uploads.ts",
+    "reserve:m10:live": "tsx scripts/reserve-m10-live.ts"
   },
   "dependencies": {
     "@next/env": "16.4.5",
@@ -38,5 +40,8 @@
     "tsx": "4.23.15",
     "typescript": "^5",
     "vitest": "4.1.12"
+  },
+  "engines": {
+    "node": "26.x"
   }
 }

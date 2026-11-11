@@ -26,6 +26,7 @@ export async function fixtures(){
  }
  try{
   for(let i=0;i<2;i++){const email="anansi-t2-"+randomUUID()+"@example.com";const {data,error}=await c.admin.auth.admin.createUser({email,password,email_confirm:true});if(error||!data.user)throw new Error("Disposable account setup failed.");ids.push(data.user.id);emails.push(email);
+   if((await c.admin.rpc("m10_test_member",{p_user:data.user.id})).error)throw new Error("BLOCKED: M10 fixture membership setup failed.");
    const session=c.anonymous();sessions.push(session);if((await session.auth.signInWithPassword({email,password})).error)throw new Error("Fixture sign-in failed.");
   }
   return {...c,ids,emails,password,sessions,cleanup};

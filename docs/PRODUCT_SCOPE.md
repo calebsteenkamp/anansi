@@ -39,4 +39,12 @@ Keep completed work after failures. Retry only unfinished segments; interrupted 
 
 No production guarantee, extra language pairs, translated UI, rewards/payments, blockchain, legal ownership protection, media editing, illustrations, recommendation algorithms, reviewer reputation, disagreement escalation, or training.
 
-M10 intent-example prompting is deferred. With owner agreement only, cut: M10, sharing (keep follow), search/filters, corrected-version toggle, device English speech. Never cut core journey. Synchronize scope/plan/tests/demo after a cut; do not label removed tests passed.
+M10 opt-in intent-example prompting is authorized by the owner on2026-11-11 (D39). With owner agreement only, cut: M10, sharing (keep follow), search/filters, corrected-version toggle, device English speech. Never cut core journey. Synchronize scope/plan/tests/demo after a cut; do not label removed tests passed.
+
+## M10 and hosted demo additions (owner approved)
+
+Four permanent invited accounts, private direct uploads up to25MB/180seconds and warm paper/teal presentation. The owner creates the additional two accounts; UUID membership is enforced at app, SQL and Storage boundaries. Public registration closes after activation; prior accounts/data are preserved. Disposable test memberships are tagged, temporary and cleaned.
+
+Review example reuse defaults false. Only approving opted-in reviews rated>=3 with corrections/intent, current bilingual eligibility, real OpenAI provenance and an overall Confident translation qualify. Select at most3 distinct recent translations, exclude the current story and mock content, cap total field characters6000 and each source/correction/intent1000 without truncation. Context is frozen on first processing and reused across retries; existing translations retain baseline. Opt-out stops new selection, not prior requests/history. This is prompt context, not model training or an accuracy guarantee. Vulavula retains baseline behavior.
+
+The owner accepts M9 rehearsals5:00/5:15 with the slight overrun; unspecified feedback metrics remain unreported. M10 local/hosted live checks share six OpenAI request slots, only provided Phrase1/2 material; ordinary tests use mocks. No paid hosting upgrade/custom domain/additional provider.

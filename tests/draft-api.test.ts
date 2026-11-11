@@ -1,33 +1,14 @@
 import {beforeEach,it,expect,vi} from "vitest";
-const {server,store,upload,insert,remove}=vi.hoisted(()=>({server:vi.fn(),store:vi.fn(),upload:vi.fn(),insert:vi.fn(),remove:vi.fn()}));
-vi.mock("../lib/supabase/server",()=>({serverClient:server}));
-vi.mock("../lib/supabase/draft-store",()=>({draftStore:store}));
+const m=vi.hoisted(()=>({session:vi.fn(),reserve:vi.fn(),finish:vi.fn()}));
+vi.mock("../lib/supabase/story-workflow",()=>({workflowSession:m.session}));
+vi.mock("../lib/supabase/uploads",()=>({reserveUpload:m.reserve,finalizeUpload:m.finish}));
 import {POST} from "../app/api/stories/drafts/route";
-import {wave} from "./support/audio";
-beforeEach(()=>{
- vi.clearAllMocks();
- server.mockResolvedValue({auth:{getClaims:vi.fn().mockResolvedValue({data:{claims:{sub:"trusted-user"}}})}});
- upload.mockResolvedValue(undefined);insert.mockResolvedValue(undefined);remove.mockResolvedValue(undefined);
- store.mockReturnValue({upload,insert,remove,isFinalized:vi.fn().mockResolvedValue(false)});
-});
-function request(consent=true,bytes=wave(),origin="http://localhost:3000"){
- const form=new FormData();form.set("audio",new File([bytes as BlobPart],"forged.mp3",{type:"text/html"}));if(consent)form.set("consent","yes");form.set("author_id","attacker");form.set("status","published");form.set("duration","1");
- return new Request("http://localhost:3000/api/stories/drafts",{method:"POST",headers:{origin},body:form});
-}
-it("denies cross-origin mutations and missing identity before any privileged operation",async()=>{
- expect((await POST(request(true,wave(),"https://foreign.example"))).status).toBe(403);expect(server).not.toHaveBeenCalled();
- server.mockResolvedValue({auth:{getClaims:vi.fn().mockResolvedValue({data:null,error:{message:"bad"}})}});
- expect((await POST(request())).status).toBe(401);expect(store).not.toHaveBeenCalled();
-});
-it("rejects missing consent and malformed bytes without uploading",async()=>{
- expect((await POST(request(false))).status).toBe(400);
- expect((await POST(request(true,new TextEncoder().encode("not audio")))).status).toBe(400);
- expect(store).not.toHaveBeenCalled();
-});
-it("ignores forged actor, type, duration and processing fields",async()=>{
- const response=await POST(request());expect(response.status).toBe(201);expect(response.headers.get("cache-control")).toContain("no-store");
- expect(insert).toHaveBeenCalledWith(expect.objectContaining({author_id:"trusted-user",status:"draft",audio_duration_ms:250,audio_media_type:"audio/wav"}));
- expect(upload).toHaveBeenCalledWith(expect.stringMatching(/^trusted-user\/.*\/original.wav$/),expect.any(Uint8Array),"audio/wav");
-});
-it("rejects overlong audio even when the browser claims one second",async()=>{const response=await POST(request(true,wave(180.1)));expect(response.status).toBe(400);expect((await response.json()).error.code).toBe("audio_too_long");expect(store).not.toHaveBeenCalled();});
-it("sanitizes infrastructure errors",async()=>{server.mockRejectedValue(new Error("private token"));const response=await POST(request());expect(response.status).toBe(503);expect(await response.text()).not.toContain("private token");});
+import {POST as finalize} from "../app/api/stories/drafts/[id]/finalize/route";
+import {AudioError} from "../lib/audio";
+function request(body:object={},origin="http://localhost:3000"){return new Request("http://localhost:3000/api",{method:"POST",headers:{origin,"content-type":"application/json"},body:JSON.stringify({consent:true,size:1000,filename:"a.mp3",...body})});}
+beforeEach(()=>{vi.resetAllMocks();m.session.mockResolvedValue({userId:"trusted"});m.reserve.mockResolvedValue({id:"reserved",token:"scoped"});m.finish.mockResolvedValue({id:"saved"});});
+it("denies foreign origin and missing identity before privileged storage",async()=>{expect((await POST(request({},"https://evil.example"))).status).toBe(403);expect(m.session).not.toHaveBeenCalled();m.session.mockRejectedValue(new AudioError("unauthenticated","Sign in",401));expect((await POST(request())).status).toBe(401);expect(m.reserve).not.toHaveBeenCalled();});
+it("rejects missing consent, over-limit size and unsupported format",async()=>{for(const body of [{consent:false},{size:25000001},{size:0},{filename:"a.html",mediaType:"text/html"}])expect((await POST(request(body))).status).toBeGreaterThanOrEqual(400);expect(m.reserve).not.toHaveBeenCalled();});
+it("ignores forged ownership/path/state and passes only validated reservation hints",async()=>{const r=await POST(request({author_id:"evil",path:"../evil",duration:1,status:"published"}));expect(r.status).toBe(201);expect(r.headers.get("cache-control")).toContain("no-store");expect(m.reserve).toHaveBeenCalledExactlyOnceWith("trusted",{size:1000,media:"audio/mpeg"});});
+it("finalization uses verified actor and route ID, never browser timing/MIME",async()=>{expect((await finalize(request({duration:1,path:"evil"}),{params:Promise.resolve({id:"route-id"})})).status).toBe(201);expect(m.finish).toHaveBeenCalledExactlyOnceWith("trusted","route-id");});
+it("sanitizes unavailable infrastructure",async()=>{m.reserve.mockRejectedValue(new Error("private key"));const r=await POST(request());expect(r.status).toBe(503);expect(await r.text()).not.toContain("private key");});

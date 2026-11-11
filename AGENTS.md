@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Anansi: persistent project instructions
 
-Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. M0–M8 are accepted/published; M9 is accepted; M10/UI/hosting are authorized by the latest owner plan. See the milestone log for current status.
+Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers and bilingual reviewers retain control of meaning. M0–M9 are accepted/published; M10/UI/hosting are authorized by the latest owner plan. See the milestone log for current status.
 
 ## Read before working
 
@@ -33,6 +33,8 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 - Never overwrite original audio/published transcript or replace AI text with review edits. Translations are separate linked stories.
 - Persist translation results/task claims. GET/page rendering never calls paid providers; retry unfinished work only. Do not promise exactly-once billing across crashes.
 
+- M10: example reuse requires explicit opt-in and a frozen bounded context; never describe it as training. Hosted demo has four permanent owner-selected UUIDs. Temporary test memberships must expire and be removed. Six new live OpenAI verification calls total; reserve before acting, only provided Phrase1/2. No automatic retry or new provider.
+
 ## Security and tests
 
 - Secrets only in ignored .env.local. Update safe .env.example as variables change. No service-role/provider secrets in NEXT_PUBLIC_, browser imports, logs, fixtures, or commits.
@@ -45,7 +47,7 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 
 - Update [README](README.md) whenever setup, commands, dependencies, environment variables, capabilities change.
 - Update [DECISIONS](docs/DECISIONS.md) for material product/technical choices and rationale.
-- Update [MILESTONES](docs/MILESTONES.md) when work starts, blocks, verifies, commits; map M0-M9 to T0-T10.
+- Update [MILESTONES](docs/MILESTONES.md) when work starts, blocks, verifies, commits; map M0-M10 to T0-T10.
 - Brief defines why; scope what; architecture how; PLANS sequence; TEST_PLAN proof; MILESTONES actual progress. Keep links synchronized and planned commands visibly distinct from installed scripts.
 - Use [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) for rehearsal. Preserve ignored source materials; committed docs must stand alone.
 

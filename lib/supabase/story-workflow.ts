@@ -1,3 +1,4 @@
+import {assertDemoAccess} from "../demo-access";
 import "server-only";
 import {createClient,type SupabaseClient} from "@supabase/supabase-js";
 import {serverClient} from "./server";
@@ -13,6 +14,7 @@ export interface StorySnapshot {
 export async function workflowSession(){
  const db=await serverClient();const {data,error}=await db.auth.getUser();
  if(error||!data.user)throw new AudioError("unauthenticated","Sign in first.",401);
+ await assertDemoAccess(db);
  return {db,userId:data.user.id};
 }
 export async function storySnapshot(db:SupabaseClient,id:string):Promise<StorySnapshot>{

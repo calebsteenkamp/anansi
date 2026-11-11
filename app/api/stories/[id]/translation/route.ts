@@ -1,3 +1,4 @@
+export const maxDuration=300;
 import {apiError,privateJson} from "../../../../../lib/api";
 import {storySnapshot,workflowSession,workflowAdmin} from "../../../../../lib/supabase/story-workflow";
 import {translationView,translationStore,translateConfigured} from "../../../../../lib/supabase/translation-workflow";

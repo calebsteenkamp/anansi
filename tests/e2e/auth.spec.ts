@@ -7,15 +7,20 @@ test("public entrypoints render and anonymous account access redirects",async({p
  await page.goto("/account");await expect(page).toHaveURL(/sign-in/);
 });
 test("two real browser accounts register, retain separate profiles, and sign out",async({browser})=>{
- const c=await preflight(true);const ids:string[]=[];const emails:string[]=[];const sessions:ReturnType<typeof c.anonymous>[]=[];const contexts=[];const credentials:{email:string;password:string}[]=[];const hydrationErrors:string[]=[];
+ const c=await preflight(true);const restricted=(await c.anonymous().rpc("m10_demo_mode")).data===true;const ids:string[]=[];const emails:string[]=[];const sessions:ReturnType<typeof c.anonymous>[]=[];const contexts=[];const credentials:{email:string;password:string}[]=[];const hydrationErrors:string[]=[];
  try{
   for(let n=0;n<2;n++){
    const context=await browser.newContext();contexts.push(context);const page=await context.newPage();page.on("console",message=>{if(message.type()==="error"&&/hydrat|didn.t match|server rendered/i.test(message.text()))hydrationErrors.push(message.text().slice(0,100));});
    await page.goto("/account");await expect(page).toHaveURL(/sign-in/);
    const email="anansi-e2e-"+randomUUID()+"@example.com",password=randomUUID()+"!aA1";emails.push(email);credentials.push({email,password});
-   await page.goto("/sign-up");await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Password",{exact:true}).fill(password);await page.getByRole("button",{name:"Create account",exact:true}).click();
+   await page.goto("/sign-up");
+   if(restricted){
+    await expect(page.getByText(/This demo is invitation-only/)).toBeVisible();
+    const created=await c.admin.auth.admin.createUser({email,password,email_confirm:true});expect(created.error).toBeNull();ids.push(created.data.user!.id);expect((await c.admin.rpc("m10_test_member",{p_user:created.data.user!.id})).error).toBeNull();
+    await page.goto("/sign-in");await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Password",{exact:true}).fill(password);await page.getByRole("button",{name:"Sign in",exact:true}).click();
+   }else{await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Password",{exact:true}).fill(password);await page.getByRole("button",{name:"Create account",exact:true}).click();}
    await expect(page.getByRole("heading",{name:"Your profile"})).toBeVisible();
-   const client=c.anonymous();sessions.push(client);const {data,error}=await client.auth.signInWithPassword({email,password});if(error||!data.user)throw new Error("Test account lookup failed");ids.push(data.user.id);
+   const client=c.anonymous();sessions.push(client);const {data,error}=await client.auth.signInWithPassword({email,password});if(error||!data.user)throw new Error("Test account lookup failed");if(!ids.includes(data.user.id))ids.push(data.user.id);
    await page.getByLabel("Display name").fill("Browser storyteller "+n);await page.getByLabel("Bio").fill("Fixture bio "+n);
    await page.getByLabel("Preferred language").selectOption(n?"en":"xh");
    await page.getByLabel("isiXhosa",{exact:true}).setChecked(n===0);await page.getByLabel("English",{exact:true}).setChecked(n===1);

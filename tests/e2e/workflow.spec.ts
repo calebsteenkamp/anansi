@@ -8,7 +8,7 @@ async function login(page:Page,email:string,password:string){
 async function draft(page:Page){
  await page.goto("/stories/new");await expect(page.getByLabel("Upload audio")).toBeEnabled();
  await page.getByLabel("Upload audio").setInputFiles({name:"t4.wav",mimeType:"audio/wav",buffer:Buffer.from(wave(2))});await page.getByRole("checkbox",{name:/I own this audio/}).check();
- const saved=page.waitForResponse(response=>response.url().endsWith("/api/stories/drafts")&&response.request().method()==="POST");
+ const saved=page.waitForResponse(response=>/\/api\/stories\/drafts\/[^/]+\/finalize$/.test(response.url())&&response.request().method()==="POST");
  await page.getByRole("button",{name:"Save private draft"}).click();const result=await saved;expect(result.status()).toBe(201);const {id}=await result.json();await expect(page.getByRole("heading",{name:"Transcript editor"})).toBeVisible();return id as string;
 }
 async function cleanup(f:Awaited<ReturnType<typeof fixtures>>){

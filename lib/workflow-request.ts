@@ -13,6 +13,7 @@ export async function workflowBody(request:Request):Promise<Record<string,unknow
 export function rpcError(error:{message:string}|null){
  if(!error)return;
  const known:Record<string,[number,string]>={
+  account_not_allowed:[403,"This demo is limited to invited accounts."],upload_limit:[409,"Two uploads are already pending. Finish them or wait for their expiry before starting another."],upload_expired:[409,"This upload expired. Select the file again and save a new draft."],invalid_audio:[400,"Audio validation failed. Use a supported file up to25MB/180seconds."],
   ineligible:[403,"List both isiXhosa and English in your profile to review."],invalid_review:[400,"Enter a valid rating, decision and corrections for this translation."],invalid_feed:[400,"Choose a valid feed, language and title search."],invalid_relationship:[400,"Invalid follow or repost action."],self_follow:[400,"You cannot follow yourself."],not_found:[404,"Story not found."],unauthenticated:[401,"Sign in first."],revision_conflict:[409,"This story changed elsewhere. Reload before saving; copy unsaved text first."],
   processing:[409,"Processing is still running. Refresh to check its status."],stale_claim:[409,"This processing attempt expired or was replaced. Refresh before retrying."],
   retry_required:[409,"Choose Retry explicitly to recover unfinished processing."],published_immutable:[409,"Published transcripts cannot be edited."],

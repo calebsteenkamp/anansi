@@ -6,11 +6,11 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M8 accepted/published (M8:00fbdfb). M9 demo tools and automated gates pass (165 unit/30 integration/18 browser, lint/build and fresh-source install checks); owner has accepted reviews and5:00/5:15 rehearsals with an explicit slight-overrun exception. M9 publication and M10/UI/hosting are authorized. See [M9 verification](docs/M9_VERIFICATION.md), [demo script](docs/DEMO_SCRIPT.md), [submission readiness](docs/SUBMISSION_CHECKLIST.md), and [milestones](docs/MILESTONES.md).
+M0–M9 accepted/published (M9:9fbd552). M10 opt-in intent examples, warm paper/teal UI, direct private uploads and four-account access passed local automated and Edge verification. Publication and staged Vercel release are pending; no hosted availability is claimed yet. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
-- Node.js >=20.9, npm, Git, and a modern browser.
+- Node.js26.x, npm, Git, and a modern browser.
 - Internet for dependency installation and existing build-time Geist/Geist Mono downloads through next/font/google. Offline/proxy failures are recorded in the milestone log; fonts have not been replaced.
 - Supabase credentials and owner-applied migrations are required for accounts, stories and network tests. Provider credentials are needed for live processing; explicit mock mode does not need provider keys. The public home page needs neither.
 
@@ -159,3 +159,16 @@ Use only the supplied Phrase1/2 recordings and references. `npm run seed:demo --
 For a new environment, configure `.env.local` from the safe example, have the owner review/apply `supabase/migrations/` in filename order, and configure demo-only email confirmation per M2_VERIFICATION. Never paste server credentials into public variables. No new migration is needed for M9. Complete the manual evidence in [M9_VERIFICATION](docs/M9_VERIFICATION.md) before claiming demo readiness.
 
 Current verification also reports7 moderate transitive ESLint-tooling audit findings (0 high/critical); no automatic dependency upgrade was made. See M9_VERIFICATION for exact evidence and remaining limitations.
+
+
+## M10 / hosted demo (verification in progress)
+
+Owner applied the reviewed M10 migrations, cleanup guard and four-UUID activation. Read-only inspection confirms exactly four permanent members, private staging and RLS; Supabase settings confirm public signup is closed and demo email confirmation remains disabled. See M10_VERIFICATION for the complete ordered migration history. Do not automatically db push/reset. Other Auth accounts and content remain intact. Tests use expiring tagged memberships, never permanent membership edits.
+
+Review reuse is opt-in and defaults false. Eligible real OpenAI corrections/intent can be bounded prompt examples for new translations; snapshots preserve retry consistency. Opt-out affects future selection, not earlier requests/history. No model training or accuracy guarantee. Provider defaults/models are unchanged.
+
+Browser uploads now use private signed staging then server-byte finalization, preserving25MB/180seconds on Vercel. `npm run cleanup:uploads` previews expired staging; `-- --apply` removes only exact expired temporary objects after the token lifetime plus10min. It never deletes original story audio. Failed/uncertain finalization retains a draft ID and preview for explicit recovery.
+
+Before an approved live verification operation, `npm run reserve:m10:live -- --calls=3 --phase=local` (or hosted) reserves slots in the existing local budget ledger and the separate six-slot M10 record. No provider request is made by this command. Never reset reservations/locks to bypass limits; reservations are not actual billed usage. This verification guard does not impose an account-wide production spending limit.
+
+Vercel project anansi exists in Caleb Steenkamp's projects, Node26; no deployment/availability is claimed until final release evidence. Production variable metadata is verified; secret values were entered directly by the owner. Required variables are the public Supabase URL/anon key and Secret Supabase service-role/OpenAI keys plus the existing provider/model configuration. Do not copy unused Google/Vulavula keys. GitHub integration currently returns Bad credentials; the owner approved CLI deployment of verified committed source, with automatic GitHub deployment deferred. The .vercelignore excludes local secrets, recordings, dependencies and generated artifacts. Owner handoffs and exact evidence are in M10_VERIFICATION.

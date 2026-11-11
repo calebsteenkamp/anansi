@@ -31,7 +31,7 @@ test("mobile LAN sign-in keeps typing and recovers from transport failures",asyn
   await page.goto("/stories/new");await expect(page.getByLabel("Upload audio")).toBeEnabled();
   await page.getByLabel("Upload audio").setInputFiles({name:"lan.wav",mimeType:"audio/wav",buffer:Buffer.from(wave())});
   await page.getByRole("checkbox",{name:/I own this audio/}).check();
-  const saved=page.waitForResponse(response=>response.url().endsWith("/api/stories/drafts")&&response.request().method()==="POST");
+  const saved=page.waitForResponse(response=>/\/api\/stories\/drafts\/[^/]+\/finalize$/.test(response.url())&&response.request().method()==="POST");
   await page.getByRole("button",{name:"Save private draft"}).click();expect((await saved).status()).toBe(201);
   await expect(page.getByLabel("Saved draft audio")).toBeVisible();await page.reload();await expect(page.getByLabel("Saved draft audio")).toBeVisible();
   await page.goto("/account");

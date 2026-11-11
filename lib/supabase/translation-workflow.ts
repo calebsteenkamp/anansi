@@ -1,3 +1,4 @@
+import type {IntentExample} from "../intent-examples";
 import "server-only";
 import type {SupabaseClient} from "@supabase/supabase-js";
 import {AudioError} from "../audio";
@@ -21,14 +22,15 @@ export async function translationView(db:SupabaseClient,story:StorySnapshot,user
   total=tasks.data.length;complete=tasks.data.filter(t=>t.state==="complete").length;failed=tasks.data.filter(t=>t.state==="failed").length;processing=tasks.data.filter(t=>t.state==="processing").length;
   retryRequired=failed>0||tasks.data.some(t=>t.state==="processing"&&Date.parse(t.claim_expires_at??"")<=Date.now());
  }
- return {id:linked.id,status:linked.status,provider:linked.ai_provider,model:linked.ai_model,owner,total,complete,failed,processing,retryRequired,segments:segments.data};
+ const context=await db.rpc("m10_context_info",{p_translation:linked.id});rpcError(context.error);
+ return {examplesUsed:context.data.examplesUsed,promptVersion:context.data.promptVersion,id:linked.id,status:linked.status,provider:linked.ai_provider,model:linked.ai_model,owner,total,complete,failed,processing,retryRequired,segments:segments.data};
 }
 export function translationStore(admin:SupabaseClient,id:string,userId:string):TranslationStore{return {
- async claim(consent){const r=await admin.rpc("m5_claim_translation",{p_story:id,p_actor:userId,p_consent:consent});rpcError(r.error);return r.data;},
+ async claim(consent){const r=await admin.rpc("m10_claim_translation",{p_story:id,p_actor:userId,p_consent:consent});rpcError(r.error);return r.data;},
  async finish(task,token,text,error){const r=await admin.rpc("m5_finish_translation",{p_story:id,p_actor:userId,p_task:task,p_token:token,p_text:text,p_error:error});rpcError(r.error);}
 };}
-export async function translateConfigured(text:string,provider:Provider,model:string){
+export async function translateConfigured(text:string,provider:Provider,model:string,examples?:IntentExample[]){
  if((provider==="mock"&&model!=="synthetic-v1")||(provider==="vulavula"&&model!=="vulavula-translate-api"))throw new ProviderError("configuration");
  const config=configFromEnv(process.env);
- return createAdapters({...config,translation:provider,openaiTranslationModel:model}).translate(text,"xh","en");
+ return createAdapters({...config,translation:provider,openaiTranslationModel:model}).translate(text,"xh","en",examples);
 }

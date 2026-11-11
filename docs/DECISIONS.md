@@ -149,3 +149,7 @@ Owner-approved restriction: use only the provided audio. Phrase1 primary/Phrase2
 ## D39 — M9 accepted; M10/UI/hosting authorized (2026-11-11T18:41:07+02:00)
 
 Owner reports reviews passed and rehearsals5:00/5:15; expressly permits the slight overrun. Record missing measurements as unreported. Publish M9, then implement M10 opt-in intent examples, warm paper/teal UI, private direct audio upload preserving25MB/180seconds, four permanent demo accounts and Vercel hosting. Six new OpenAI requests total permitted across local/hosted checks using only provided Phrase1/2; ordinary tests remain mocks. Owner creates the additional two accounts and applies reviewed SQL. No paid hosting upgrade or new provider authorized.
+
+## D40 — CLI release while GitHub integration is unavailable (2026-11-11T20:02:10+02:00)
+
+Owner-approved release path: deploy the verified committed source with Vercel CLI; repair automatic GitHub deployment later. Vercel's GitHub connection returned Bad credentials through MCP and CLI, while Vercel account access works. Keep normal Git commit/push verification independently. Inspect the CLI source manifest, exclude local credentials/data/generated artifacts with .vercelignore, stage a production deployment without a domain, test it in Edge, and promote that same artifact. No new credential transfer or paid upgrade is authorized.

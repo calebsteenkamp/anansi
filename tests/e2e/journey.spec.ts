@@ -10,7 +10,7 @@ for(const recovery of [false,true])test("provided Phrase 1 complete two-user jou
   const reference=await readFile("data/Phrase 1/isiXhosa.txt","utf8"),english=await readFile("data/Phrase 1/English.txt","utf8"),intent=await readFile("data/Phrase 1/Intent.txt","utf8");
   const p=await a.newPage();await login(p,f.emails[0],f.password);await p.goto("/stories/new");
   await p.getByLabel("Upload audio").setInputFiles("data/Phrase 1/Phrase 1.mp3");await p.getByRole("checkbox",{name:/I own this audio/}).check();
-  const saved=p.waitForResponse(r=>r.url().endsWith("/api/stories/drafts")&&r.request().method()==="POST");await p.getByRole("button",{name:"Save private draft"}).click();const response=await saved;expect(response.status()).toBe(201);const {id}=await response.json();
+  const saved=p.waitForResponse(r=>/\/api\/stories\/drafts\/[^/]+\/finalize$/.test(r.url())&&r.request().method()==="POST");await p.getByRole("button",{name:"Save private draft"}).click();const response=await saved;expect(response.status()).toBe(201);const {id}=await response.json();
   await expect(p.getByRole("heading",{name:"Transcript editor"})).toBeVisible();await expect(p.getByText(/^Provider: mock\./)).toBeVisible();
   if(recovery)await p.route("**/api/stories/"+id+"/transcribe",route=>route.fulfill({status:502,contentType:"application/json",body:JSON.stringify({error:{message:"Simulated transcription failure; paste reference."}})}),{times:1});
   await p.getByRole("checkbox",{name:/I have permission to send this audio/}).check();await p.getByRole("button",{name:"Transcribe audio",exact:true}).click();

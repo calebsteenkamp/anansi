@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0–M8 accepted/published; M8 is00fbdfb and remote matched before M9 code. Owner authorizes M9 only. Required human bilingual feedback and two <=5minute rehearsals gate M9 commit/push. M10 deferred. Milestone approval is never inferred from test passes.
+M0–M9 accepted/published; M9 is9fbd552d00f0068afa9b2400b11df87560195b32 and remote matched. Owner authorizes M10/UI/four-account Vercel hosting. SQL remains owner-applied. Local and hosted verification gate publication/release; no further milestone inferred.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -153,3 +153,11 @@ Use only the supplied Phrase1/2 MP3/reference files; no newly invented narrative
 Unit safety checks, actual Supabase repeatability/contribution preservation, and two provided-audio full-journey browser cases (normal and simulated failure/recovery) establish workflow evidence. `verify:fresh-setup` uses a credential-free source snapshot within ignored local data, npm ci, unit/lint/build. Record exact final outputs in M9_VERIFICATION/MILESTONES; no claim of a fresh cloud deployment. Maintain honest demo/submission docs and home copy. All earlier suites remain required.
 
 Owner selects demo accounts, runs inspected seed, supplies bilingual correction/time/rating/intent observations and performs DEMO_SCRIPT twice uninterrupted <=5minutes. Mock feedback proves workflow only. No M9 commit/push before those observations pass; no M10/deployment/submission authority.
+
+## Active M10 / T10 execution contract
+
+Approved implementation plan: opt-in review reuse, bounded/confident real-OpenAI source examples, frozen/versioned retry context, unchanged original/AI results, UI modernization, private staged25MB uploads and four-account deployment. Selection/context and membership are SQL guarded; pages/GET never call providers. Read M10_VERIFICATION for migration files/corrections, pending owner account/SQL/environment handoffs and actual evidence.
+
+Sequence: M9 published9fbd552; implement and unit/build-check M10; owner applies reviewed SQL and supplies four existing UUIDs; activate membership/close signup; inspect schema/permissions; run full unit/integration/browser/lint/build/fresh-source/dependency/security checks. Use Browser interactive then Edge local production checks. Six live OpenAI calls maximum including every segment, no automatic retries, only provided recordings; reserve slots with reserve:m10:live before each operation. No other provider comparison.
+
+After local requirements pass, explicitly stage reviewed files, commit feat: complete milestone m10 intent examples and hosted demo, push main normally and verify remote hash. Vercel project anansi/prj_svYmOXQs8Lof2sOYfyxRNdRzBXX8 exists in team_a8sQvu6vpJMua47ZQNGO2P1Q, Node26, no deployment yet. Owner enters production credentials securely. Stage exact production commit without assigning domain, Edge smoke, then promote tested artifact. No release completion until reachable HTTPS and four-account isolation are confirmed. No paid upgrade/custom domain/new provider.

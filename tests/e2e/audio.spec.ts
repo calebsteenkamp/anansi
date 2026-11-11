@@ -10,7 +10,7 @@ async function signIn(page:Page,email:string,password:string) {
 test("anonymous capture, draft and audio requests stay protected",async({page})=>{
  await page.goto("/stories/new");await expect(page).toHaveURL(/sign-in/);
  await page.goto("/stories/00000000-0000-4000-8000-000000000000");await expect(page).toHaveURL(/sign-in/);
- const response=await page.request.post("/api/stories/drafts",{headers:{origin:"http://localhost:3000"}});
+ const response=await page.request.post("/api/stories/drafts",{headers:{origin:"http://localhost:3000"},data:{consent:true,size:10,filename:"a.mp3"}});
  expect(response.status()).toBe(401);
  const audio=await page.request.get("/api/stories/00000000-0000-4000-8000-000000000000/audio");expect(audio.status()).toBe(401);
 });
@@ -26,7 +26,7 @@ test("denied microphone falls back to upload; private audio survives reload and 
   await expect(page.getByLabel("Upload audio")).toBeEnabled();await page.getByLabel("Upload audio").setInputFiles({name:"synthetic.wav",mimeType:"audio/wav",buffer:Buffer.from(wave())});
   await expect(page.getByLabel("Preview audio")).toBeVisible();await expect(page.getByRole("button",{name:"Save private draft"})).toBeDisabled();
   await page.getByRole("checkbox",{name:/I own this audio/}).check();
-  const saved=page.waitForResponse(response=>response.url().endsWith("/api/stories/drafts")&&response.request().method()==="POST");
+  const saved=page.waitForResponse(response=>/\/api\/stories\/drafts\/[^/]+\/finalize$/.test(response.url())&&response.request().method()==="POST");
   await page.getByRole("button",{name:"Save private draft"}).click();const response=await saved;expect(response.status()).toBe(201);const result=await response.json();const id=result.id as string;
   const row=await f.sessions[0].from("stories").select("audio_path").eq("id",id).single();expect(row.error).toBeNull();paths.push(row.data!.audio_path);
   await expect(page).toHaveURL(new RegExp("/stories/"+id+"$"));await expect(page.getByText(/Private draft/)).toBeVisible();

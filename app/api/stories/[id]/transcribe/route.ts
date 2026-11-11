@@ -1,3 +1,4 @@
+export const maxDuration=300;
 import {randomUUID} from "node:crypto";
 import {apiError,privateJson} from "../../../../../lib/api";
 import {AudioError} from "../../../../../lib/audio";

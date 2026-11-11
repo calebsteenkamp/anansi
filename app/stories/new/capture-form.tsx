@@ -1,7 +1,9 @@
 "use client";
 import {useEffect, useRef, useState, useSyncExternalStore} from "react";
+import {createBrowserClient} from "@supabase/ssr";
 import {useRouter} from "next/navigation";
 import {AUDIO_ACCEPT, MAX_AUDIO_BYTES, selectRecordingType} from "../../../lib/audio";
+import {recordingSession} from "../../../lib/recording";
 
 const subscribeReady = () => () => {};
 const clientReady = () => true;
@@ -9,6 +11,7 @@ const serverReady = () => false;
 export function CaptureForm() {
  const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
  const router = useRouter();
+ const reservation=useRef<{file:File;id:string}|null>(null);
  const [file, setFile] = useState<File | null>(null);
  const [preview, setPreview] = useState("");
  const [consent, setConsent] = useState(false);
@@ -18,7 +21,7 @@ export function CaptureForm() {
  const [elapsed, setElapsed] = useState(0);
  const [message, setMessage] = useState("");
  const stream = useRef<MediaStream | null>(null);
- const recorder = useRef<MediaRecorder | null>(null);
+ const recorder = useRef<ReturnType<typeof recordingSession> | null>(null);
  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
  const previewUrl = useRef("");
  const mounted = useRef(true);
@@ -28,7 +31,7 @@ export function CaptureForm() {
   return () => {
    mounted.current = false;
    if (timer.current) clearInterval(timer.current);
-   if (recorder.current?.state === "recording") recorder.current.stop();
+   recorder.current?.dispose();
    stream.current?.getTracks().forEach(track => track.stop());
    if (previewUrl.current) URL.revokeObjectURL(previewUrl.current);
   };
@@ -36,6 +39,7 @@ export function CaptureForm() {
  function chooseFile(next: File | null) {
   if (previewUrl.current) URL.revokeObjectURL(previewUrl.current);
   previewUrl.current = "";
+  reservation.current=null;
   setFile(null); setPreview(""); setConsent(false); setMessage("");
   if (!next) return;
   if (!next.size || next.size > MAX_AUDIO_BYTES) {setMessage("Choose a nonempty audio file of 25 MB or smaller."); return;}
@@ -43,10 +47,8 @@ export function CaptureForm() {
   setFile(next); setPreview(previewUrl.current);
  }
  function stopRecording() {
-  if (recorder.current?.state === "recording") recorder.current.stop();
+  recorder.current?.stop();
   if (timer.current) {clearInterval(timer.current); timer.current = null;}
-  stream.current?.getTracks().forEach(track => track.stop());
-  stream.current = null;
  }
  async function startRecording() {
   setMessage(""); setRequesting(true);
@@ -61,23 +63,16 @@ export function CaptureForm() {
    chooseFile(null);
    stream.current = acquired;
    const nextRecorder = new MediaRecorder(acquired, {mimeType, audioBitsPerSecond:128000});
-   recorder.current = nextRecorder;
-   const chunks: BlobPart[] = [];
-   nextRecorder.ondataavailable = event => {if (event.data.size) chunks.push(event.data);};
-   nextRecorder.onstop = () => {
+   const finished = () => {
     if (!mounted.current) return;
     if (timer.current) {clearInterval(timer.current); timer.current = null;}
-    acquired?.getTracks().forEach(track => track.stop());
     stream.current = null; setRecording(false);
-    const extension = mimeType.startsWith("audio/mp4") ? "m4a" : "webm";
-    chooseFile(new File(chunks, "recording." + extension, {type:mimeType}));
+   };
+   recorder.current = recordingSession(nextRecorder, acquired, mimeType, recorded => {
+    if (!mounted.current) return;
+    finished(); chooseFile(recorded);
     setMessage("Recording ready. Preview it and confirm permission before saving.");
-   };
-   nextRecorder.onerror = () => {
-    nextRecorder.onstop = null;
-    stopRecording(); setRecording(false);
-    setMessage("Recording failed. Try again or use Upload audio.");
-   };
+   }, error => {if (mounted.current) {finished(); setMessage(error);}});
    nextRecorder.start(250);
    const started = performance.now();
    setElapsed(0); setRecording(true);
@@ -96,12 +91,22 @@ export function CaptureForm() {
   event.preventDefault();
   if (!file || !consent || saving.current) return;
   saving.current = true; setBusy(true); setMessage("Validating and saving your private draft…");
-  const data = new FormData();
-  data.set("audio", file); data.set("consent", "yes");
   try {
-   const response = await fetch("/api/stories/drafts", {method:"POST",body:data});
-   const result = await response.json();
-   if (!response.ok || typeof result.id !== "string") throw new Error(result.error?.message || "Saving failed. Your preview is still available; try again.");
+   let id=reservation.current?.file===file?reservation.current.id:null;
+   if(!id){
+    const response=await fetch("/api/stories/drafts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({consent,size:file.size,mediaType:file.type,filename:file.name})});
+    const upload=await response.json();if(!response.ok||typeof upload.id!=="string")throw new Error(upload.error?.message??"Upload setup failed. Your preview is retained.");
+    id=upload.id;reservation.current={file,id:upload.id};
+    const db=createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    // Even if the response is lost, finalization checks whether the actual object arrived.
+    await db.storage.from("story-audio-staging").uploadToSignedUrl(upload.path,upload.token,file,{contentType:upload.mediaType});
+   }
+   const response=await fetch("/api/stories/drafts/"+id+"/finalize",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
+   const result=await response.json();
+   if(!response.ok||typeof result.id!=="string"){
+    if(["upload_missing","invalid_audio","audio_too_long","audio_too_large","empty_audio"].includes(result.error?.code))reservation.current=null;
+    throw new Error(result.error?.message??"Saving failed. Keep your preview and retry finalization.");
+   }
    router.push("/stories/" + result.id);
    router.refresh();
   } catch (error) {setMessage(error instanceof Error ? error.message : "Saving failed. Try again.");}

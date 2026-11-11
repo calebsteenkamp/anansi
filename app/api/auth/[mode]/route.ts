@@ -1,3 +1,5 @@
+import {assertDemoAccess,demoRestricted} from "../../../../lib/demo-access";
+import {AudioError} from "../../../../lib/audio";
 import {isSameOrigin} from "../../../../lib/request-origin";
 import {serverClient} from "../../../../lib/supabase/server";
 import {credentials} from "../../../../lib/profile";
@@ -23,13 +25,15 @@ export async function POST(request:Request,{params}:{params:Promise<{mode:string
  try {
   const db=await serverClient();
   if(mode==="sign-in"){
-   const {error}=await db.auth.signInWithPassword(input);
-   if(error)return privateJson({message:"Unable to sign in. Check your credentials and email confirmation."},401);
+   const {data,error}=await db.auth.signInWithPassword(input);
+   if(error||!data?.user)return privateJson({message:"Unable to sign in. Check your credentials and email confirmation."},401);
+   try{await assertDemoAccess(db);}catch(error){await db.auth.signOut();throw error;}
   }else{
+   if(await demoRestricted(db))return privateJson({message:"This demo is invitation-only. Sign in with an invited account."},403);
    const {data,error}=await db.auth.signUp(input);
    if(error)return privateJson({message:"Unable to create account. Try again later or contact the demo owner."},400);
    if(!data.session)return privateJson({message:"Check your email to confirm registration before signing in."});
   }
   return privateJson({redirect:"/account"});
- }catch{return privateJson({message:"Authentication is temporarily unavailable. Your entries have been kept; try again."},503);}
+ }catch(error){if(error instanceof AudioError)return privateJson({message:error.message},error.status);return privateJson({message:"Authentication is temporarily unavailable. Your entries have been kept; try again."},503);}
 }
