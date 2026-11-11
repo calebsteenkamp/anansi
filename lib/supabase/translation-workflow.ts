@@ -12,7 +12,7 @@ export async function translationView(db:SupabaseClient,story:StorySnapshot,user
  if(result.error)throw new AudioError("unavailable","Translation setup unavailable. Ask the owner to verify M5 SQL.",503);
  if(!result.data)return null;
  const linked=result.data,owner=story.author_id===userId;
- const segments=await db.from("segments").select("id,text,position").eq("story_id",linked.id).order("position");
+ const segments=await db.from("segments").select("id,text,position,source_segment_id,start_ms,end_ms,timing_source").eq("story_id",linked.id).order("position");
  if(segments.error)throw new AudioError("unavailable","Translation unavailable. Refresh to try again.",503);
  let total=segments.data.length,complete=total,failed=0,processing=0,retryRequired=false;
  if(owner){

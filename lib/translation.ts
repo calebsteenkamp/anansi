@@ -25,5 +25,5 @@ export async function translateNext(store:TranslationStore,adapter:(text:string,
 }
 export interface TranslationView {
  id:string;status:string;provider:string;model:string;owner:boolean;total:number;complete:number;failed:number;processing:number;retryRequired:boolean;
- segments:{id:string;text:string;position:number}[];
+ segments:{id:string;text:string;position:number;source_segment_id:string|null;start_ms:number|null;end_ms:number|null;timing_source:"provider"|"estimated"|null}[];
 }

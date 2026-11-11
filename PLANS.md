@@ -4,7 +4,7 @@ Approved by the owner on 2026-11-09. This file is a blueprint, not a completion 
 
 ## Execution rules and common gates
 
-M0-M4 are accepted, committed and pushed. M4 is fb985ff; remote hash matched. Owner authorized M5 only; its SQL, automated and manual gates must pass before commit. M6 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
+M0-M5 are accepted, committed and pushed. M5 is9872f29; remote hash matched. Owner authorizes M6 only; automated and real desktop/phone listening gates must pass before M6 commit/push. M7 remains unauthorized. M1-M9 require separate confirmation after the preceding milestone passes its T-number gate. M10 deferred. No dependencies/tests/product code for M1-M9 in the documentation step.
 
 Use current Next.js/TypeScript/Tailwind/npm/root app. Implement planned typed interfaces and records in architecture, validating at server and database boundaries. SQL migrations are owner-reviewed/applied. No external services called on read, no overwritten originals, no browser secrets, no claims of exactly-once billing.
 
@@ -116,8 +116,16 @@ Explicit owner transcribe, typed/pasted fallback, title/segment edit/split/merge
 
 Owner permits at most two live OpenAI requests using previously cleared Phrase1/2. Both completed successfully and authorization is consumed; no retry/new phone audio. Unit/E2E providers are mocks, not accuracy evidence. M4 stopped for owner SQL and real desktop/phone acceptance. That gate passed; fb985ff was committed/pushed before M5 began.
 
-## Active M5 implementation contract
+## Completed M5 implementation contract
 
 A post-publish event starts sequential explicit POST /api/stories/[id]/translation calls, one segment each. Existing published pages/GETs never start work. TranslationPanel exposes saved partial results, Refresh (read-only), Continue and explicit Retry. Permission to submit text is required; OpenAI remains default; stored task provider/model is authoritative. Provider clients remain server-only.
 
 Owner reviews/applies 20261110212329_m5_translation_processing.sql. Parent English row lock serializes active claims,5min expiry, fingerprint verification, stale-token rejection, completed reuse, unfinished-only reset, transactional aligned result/task/status persistence. Claims/results/retry SQL executable only by service_role with verified actor repeated inside SQL; ordinary tables retain RLS/default-denial. Crash after response before persistence can incur another paid call after explicit recovery. No automatic retry/fallback, background queue, M6 highlighting/device speech, or new live benchmark. Read M5_VERIFICATION for application and acceptance handoff.
+
+## Active M6 implementation contract
+
+Read current user's profile preference through the session client. StoryReader shows original only for xh, original+aligned English for en; page selector overrides presentation for that page only. Translation lookup uses source_segment_id, not array position. Original timing drives click/Enter/Space seek and playhead highlight; labelled estimates remain approximate, not word alignment. Existing M5 progress/actions stay explicit and update the reader after saved results; no read triggers provider work.
+
+DraftAudio accepts a reader ref/time callback, renews private URLs, and stops on unmount/pagehide. Playback arbiter stops the current document's competing audio/voice. DeviceNarrator uses browser-reported local English voices only, sequential short utterances preserving source IDs, stale-event guards, cancel/listener cleanup and unavailable/error fallback. No autoplay or remote speech fallback. Profile/language/voice selection and navigation must not restart provider jobs. No SQL/dependency changes.
+
+Verification: npm run test:unit, test:integration, test:e2e, lint, build, dependency/whitespace/client-secret checks. T6 units cover boundaries, identity alignment, arbitration, chunking, sequencing and cancellation/errors; browser uses actual stored synthetic audio plus deterministic speech stubs. Owner manually verifies real desktop/Huawei/Oppo audibility and voice/fallback, seeking and navigation per M6_VERIFICATION. M6 remains uncommitted until that acceptance; M7 not authorized.

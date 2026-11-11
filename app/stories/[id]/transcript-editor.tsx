@@ -1,13 +1,13 @@
 "use client";
 import {useEffect,useRef,useState,useSyncExternalStore} from "react";
 import {newSegmentId,estimateTimings,initialText,mergeSegment,splitSegment} from "../../../lib/transcript";
-import {TranslationPanel} from "./translation-panel";
+import {StoryReader} from "./story-reader";
 import {DraftAudio} from "./draft-audio";
 import type {StorySnapshot} from "../../../lib/supabase/story-workflow";
 const subscribe=()=>()=>{};
 const clientReady=()=>true;
 const serverReady=()=>false;
-export function TranscriptEditor({initial,provider,translationProvider,audioUrl}:{initial:StorySnapshot;provider:string;translationProvider:string;audioUrl?:string}){
+export function TranscriptEditor({initial,provider,translationProvider,preferredLanguage,audioUrl}:{initial:StorySnapshot;provider:string;translationProvider:string;preferredLanguage:"xh"|"en";audioUrl?:string}){
  const ready=useSyncExternalStore(subscribe,clientReady,serverReady);
  const [story,setStory]=useState(initial);
  const [title,setTitle]=useState(initial.title);
@@ -79,7 +79,7 @@ export function TranscriptEditor({initial,provider,translationProvider,audioUrl}
   try{setSegments(mergeSegment(segments,index,story.audio_duration_ms));setDirty(true);setMessage("");}
   catch(error){setMessage((error as Error).message);}
  }
- if(published)return <section><h1 className="text-3xl">{story.title}</h1><p className="mt-4">Published story · isiXhosa · {(story.audio_duration_ms/1000).toFixed(1)} seconds</p><p>State: published. Original transcript is read-only.</p>{audioUrl&&<DraftAudio id={story.id} initialUrl={audioUrl}/>}<h2 className="mt-8 text-2xl">Published transcript</h2><ol className="mt-4 space-y-3">{segments.map(row=><li key={row.id}><p>{row.text}</p><p>{row.timing_source==="estimated"?"Approximate":"Provider"} timing: {(row.start_ms/1000).toFixed(2)}–{(row.end_ms/1000).toFixed(2)} seconds</p></li>)}</ol><TranslationPanel storyId={story.id} initial={null} owner={true} provider={translationProvider} autoStart={startTranslation}/></section>;
+ if(published)return <StoryReader story={story} audioUrl={audioUrl} initialTranslation={null} owner={true} provider={translationProvider} preferredLanguage={preferredLanguage} autoStart={startTranslation}/>;
  if(sessionChanged)return <section role="alert"><h1 className="text-2xl">Session or story access changed</h1><p>This editor has been closed. Reload to verify the current account and story permissions.</p><button className="underline" onClick={()=>window.location.reload()}>Reload story</button></section>;
  return <><h1 className="text-3xl">{story.title}</h1><p className="mt-4">{published?"Published story":"Private draft"} · isiXhosa · {(story.audio_duration_ms/1000).toFixed(1)} seconds</p>
   {audioUrl?<DraftAudio id={story.id} initialUrl={audioUrl}/>:<p role="alert">Playback unavailable. Refresh to retry.</p>}

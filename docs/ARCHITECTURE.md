@@ -1,6 +1,6 @@
 # Architecture blueprint
 
-Approved design, 2026-11-09. M1 provider adapters and M2 auth/profile foundation are accepted/published. M3 capture/drafts and M4 transcript/publication are accepted and published. M5 translation/recovery is implemented with applied SQL, pending final verification/manual acceptance; M6 onward remains planned. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
+Approved design, 2026-11-09. M1 provider adapters and M2 auth/profile foundation are accepted/published. M3 capture/drafts and M4 transcript/publication are accepted and published. M5 translation/recovery is accepted/published. M6 reading/listening is implemented pending verification and manual acceptance; M7 onward remains planned. See [scope](PRODUCT_SCOPE.md), [plan](../PLANS.md), and [actual status](MILESTONES.md).
 
 ## Boundaries and services
 
@@ -125,3 +125,13 @@ Adapters use the stored provider/model plus current server credentials. A five-m
 Auto-start exists only in client memory after a successful explicit Publish event. Rendering/reloading does not set that flag. Unmount stops subsequent client requests; an in-flight server request may still finish. No shared session cache, background queue, translation GET side effects or M6 playback/speech work is introduced.
 
 Consent additionally binds to the displayed provider: new Publish rejects changed server configuration, and Continue/Retry checks expectedProvider against stored English metadata before claiming. That value is a permission guard, not a caller-controlled provider selection. Initial recovery may GET saved progress; it never POSTs automatically on reload. The original page identifies its actual storyteller, and translation links explicitly to the original.
+
+## M6 reading/listening boundary (verification pending)
+
+Server Story reads current-user preferred_language and storyteller identity via the existing session client, alongside signed audio and caller-visible English. TranslationView now exposes saved source-segment IDs/timings, protected by the same RLS; no task tokens, secrets or new grants. StoryReader is an interactive client boundary beneath request-time Suspense. M5 panel keeps workflow state and notifies the reader when saved English changes; rendering itself remains read-only.
+
+Aligned rows use source identity, with ambiguous/missing mappings refused. Original intervals are inclusive-start/exclusive-end; gaps/end have no active segment. Native audio events update the playhead; segment buttons seek without implicit autoplay. Document-scoped playback ownership cancels the previous audio/voice before another starts. Audio refs/URLs/listeners are released on unmount/pagehide; URL renewal stays an authorized read.
+
+Optional DeviceNarrator wraps Web Speech through an injectable engine. It filters English voices with localService=true, loads asynchronous voiceschanged updates, chunks long text into<=240 code points, speaks one chunk at a time and highlights its source segment. Generation guards ignore stale callbacks after cancel/restart. Voice/language changes, competing original playback, Stop and navigation cancel the queue. Unsupported APIs, missing local voice or engine failure retain text/original audio; no paid/remote fallback. No cross-tab audio arbitration or precise translated-word timing is claimed.
+
+Primary API references: [media currentTime](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime), [voice inventory](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices), [localService](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice/localService), [speech cancellation](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/cancel). These document browser contracts; device behavior still requires manual checks.

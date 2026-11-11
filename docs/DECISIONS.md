@@ -117,3 +117,11 @@ Status: implementation choice within owner-approved M5, verification pending. M4
 ## D31 — M5 accepted; M6 authorized (2026-11-11T08:34:02+02:00)
 
 Owner reports all tests pass, authorizes M5 commit/push and M6 only. Record manual acceptance without inventing device/browser versions or accuracy evidence. Repeat required automated gates, publish M5 and verify remote before M6 code. M6 still requires actual desktop/phone listening checks before its commit. M7 remains unauthorized.
+
+## D32 — M6 reader and local narration (2026-11-11T09:28:08+02:00)
+
+Status: technical implementation under owner-approved M6; acceptance pending. M5 published as9872f29. Reuse existing source IDs, profile preference, original audio/timings and RLS; no new SQL or dependencies. Per-page language override does not silently change the saved profile. Original and English share source-segment alignment; estimated timing stays explicitly approximate. Use browser-reported local English voices only, rather than silently sending text to a remote voice. Sequential bounded utterances and a document-scoped playback owner prevent competing playback; cancellation ignores late events. No local voice is a supported fallback condition, not evidence of audible narration. Real desktop/phone checks required before M6 commit; M7 unauthorized.
+
+## D33 — M6 accepted; M7 authorized (2026-11-11T10:07:45+02:00)
+
+Owner confirms all tests pass and authorizes normal M6 commit/push, then M7 only. M7 SQL remains owner-applied and manual verification required before its commit. M8 is unauthorized.

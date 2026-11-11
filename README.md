@@ -6,7 +6,7 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
-M0–M4 are accepted, committed and pushed (M4: fb985ff). Accounts/profiles, private audio capture/upload/playback, explicit transcription, editable/manual transcripts and immutable publication are implemented. M5 linked English translation, progress and recovery are implemented but await manual desktop/phone acceptance. SQL/permissions and automated tests are verified; M5 is uncommitted. Review/discovery and M6 listening enhancements remain planned. See [M5 setup/verification](docs/M5_VERIFICATION.md), [M4 evidence](docs/M4_VERIFICATION.md), and [milestones](docs/MILESTONES.md).
+M0–M5 are accepted, committed and pushed (M5:9872f29). Accounts, private audio capture/playback, editable transcripts, immutable publication and durable linked English translation/recovery are implemented. M6 preference-aware reading, aligned seeking/highlighting and optional local device narration are implemented with passing automated checks, pending manual desktop/phone acceptance; M6 is uncommitted. Review and discovery remain planned. See [M6 verification](docs/M6_VERIFICATION.md), [M5 evidence](docs/M5_VERIFICATION.md) and [milestones](docs/MILESTONES.md).
 
 ## Prerequisites and setup
 
@@ -130,3 +130,9 @@ After prior migrations, review/apply only supabase/migrations/20261110212329_m5_
 After saving a corrected transcript, consent to send its text and publish. Translation begins through explicit POST requests, with one English story per original. Leaving interrupts subsequent requests; refresh shows persisted results without generating more. Continue handles pending work; Retry resets failed/expired work only. Claims last five minutes. Completed segments retain their original provider/model; changing environment configuration does not silently retranslate them. Costs may repeat after a response/persistence crash; app processing does not enforce an account-wide provider spending limit.
 
 For automated browser tests, stop the manual server and run npm run test:e2e normally. Its managed server forces mock providers. Do not reuse a live-configured server; guards deliberately fail before live processing. Mocks prove workflow only. No new live benchmark is included in M5.
+
+## M6 reading and listening
+
+No new migration, dependency or environment variable. The signed-in reader's profile sets initial presentation: isiXhosa original, or original plus English. Reading language changes only the current page; save profile preference on Your profile for future page loads. Published content stays read-only. Activate a segment by click, Enter or Space to seek original audio; seeking preserves paused/playing behavior. Highlight follows the original playhead or device narration. Approximate timing is text-based, not precise word synchronization. Renew playback if the private audio link expires.
+
+When English is displayed and all translation segments are aligned/saved, Device English voice can read them with an available local English voice. It starts only on explicit button press; original audio stops when narration starts and vice versa. Stop, language/voice changes and navigation cancel narration. If no suitable local voice exists or speech fails, text and original audio remain available. No remote speech fallback or new paid API call is introduced. Actual voice availability/audibility depends on the device and must be observed; browser mocks do not prove it. Follow [M6 manual checklist](docs/M6_VERIFICATION.md) before marking M6 accepted.

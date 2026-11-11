@@ -1,0 +1,9 @@
+import {it,expect,vi} from "vitest";
+import {activeSegment,seekTime,alignTranslations,claimPlayback,releasePlayback} from "../lib/playback";
+const rows=[{id:"a",start_ms:0,end_ms:1000},{id:"b",start_ms:1000,end_ms:2000},{id:"c",start_ms:2500,end_ms:3000}];
+it("uses inclusive starts/exclusive ends and clears gaps/end/invalid time",()=>{expect(activeSegment(rows,0)).toBe("a");expect(activeSegment(rows,999.9)).toBe("a");expect(activeSegment(rows,1000)).toBe("b");for(const t of [-1,2000,3000,NaN,Infinity])expect(activeSegment(rows,t)).toBeNull();});
+it("ignores malformed timing rows",()=>{expect(activeSegment([{id:"bad",start_ms:-1,end_ms:1000},{id:"backward",start_ms:200,end_ms:100}],100)).toBeNull();});
+it("bounds seeks and rejects invalid values",()=>{expect(seekTime(1500,2000)).toBe(1.5);expect(seekTime(4000,2000)).toBe(2);for(const [start,duration] of [[-1,2000],[NaN,2000],[0,0],[0,Infinity]])expect(seekTime(start,duration)).toBeNull();});
+it("aligns by source identity despite order, and rejects ambiguous/missing mappings",()=>{const a={id:"en-a",text:"A",source_segment_id:"a"},b={id:"en-b",text:"B",source_segment_id:"b"};expect(alignTranslations(rows,[b,a])).toEqual([a,b,null]);expect(alignTranslations(rows,[a,{...a,id:"duplicate"},b])).toEqual([null,b,null]);expect(alignTranslations(rows,[{...a,source_segment_id:null}])).toEqual([null,null,null]);});
+it("new playback stops prior playback; stale cleanup cannot release the new owner",()=>{const a=Symbol(),b=Symbol(),c=Symbol(),stopA=vi.fn(()=>releasePlayback(a)),stopB=vi.fn();claimPlayback(a,stopA);claimPlayback(b,stopB);expect(stopA).toHaveBeenCalledOnce();releasePlayback(a);claimPlayback(c,vi.fn());expect(stopB).toHaveBeenCalledOnce();releasePlayback(c);});
+it("reclaiming the same player does not stop itself",()=>{const owner=Symbol(),stop=vi.fn();claimPlayback(owner,stop);claimPlayback(owner,stop);expect(stop).not.toHaveBeenCalled();releasePlayback(owner);});

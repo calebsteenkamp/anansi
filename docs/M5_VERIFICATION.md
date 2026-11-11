@@ -57,3 +57,5 @@ Manual clarification: existing stories published in M4 do not auto-start on page
 M5 owner acceptance 2026-11-11T08:34:02+02:00: owner reports all requested tests pass and authorizes commit/push M5 then M6 only. This resolves the manual acceptance gate; no additional device/version or quality measurements were supplied. Final publication checks pending. M7 is unauthorized.
 
 M5 publication gate 2026-11-11T08:38:59+02:00: repeated unit117/117 exit0 (5.53s); integration22/22 exit0 (76.00s); full browser11/11 exit0 (4.9m); lint/build exit0 (compile3.6s/TypeScript10.0s); whitespace exit0. Owner manual acceptance recorded above. No new paid calls.
+
+Publication complete:9872f29cc17d9891c794786e1ba81c85c90322e6 committed/pushed; remote hash verified before M6 implementation. Owner reports all required manual tests passed. M6 status is separate in M6_VERIFICATION/MILESTONES.

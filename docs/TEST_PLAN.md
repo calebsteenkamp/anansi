@@ -1,6 +1,6 @@
 # Test plan: T0-T9
 
-T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5 now has executable cases pending owner SQL/verification; T6-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
+T1 now has executable offline tests; T2 now has executable unit/integration/browser checks; T3 has executable tests pending its manual prerequisites; T4 now has executable cases pending its manual prerequisites; T5 now has executable cases pending owner SQL/verification; T6 has executable coverage pending verification/manual acceptance; T7-T9 remain specifications. Actual results are recorded in MILESTONES. [MILESTONES](MILESTONES.md) owns actual evidence. Each Mn maps to Tn and requires owner confirmation before the next milestone.
 
 ## Environments, commands, and evidence
 
@@ -155,3 +155,11 @@ D28 regressions: session.test.ts proves verified user retrieval per protected re
 - integration/translation.test.ts: real ordinary-user/anonymous capability denial, concurrent publication/claims, private partial results, immutable completed result, alignment/provenance, unfinished-only retry, expiry/stale worker, fingerprint rejection, atomic failure/original preservation. Admin fixture setup and guarded server capabilities are distinct from actual user-token RLS assertions.
 - e2e/workflow.spec.ts now checks automatic mock translation after Publish. e2e/translation.spec.ts checks zero POST on page/reload, interrupted request recovery, completed work reuse, explicit failed-task Retry and another user's completed read/no mutation controls. Mock guards must pass before any processing.
 - Browser global preflight requires M5 SQL. Missing prerequisite means blocked/not run, not passed. No live benchmark added. Exact SQL and real desktop/phone acceptance are in M5_VERIFICATION.
+
+## Executable T6 coverage
+
+- playback.test.ts: inclusive/exclusive interval boundaries, invalid/gapped/end positions, seek validation/bounds, source-ID alignment/missing/duplicate refusal, competing playback ownership and stale cleanup.
+- device-speech.test.ts: local-English/default selection, Unicode chunks, sequential source highlights/end, cancellation/stale callback, competing audio, unavailable voices, synchronous/asynchronous speech errors. No device or paid provider is used by units.
+- e2e/reader.spec.ts + support/reader-fixture.ts: uniquely owned synthetic stored WAV, actual native seek/Enter/Space, profile preference/reload, source alignment/estimates, zero provider processing on reads, deterministic speech sequencing/error/cancel/navigation, absent/late voice and mobile layout/session navigation. Speech stubs exist only in test contexts and do not prove audibility.
+- Existing real Supabase authorization/integration suites and all M1–M5 browser flows remain required. No schema change/new migration in M6. Ordinary clients read through RLS; fixture administration stays separate.
+- Human desktop/Huawei/Oppo actual audio/voice checks are mandatory; report unsupported voice honestly and verify fallback. Exact steps/results in M6_VERIFICATION. Do not commit/push M6 with a pending required manual check.

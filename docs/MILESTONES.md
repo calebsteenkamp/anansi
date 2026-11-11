@@ -9,8 +9,8 @@ Source of actual progress; [PLANS](../PLANS.md) defines tasks and [TEST_PLAN](TE
 | M2 Database/auth/profiles | T2 | M1/T1 + owner confirmation | Complete | 2026-11-10T13:50:00+02:00 | 39 unit, 5 integration, 2 browser tests pass; owner confirms reported hydration/sign-in issues fixed. M2 committed/pushed as 5b9a1a2; origin/main hash verified identical. Owner authorizes M3 only. |
 | M3 Capture/upload/drafts | T3 | M2/T2 + owner confirmation | Complete | 2026-11-10T19:15:59+02:00 | Accepted on both phones; repeated74 unit/9 integration/6 browser/lint/build pass; committed/pushed ade9f2b, remote matched. |
 | M4 Transcribe/edit/publish | T4 | M3/T3 + owner confirmation | Complete | 2026-11-10T23:32:25+02:00 | Accepted;96 unit/16 integration/9 browser/lint/build pass. fb985ff5a9e40bb3d4126e1ed334a4f350867cf5 committed/pushed; remote matched. |
-| M5 Linked English translation | T5 | M4/T4 + owner confirmation | Verified / commit pending | 2026-11-10T23:50:57+02:00 | SQL/permissions verified;117 unit/22 integration/11 browser/lint/build pass. Owner accepts all manual tests; final publication checks pending. |
-| M6 Reading/listening | T6 | M5/T5 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
+| M5 Linked English translation | T5 | M4/T4 + owner confirmation | Complete | 2026-11-11T09:28:08+02:00 | Owner accepted all manual checks. Repeated117 unit/22 integration/11 browser/lint/build passed;9872f29cc17d9891c794786e1ba81c85c90322e6 committed/pushed, remote matched. |
+| M6 Reading/listening | T6 | M5/T5 + owner confirmation | Automated verified / manual acceptance pending | 2026-11-11T09:42:56+02:00 |132 unit/22 integration/14 browser + focused accessibility/lint/build pass. Manual desktop/Huawei/Oppo listening pending. Uncommitted/unpushed; no M7. |
 | M7 Verification/corrections | T7 | M6/T6 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M8 Follow/share/discover | T8 | M7/T7 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Planned only. |
 | M9 Demo/submission evidence | T9 | M8/T8 + owner confirmation | Not started | 2026-11-09T23:15:58+02:00 | Q6 tester/narrative/rehearsals pending. |
@@ -232,3 +232,23 @@ Security advisors contain no new M5 finding. Existing intentional default-denial
 M5 owner acceptance 2026-11-11T08:34:02+02:00: owner reports all requested tests pass and authorizes commit/push M5 then M6 only. This resolves the manual acceptance gate; no additional device/version or quality measurements were supplied. Final publication checks pending. M7 is unauthorized.
 
 M5 publication gate 2026-11-11T08:38:59+02:00: repeated unit117/117 exit0 (5.53s); integration22/22 exit0 (76.00s); full browser11/11 exit0 (4.9m); lint/build exit0 (compile3.6s/TypeScript10.0s); whitespace exit0. Owner manual acceptance recorded above. No new paid calls.
+
+### M6 implementation checkpoint — 2026-11-11T09:28:08+02:00
+
+M5 published as9872f29cc17d9891c794786e1ba81c85c90322e6; remote verified before M6 code. Automatic approval initially rejected publication despite original instruction; explicit renewed owner approval was accepted, and normal commit/push succeeded. No workaround, force push or M6 commit.
+
+M6 adds profile-aware original/English aligned reading, click/keyboard seeking, current segment highlighting, signed audio renewal, document-scoped audio/voice arbitration, optional browser-reported local English narration and cleanup. No schema, dependencies or paid calls added. Unit132/132 exit0,19 files,09:25:39+02:00,2.29s; lint/build exit0,compile4.4s/TypeScript6.9s. Full integration/browser running. Manual checks in M6_VERIFICATION remain required; M7 unauthorized.
+
+### M6 final automated verification — 2026-11-11T09:42:56+02:00
+
+- Unit:132 passed(132),19 files,exit0,09:37:42+02:00,5.74s.
+- Integration:22 passed(22),4 files,exit0,09:25:43+02:00,63.34s; actual existing Supabase schema/user authorization. No migration needed.
+- Full browser:14 passed,exit0,4.6m. Initial full run11 passed/3 failed (5.8m) on exact implicit select-label lookup; explicit aria-labels fixed it. Final native seek/end/accessibility-description case also passed separately (1 test,37.8s). Device speech stubs are confined to tests, not proof of audible output.
+- Final lint/build exit0 (compile2.8s/TypeScript7.3s). A test-only dotAll regex flag first failed the existing ES2017 TypeScript target; equivalent [\s\S] expression fixed it without changing application target.
+- npm ls --depth=0, whitespace and local documentation links pass. Final production client secret-value scan passes across16 JavaScript assets; no values displayed. .env.local/data remain ignored; M6 remains unstaged.0 disposable test accounts remain.
+- No new paid provider calls, schema mutations or dependencies. M5 stays published at9872f29cc17d9891c794786e1ba81c85c90322e6. M6 manual desktop/Huawei/Oppo acceptance remains pending; M6 uncommitted/unpushed, M7 unauthorized.
+- Next.js feedback review completed: no qualifying framework issue retained. Label/regex fixes were routine application/test debugging; no feedback sent.
+
+Owner acceptance 2026-11-11T10:07:45+02:00: all requested M6 tests pass; owner authorizes M6 commit/push, then M7 only. No further device/version observations supplied. M8 unauthorized. Repeated publication checks pending.
+
+M6 publication recheck 2026-11-11T10:12:37+02:00:132 unit (4.11s),22 integration (63.70s),14 browser (4.7m), lint passed exit0. Owner manual acceptance recorded. Production build repeated before commit. No paid calls.
