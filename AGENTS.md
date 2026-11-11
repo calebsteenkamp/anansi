@@ -35,6 +35,8 @@ Anansi is an isiXhosa-to-English storytelling prototype. AI drafts; storytellers
 
 - M10: example reuse requires explicit opt-in and a frozen bounded context; never describe it as training. Hosted demo has four permanent owner-selected UUIDs. Temporary test memberships must expire and be removed. The six-slot live verification allowance is closed; additional agent provider work requires fresh owner authorization. No automatic retry or new provider. Do not use vercel curl: this installed CLI creates a persistent bypass secret; keep existing Vercel protection and use ordinary owner sign-in for protected browser verification.
 
+GitHub/main is connected to Vercel automatic production deployments. Run all applicable checks before committing/pushing maintenance changes; verify the resulting Git-sourced deployment. See [MAINTENANCE](docs/MAINTENANCE.md) for the audit override and invitation limitations.
+
 ## Security and tests
 
 - Secrets only in ignored .env.local. Update safe .env.example as variables change. No service-role/provider secrets in NEXT_PUBLIC_, browser imports, logs, fixtures, or commits.

@@ -6,6 +6,8 @@ Anansi aims to help isiXhosa storytellers publish audio with an editable transcr
 
 ## Current status
 
+Post-release maintenance: the seven tooling audit findings are resolved with a scoped minimatch override; GitHub/main deployment configuration is restored. See [maintenance evidence and invitation limits](docs/MAINTENANCE.md). New users still require an approved membership/onboarding change; public signup remains closed.
+
 Live demo: **https://anansi-gray.vercel.app**. M0–M10 implementations are committed/pushed (M9:9fbd552; M10:d4290a9). Release7f05aaf passed local automated/Edge and staged production Edge checks, then the same artifact was promoted. The warm paper/teal UI, opt-in examples, direct private uploads and four-account access are implemented. See [M10 verification](docs/M10_VERIFICATION.md) and [milestones](docs/MILESTONES.md) for evidence and prototype limitations.
 
 ## Prerequisites and setup
@@ -158,7 +160,7 @@ Use only the supplied Phrase1/2 recordings and references. `npm run seed:demo --
 
 For a new environment, configure `.env.local` from the safe example, have the owner review/apply `supabase/migrations/` in filename order, and configure demo-only email confirmation per M2_VERIFICATION. Never paste server credentials into public variables. No new migration is needed for M9. Complete the manual evidence in [M9_VERIFICATION](docs/M9_VERIFICATION.md) before claiming demo readiness.
 
-Current verification also reports7 moderate transitive ESLint-tooling audit findings (0 high/critical); no automatic dependency upgrade was made. See M9_VERIFICATION for exact evidence and remaining limitations.
+Historical M9 verification reported7 moderate tooling findings; post-release maintenance resolved all seven. The current npm audit result is0 vulnerabilities; see MAINTENANCE for the scoped override and verification.
 
 
 ## M10 / hosted demo
@@ -173,4 +175,4 @@ Browser uploads now use private signed staging then server-byte finalization, pr
 
 Before an approved live verification operation, `npm run reserve:m10:live -- --calls=3 --phase=local` (or hosted) reserves slots in the existing local budget ledger and the separate six-slot M10 record. No provider request is made by this command. Never reset reservations/locks to bypass limits; reservations are not actual billed usage. This verification guard does not impose an account-wide production spending limit.
 
-Vercel project anansi in Caleb Steenkamp's projects uses Node26. Its verified production URL is https://anansi-gray.vercel.app, serving deployment dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw from release7f05aaf. It was staged/tested/promoted without rebuilding or a paid hosting upgrade. Required public Supabase URL/anon key and Secret Supabase service-role/OpenAI keys were entered directly by the owner, alongside provider/model configuration. Unused Google/Vulavula keys remain local. Automatic GitHub deployment is deferred after Bad credentials; release used the approved CLI source path. The .vercelignore excludes credentials, recordings, dependencies and generated artifacts, including next-env.d.ts. See M10_VERIFICATION for release evidence and7 remaining moderate tooling audit findings.
+Vercel project anansi in Caleb Steenkamp's projects uses Node26. Its verified production URL is https://anansi-gray.vercel.app. The initial M10 release used deployment dpl_4Lny66cukxg4p7Xw79gEZdDy3uzw from release7f05aaf. It was staged/tested/promoted without rebuilding or a paid hosting upgrade. Required public Supabase URL/anon key and Secret Supabase service-role/OpenAI keys were entered directly by the owner, alongside provider/model configuration. Unused Google/Vulavula keys remain local. The initial release used CLI after GitHub credentials failed. Owner reconnected GitHub during maintenance; main is now configured for automatic production builds. The .vercelignore excludes credentials, recordings, dependencies and generated artifacts, including next-env.d.ts. See M10_VERIFICATION for historical release evidence and MAINTENANCE for the resolved audit findings/Git repair.
